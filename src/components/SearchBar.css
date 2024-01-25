@@ -1,0 +1,126 @@
+.input-wrapper {
+    background-color: white;
+    width: 100%;
+    border-radius: 10px;
+    border-bottom: 2px solid #357aa1;
+    height: 2.5rem;
+    padding: 0 10px;
+    box-shadow: 0px 0px 8px #ddd;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar{
+  width: 45%;
+  min-width: 40%;
+}
+
+
+.filter {
+    font-weight:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:large;
+    background-color: transparent;
+    border: none;
+    color: #357aa1;
+    background-color: white;
+    cursor: pointer;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  display: flex;
+}
+
+.filter-button {
+  display: inline-flex;
+}
+
+
+input {
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    font-size: 1.25rem;
+    width: 100%;
+}
+
+input:focus {
+    outline: none;
+}
+
+.filter-arrow {
+    color: #357aa1;
+}
+
+#search-icon {
+    color: #357aa1;
+    width: 2vh;
+    height: 2vh;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+.filter-arrow-container {    
+    padding-top: 8px;
+    color: #357aa1;
+    transform-origin: center;
+  }
+
+/* .filter-modal {
+  position:absolute;
+  top: 220px;
+  left: 0;
+  width: 300px;
+  height: 200px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  z-index: 2;
+} */
+
+  .divider {
+    height: 20px; /* Adjust the height as needed */
+    width: 1px;
+    background-color: #357aa1; /* Color of the divider */
+    margin: 0 5px; /* Adjust the margin as needed */
+  }
+
+  .search-divider {
+    height: 20px; /* Adjust the height as needed */
+    width: 1px;
+    background-color: #357aa1; /* Color of the divider */
+    margin: 0 10px; /* Adjust the margin as needed */
+  }
+
+  .dropdown {
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown-container {
+    max-height: 200px;
+    overflow-y: auto;
+    border: black;
+    /* position: relative; */
+  }
+
+  .dropdown-row {
+    border-bottom: 2px solid #ccc; 
+    padding: 8px; 
+    cursor: pointer;
+    font-size: large;
+  }
+
+  .Filter {
+    position: relative;
+    padding-bottom: 100px;
+  }
+
+  .numOfResults {
+    font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+  }

@@ -1,0 +1,72 @@
+.filter-modal {
+  border: 1px solid #357aa1;
+  border-radius: 10px;
+  background-color: #e45e19;
+}
+
+.filter-wrapper {
+    background-color: white;
+    width: 100%;
+    border-radius: 10px;
+    border-left: 2px solid #357aa1;
+    border-right: 2px solid #357aa1;
+    border-bottom: 2px solid #357aa1;
+    border-top: 1px solid #357aa1;
+    height: 4rem;
+    padding: 0 10px;
+    box-shadow: 0px 0px 8px #ddd;
+    display: flex;
+    align-items: center;
+    overflow: auto;
+    position:relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-text {
+    font-weight:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:large;
+    background-color: transparent;
+    border: none;
+    color: #357aa1;
+    background-color: white;
+    position: relative;
+    display: inline-flex;
+}
+
+#filter-option {
+  align-items: center;
+  padding-top: 0.5rem;
+  position: relative;
+}
+
+.select-container {
+  display: inline-flex
+ 
+}
+
+.select-container > div {
+    margin-right: 1rem; /* Add margin for spacing between selects */
+    margin-left: 0.5rem;
+    /* align-items: center; */
+    /* display: flex; */
+  }
+
+  .apply {
+    position: relative;
+    width: 100%;    
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:large;
+    color: #357aa1;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+    border-top: none;
+    border-left: 2px solid #357aa1;
+    border-right: 2px solid #357aa1;
+    border-bottom: 2px solid #357aa1;
+    background-color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    
+  }

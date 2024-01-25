@@ -1,0 +1,41 @@
+.App {
+  background-color: #eee;
+  height: 100vh;
+  width: 100vw;
+}
+
+.main-title {
+  padding-top: 2vh;
+  font-weight: bold;
+  text-decoration-line: underline;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size:xx-large;
+  text-align: center;
+}
+
+.search-bar-container {
+  padding-top: 1vh;
+  width: 100%;
+  height: 10vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -95px;
+}
+
+.species-pie-chart {
+  padding-top: 3vh;
+}
+
+.filter-container {
+  padding-top: 3vh;
+  width:100;
+  height: 10vh;
+  /* left: 422px; */
+  margin: auto;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  min-width: 200px;
+}
