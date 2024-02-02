@@ -77,6 +77,9 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
           },
         },
       },
+      tooltip: {
+        enabled: false,
+      },
     },
   };
 

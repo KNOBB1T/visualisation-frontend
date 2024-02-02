@@ -1,7 +1,11 @@
 .filter-modal {
-  border: 1px solid #357aa1;
+  /* border: 1px solid #357aa1; */
   border-radius: 10px;
-  background-color: #e45e19;
+  /* background-color: #FF8C00; */
+}
+
+.filter-modal.Button[disabled] {
+    background-color: lightgray;
 }
 
 .filter-wrapper {
@@ -12,12 +16,13 @@
     border-right: 2px solid #357aa1;
     border-bottom: 2px solid #357aa1;
     border-top: 1px solid #357aa1;
-    height: 4rem;
+    height: 7.5rem;
     padding: 0 10px;
     box-shadow: 0px 0px 8px #ddd;
     display: flex;
     align-items: center;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     position:relative;
     display: flex;
     flex-direction: column;
@@ -35,38 +40,185 @@
     display: inline-flex;
 }
 
+.evolution-text {
+  font-weight:normal;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size:large;
+  background-color: transparent;
+  border: none;
+  color: #357aa1;
+  background-color: white;
+  position: relative;
+  display: inline-flex;
+  padding-bottom: 0.4rem;
+}
+
 #filter-option {
   align-items: center;
   padding-top: 0.5rem;
+  padding-right: 3vw;
+  position: relative;
+}
+
+#domain-option {
+  align-items: center;
+  padding-top: 0.5rem;
+  padding-right: 3.1vw;
+  position: relative;
+}
+
+#node-option {
+  align-items: center;
+  padding-top: 0.5rem;
+  padding-right: 2.3vw;
+  position: relative;
+}
+
+#edge-option {
+  align-items: center;
+  padding-top: 0.5rem;
+  padding-right: 3vw;
+  position: relative;
+}
+
+#publication-option {
+  align-items: center;
+  padding-top: 1rem;
+  padding-right: 0.8vw;
+  position: relative;
+}
+
+#disease-option {
+  align-items: center;
+  padding-top: 1rem;
+  padding-right:2.3vw;
+  position: relative;
+}
+
+#evolution-option {
+  align-items: center;
+  padding-top: 0.5rem;
+  padding-right: 3vw;
   position: relative;
 }
 
 .select-container {
-  display: inline-flex
- 
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
 }
 
-.select-container > div {
-    margin-right: 1rem; /* Add margin for spacing between selects */
-    margin-left: 0.5rem;
-    /* align-items: center; */
-    /* display: flex; */
+
+  .selectedDomain {
+    width: 11vw;
+  }
+
+  .selectedNodeNum {
+    width: 11vw;
+  }
+
+  .selectedEdgeNum {
+    width: 11vw;
+  }
+
+  .selectedPublicationNum {
+    width: 13.5vw;
+  }
+
+  .selectedDisease {
+    width: 11vw;
+  }
+
+  .selectedEvolution {
+    width: 11vw;
+    height: 5px;
+    background-color: #357aa1;
+    border-radius: 10px;
+    /* padding-top: 1vh; */
+  }
+
+  .evolutionThumb {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 50%;
+    border: 2px solid #e45e19;
+    top:-6px;
+  }
+
+  .evolution-value {
+    padding-top: 0.3rem;
+    text-align: center;
+    font:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
 
   .apply {
-    position: relative;
-    width: 100%;    
+    /* position: relative; */
+    width: 75%;    
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:large;
     color: #357aa1;
+    background-color: greenyellow;
     padding-top: 0.5vh;
     padding-bottom: 0.5vh;
-    border-top: none;
-    border-left: 2px solid #357aa1;
-    border-right: 2px solid #357aa1;
-    border-bottom: 2px solid #357aa1;
-    background-color: white;
-    border-radius: 8px;
+    border: none;
+    /* border-left: 2px solid #357aa1;
+    border-right: 2px solid #357aa1; */
+    border-bottom: 1px solid #357aa1;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
     cursor: pointer;
-    
+  }
+
+  .clear {
+    /* position:relative; */
+    width: 25%;    
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:large;
+    color: white;
+    background-color: #D21404;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+    display: inline-block;
+    border: none;
+    /* border-left: 2px solid #357aa1;
+    border-right: 2px solid #357aa1; */
+    border-bottom: 1px solid #357aa1;
+    border-left: 1px solid #357aa1;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    line-height: normal;
+   
+  }
+
+  Button[disabled] {
+    opacity: 0.9;
+    background-color: lightgray;
+    cursor: not-allowed;
+  }
+
+  .filter-buttons {
+    align-items: center;
+    display: inline-flex;
+    position: relative;
+    border: none;
+    width: 100%;
+  }
+
+  .filter-second-row {
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .closeEvolution {
+    padding-top: 2.2vh;
+    padding-left: 1vw;
+    position: relative;
+    color: #D21404;
   }

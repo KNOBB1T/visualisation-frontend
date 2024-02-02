@@ -103,7 +103,7 @@ input:focus {
   }
 
   .dropdown-container {
-    max-height: 200px;
+    max-height: 15vh;
     overflow-y: auto;
     border: black;
     /* position: relative; */
@@ -121,6 +121,10 @@ input:focus {
     padding-bottom: 100px;
   }
 
-  .numOfResults {
+  .results {
     font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    color: #357aa1;
+    font-size: medium;
   }
+
+
