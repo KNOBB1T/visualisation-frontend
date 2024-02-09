@@ -14,7 +14,9 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
   const eukaryotaRecords = speciesData.filter(
     (item) => item.domain === "Eukaryota"
   );
-  const undefinedRecords = speciesData.filter((item) => item.domain === "_");
+  const undefinedRecords = speciesData.filter(
+    (item) => item.domain === "Undefined"
+  );
 
   const data = {
     labels: ["Archaea", "Bacteria", "Eukaryota", "Undefined"],

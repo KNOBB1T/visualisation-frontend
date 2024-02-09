@@ -8,32 +8,34 @@ import { NetworkView } from "./Pages/NetworkView";
 function App() {
   const [speciesData, setSpeciesData] = useState<Species[]>([]);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/retrieveDataframe');
+        const response = await axios.get(
+          "http://localhost:8000/api/retrieveDataframe"
+        );
         setSpeciesData(response.data);
+        console.log("successful render!");
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
-  fetchData();
+    fetchData();
   }, []);
-  
 
   return (
-
     <BrowserRouter>
       <main>
         <Routes>
-          <Route path="/" element={<Home speciesData={speciesData}/>} />
-          <Route path="/generateNetwork/:queriedSpeciesId" element={<NetworkView speciesData={speciesData}/>} />
+          <Route path="/" element={<Home speciesData={speciesData} />} />
+          <Route
+            path="/generateNetwork/:queriedSpeciesId"
+            element={<NetworkView speciesData={speciesData} />}
+          />
         </Routes>
       </main>
     </BrowserRouter>
-
   );
 }
 

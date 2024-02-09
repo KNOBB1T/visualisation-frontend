@@ -25,7 +25,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
     nodeNum: "",
     edgeNum: "",
     publicationNum: "",
-    evolution: [0, 0],
+    evolution: [0, 5],
     evolutionInteraction: false,
   };
 
@@ -140,6 +140,9 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
 
   const onSearch = (searchTerm: string) => {
     setInput(searchTerm);
+    if (isFilterPresent) {
+      toggleFilterModal();
+    }
     console.log("search ", searchTerm);
   };
 

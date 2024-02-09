@@ -63,7 +63,8 @@
 #domain-option {
   align-items: center;
   padding-top: 0.5rem;
-  padding-right: 3.1vw;
+  padding-left: 1.1rem;
+  padding-right: 3.2vw;
   position: relative;
 }
 
@@ -84,6 +85,7 @@
 #publication-option {
   align-items: center;
   padding-top: 1rem;
+  padding-left: 1rem;
   padding-right: 0.8vw;
   position: relative;
 }
@@ -118,7 +120,7 @@
   }
 
   .selectedEdgeNum {
-    width: 11vw;
+    width: 12vw;
   }
 
   .selectedPublicationNum {
@@ -130,7 +132,7 @@
   }
 
   .selectedEvolution {
-    width: 11vw;
+    width: 12vw;
     height: 5px;
     background-color: #357aa1;
     border-radius: 10px;

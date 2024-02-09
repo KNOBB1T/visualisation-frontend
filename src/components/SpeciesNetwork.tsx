@@ -1,77 +1,42 @@
-import * as d3 from "d3";
-import { Node, Edge, Data } from "../NetworkData";
 import { useEffect, useRef } from "react";
+import { Data } from "../Pages/NetworkView";
+import { Sigma } from "sigma";
+import { SigmaContainer, useLoadGraph, useSigma } from "@react-sigma/core";
+import "@react-sigma/core/lib/react-sigma.min.css";
+import Graph, { MultiGraph, MultiUndirectedGraph } from "graphology";
 
-type SpeciesNetworkProps = {
-  width: number;
-  height: number;
-  data: Data;
-};
-
-export const SpeciesNetwork = ({
-  data,
-  width,
-  height,
-}: SpeciesNetworkProps) => {
-  // const canvasRef = useRef<HTMLCanvasElement>(null);
-  const svgRef = useRef(null);
+export const SpeciesNetwork = ({ data }: { data: Data }) => {
+  const loadGraph = useLoadGraph();
 
   useEffect(() => {
-    if (!data) return;
+    const generateNetwork = async () => {
+      const graph = new MultiUndirectedGraph({ multi: true });
 
-    const svg = d3
-      .select(svgRef.current)
-      .attr("width", width)
-      .attr("height", height);
+      console.log("DATA: " + JSON.stringify(data));
 
-    svg.style("border", "5px solid #357aa1");
-    svg.style("background-color", "white");
+      data.nodes.forEach((node) => {
+        graph.addNode(node, {
+          x: Math.random(),
+          y: Math.random(),
+          size: 8,
+          // label: node,
+          color: "#357aa1",
+        });
+      });
 
-    const simulation = d3
-      .forceSimulation(data.nodes)
-      .force(
-        "link",
-        d3
-          .forceLink(data.edges)
-          .id((d) => (d as Edge).id)
-          .distance(100)
-      )
-      .force("charge", d3.forceManyBody().strength(0))
-      .force("center", d3.forceCenter(width / 2, height / 2));
+      data.edges.forEach((edge) => {
+        if (!graph.hasEdge(edge.source, edge.target)) {
+          graph.addUndirectedEdgeWithKey(edge.id, edge.source, edge.target);
+        }
+      });
 
-    // Create edges
-    const links = svg
-      .selectAll("line")
-      .data(data.edges)
-      .enter()
-      .append("line")
-      .attr("stroke", "#aaa")
-      .attr("stroke-width", 1);
-
-    // Create nodes
-    const nodes = svg
-      .selectAll("circle")
-      .data(data.nodes)
-      .enter()
-      .append("circle")
-      .attr("r", 5)
-      .attr("fill", "blue");
-
-    simulation.on("tick", () => {
-      links
-        .attr("x1", (d: any) => d.source.x)
-        .attr("y1", (d: any) => d.source.y)
-        .attr("x2", (d: any) => d.target.x)
-        .attr("y2", (d: any) => d.target.y);
-
-      nodes.attr("cx", (d: any) => d.x).attr("cy", (d: any) => d.y);
-    });
+      loadGraph(graph);
+    };
 
     return () => {
-      // Clean up simulation on component unmount
-      simulation.stop();
+      generateNetwork();
     };
-  }, [data]);
+  }, [loadGraph]);
 
-  return <svg ref={svgRef}></svg>;
+  return null;
 };

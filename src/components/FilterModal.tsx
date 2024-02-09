@@ -26,7 +26,7 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
   const [selectedNodeNum, setSelectedNodeNum] = useState("");
   const [selectedEdgeNum, setSelectedEdgeNum] = useState("");
   const [selectedPublicationNum, setSelectedPublicationNum] = useState("");
-  const [selectedEvolution, setSelectedEvolution] = useState([0, 0]);
+  const [selectedEvolution, setSelectedEvolution] = useState([0, 5]);
   const [evolutionInteraction, setEvolutionInteraction] = useState(false);
   const [emptyFilter, setEmptyFilter] = useState(true);
 
@@ -36,7 +36,7 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
     nodeNum: "",
     edgeNum: "",
     publicationNum: "",
-    evolution: [0, 0],
+    evolution: [0, 5],
     evolutionInteraction: false,
   };
 
@@ -68,16 +68,19 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
     setSelectedNodeNum("");
     setSelectedEdgeNum("");
     setSelectedPublicationNum("");
-    setSelectedEvolution([0, 0]);
+    setSelectedEvolution([0, 5]);
     setEvolutionInteraction(false);
 
     filterParams(defaultFilterData);
-    // setFilterData(defaultFilterData);
 
     console.log(filterData);
   };
 
   const handleEvolutionInput = () => {
+    if (evolutionInteraction == false) {
+      return;
+    }
+
     if (selectedEvolution[0] === selectedEvolution[1]) {
       return selectedEvolution[0];
     } else {
@@ -85,8 +88,8 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
     }
   };
 
-  const handleEvolutionInteraction = (newValue: number[]) => {
-    setSelectedEvolution(newValue);
+  const handleEvolutionInteraction = (newValues: number[]) => {
+    setSelectedEvolution(newValues);
     setEvolutionInteraction(true);
   };
 
@@ -109,7 +112,7 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
                 <option value="Archaea"> Archaea </option>
                 <option value="Bacteria"> Bacteria </option>
                 <option value="Eukaryota"> Eukaryota </option>
-                <option value="_"> Undefined </option>
+                <option value="Undefined"> Undefined </option>
               </select>
             </div>
           </div>
@@ -209,6 +212,7 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
               <Slider
                 className="selectedEvolution"
                 thumbClassName="evolutionThumb"
+                pearling
                 onChange={handleEvolutionInteraction}
                 value={selectedEvolution}
                 min={0}
