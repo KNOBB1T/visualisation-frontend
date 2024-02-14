@@ -64,7 +64,7 @@
   align-items: center;
   padding-top: 0.5rem;
   padding-left: 1.1rem;
-  padding-right: 3.2vw;
+  padding-right: 1vw;
   position: relative;
 }
 
@@ -78,14 +78,14 @@
 #edge-option {
   align-items: center;
   padding-top: 0.5rem;
-  padding-right: 3vw;
+  padding-right: 1vw;
   position: relative;
 }
 
 #publication-option {
   align-items: center;
   padding-top: 1rem;
-  padding-left: 1rem;
+  /* padding-left: 3rem; */
   padding-right: 0.8vw;
   position: relative;
 }
@@ -93,14 +93,14 @@
 #disease-option {
   align-items: center;
   padding-top: 1rem;
-  padding-right:2.3vw;
+  padding-right:0.5vw;
   position: relative;
 }
 
 #evolution-option {
   align-items: center;
   padding-top: 0.5rem;
-  padding-right: 3vw;
+  /* padding-right: 3vw; */
   position: relative;
 }
 

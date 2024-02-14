@@ -68,11 +68,10 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
   const options = {
     responsive: true, // Enable responsiveness
     maintainAspectRatio: false, // Allow resizing without maintaining aspect ratio
-    cutout: "69%",
     plugins: {
       legend: {
         display: true,
-        position: "bottom",
+        position: "bottom" as "bottom",
         labels: {
           font: {
             size: 16,
@@ -83,6 +82,7 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
         enabled: false,
       },
     },
+    cutout: "69%",
   };
 
   return (

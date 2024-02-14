@@ -13,9 +13,17 @@
   text-align: center;
 }
 
+.visionet {
+  height: auto;
+  /* max-height: 10vh; */
+  /* min-height: 2vh; */
+  width: 35vw;
+  max-width: 35rem;
+}
+
 .search-bar-container {
   padding-top: 1vh;
-  width: 100%;
+  width: 20vw;
   height: 10vh;
   margin: auto;
   display: flex;

@@ -8,6 +8,8 @@ import { NetworkView } from "./Pages/NetworkView";
 function App() {
   const [speciesData, setSpeciesData] = useState<Species[]>([]);
 
+  console.log("APP RENDERING---------------------");
+
   useEffect(() => {
     const fetchData = async () => {
       try {

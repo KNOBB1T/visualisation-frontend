@@ -11,7 +11,8 @@
 }
 
 .search-bar{
-  width: 45%;
+  max-width:40vw;
+  width: 40vw;
   min-width: 40%;
 }
 

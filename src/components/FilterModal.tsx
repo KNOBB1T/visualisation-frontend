@@ -1,8 +1,8 @@
 import { Button } from "react-bootstrap";
 import "./FilterModal.css";
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faClose } from "@fortawesome/free-solid-svg-icons";
 import Slider from "react-slider";
 
 export interface FilterData {

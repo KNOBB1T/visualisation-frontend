@@ -122,13 +122,14 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
             );
           });
           setResultData(filteredSpeciesData);
-        } else {
-          filteredSpeciesData = filteredSpeciesData.filter((item) => {
-            const [minValue, maxValue] = filter.evolution.map((value) => value);
-            const evolution = { ev: item.evolution };
-            return math.evaluate(`${evolution.ev} == ${minValue}`);
-          });
-          setResultData(filteredSpeciesData);
+
+          // } else {
+          //   filteredSpeciesData = filteredSpeciesData.filter((item) => {
+          //     const [minValue, maxValue] = filter.evolution.map((value) => value);
+          //     const evolution = { ev: item.evolution };
+          //     return math.evaluate(`${evolution.ev} == ${minValue}`);
+          //   });
+          // setResultData(filteredSpeciesData);
         }
       }
     };

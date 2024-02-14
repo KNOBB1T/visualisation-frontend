@@ -1,86 +1,69 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import visionet from "../visionet.png";
-// import { Data, Node, Edge } from "../NetworkData";
-import { SpeciesNetwork } from "../components/SpeciesNetwork";
 import "./NetworkView.css";
 import { Button } from "react-bootstrap";
-import { SigmaContainer, FullScreenControl } from "@react-sigma/core";
-import "@react-sigma/core/lib/react-sigma.min.css";
 import { TailSpin } from "react-loader-spinner";
+import { ForceGraph2D } from "react-force-graph";
 
 export type Data = {
-  nodes: string[];
-  edges: { id: number; source: string; target: string }[];
+  nodes: { id: string; name: string }[];
+  links: { source: string; target: string }[];
 };
 
 export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const { queriedSpeciesId } = useParams();
   const parsedSpeciesId = Number(queriedSpeciesId);
-  const [nodes, setNodes] = useState<string[]>([]);
-  const [edges, setEdges] = useState<
-    { id: number; source: string; target: string }[]
-  >([]);
-  const [data, setData] = useState<Data>({ nodes: [], edges: [] });
+  const [data, setData] = useState<Data>({ nodes: [], links: [] });
   const [loading, setLoading] = useState<boolean>(true); // Add loading state
+  const [cooldownTicks, setCooldownTicks] = useState(0);
+
+  console.log("NETWORKVIEW RENDERING---------------------");
 
   const queriedSpecies = speciesData.find(
     (species) => species.species_id === parsedSpeciesId
   );
 
+  const handleUserInteraction = () => {
+    setCooldownTicks(0); // Adjust this number as needed
+  };
+
   useEffect(() => {
-    const fetchNetwork = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/api/generateGraph/${queriedSpeciesId}`,
-          {
-            responseType: "text",
-          }
-        );
+    setLoading(true);
+    console.log("RENDERING---------------------");
+    axios
+      .get(`http://localhost:8000/api/generateGraph/${queriedSpeciesId}`, {
+        responseType: "text",
+      })
+      .then((response) => {
+        const parsedData = JSON.parse(response.data);
+        console.log("Data: ", JSON.stringify(parsedData));
 
-        const lines = response.data.split("\\n");
-        const parsedNodes: Set<string> = new Set();
-        const parsedEdges: { id: number; source: string; target: string }[] =
-          [];
-
-        lines.forEach((line: string, index: number) => {
-          const [source, target] = line.trim().split(" ");
-          if (source && target) {
-            parsedNodes.add(source);
-            parsedNodes.add(target);
-            parsedEdges.push({ id: index, source, target });
-          }
-        });
-
-        const nodes = Array.from(parsedNodes);
-        const edges = parsedEdges;
-
-        setNodes(nodes);
-        setEdges(edges);
-        setData({ nodes, edges });
-
-        setTimeout(() => {
-          setLoading(false);
-        }, 5500);
-
-        console.log(JSON.stringify(nodes));
-        console.log(JSON.stringify(edges));
-      } catch (error) {
+        setData(parsedData); // Set the fetched data
+        setLoading(false);
+      })
+      .catch((error) => {
         console.error("Error fetching graph XML data:", error);
-      }
-    };
-
-    return () => {
-      fetchNetwork();
-    };
+        setLoading(false);
+      });
   }, []);
+
+  // useEffect(() => {
+  //   if (data && !loading) {
+  //     setTimeout(() => {
+  //       if (fgRef.current) {
+  //         (fgRef.current as any).zoomToFit(10000); // Add type assertion
+  //       }
+  //     }, 10000);
+  //   }
+  // }, [data, loading]);
 
   return (
     <div className="App">
       <div className="content">
         <div className="main-title">
-          <img src={visionet} width={545} height={120} alt="visionet" />
+          <img className="visionet" src={visionet} alt="visionet" />
         </div>
         <div className="network">
           <p className="speciesName">{queriedSpecies?.compact_name}</p>
@@ -93,15 +76,26 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
             </div>
           )}
           {!loading && (
-            <SigmaContainer>
-              <div className="fullscreen">
-                <FullScreenControl />
-              </div>
-              <SpeciesNetwork data={data} />
-            </SigmaContainer>
+            <div className="network-graph" onClick={handleUserInteraction}>
+              <ForceGraph2D
+                graphData={data}
+                onNodeHover={(node) => {
+                  document.body.style.cursor = node ? "pointer" : "";
+                }}
+                nodeLabel="name"
+                cooldownTicks={cooldownTicks} // Adjust this value as needed
+                warmupTicks={3000} // Adjust this value as needed
+              />
+            </div>
           )}
         </div>
-        <div className="species-detail-modal">
+        <div className="network-buttons">
+          <Button className="comparison-button">Add to Comparison</Button>
+          {/* <Button className="reload-button" onClick={refreshGraph}>
+            Reload
+          </Button> */}
+        </div>
+        {/* <div className="species-detail-modal">
           <div className="detail-heading">
             <p>Biological Classification</p>
           </div>
@@ -109,7 +103,9 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
             <p>
               Compact Name: <span>{queriedSpecies?.compact_name}</span>
             </p>
-            <p className="taxonomy">Taxonomy: {queriedSpecies?.taxonomy}</p>
+            <p className="taxonomy">
+              Taxonomy: <span>{queriedSpecies?.taxonomy}</span>
+            </p>
             <p>
               Domain of Life: <span>{queriedSpecies?.domain}</span>
             </p>
@@ -132,10 +128,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
               <span>{queriedSpecies?.publication_count}</span>
             </p>
           </div>
-        </div>
-        <div className="network-buttons">
-          <Button className="comparison-button">Add to Comparison</Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

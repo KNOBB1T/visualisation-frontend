@@ -1,15 +1,16 @@
 import "../App.css";
 import { SearchBar } from "../components/SearchBar";
-import { useEffect, useRef, useState } from "react";
+// import { useEffect, useRef, useState } from "react";
 import visionet from "../visionet.png";
 import { ChartSearch } from "../components/ChartSearch";
 
 export const Home = ({ speciesData }: { speciesData: Species[] }) => {
+  console.log("HOME RENDERING---------------------");
   return (
     <div className="App">
       <div className="visionet-container">
         <div className="main-title">
-          <img src={visionet} width={545} height={120} alt="visionet" />
+          <img className="visionet" src={visionet} alt="visionet" />
         </div>
         <div className="species-pie-chart">
           <ChartSearch speciesData={speciesData} />
