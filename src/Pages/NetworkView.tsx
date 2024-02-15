@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import visionet from "../visionet.png";
@@ -18,6 +18,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const [data, setData] = useState<Data>({ nodes: [], links: [] });
   const [loading, setLoading] = useState<boolean>(true); // Add loading state
   const [cooldownTicks, setCooldownTicks] = useState(0);
+  const [highlightedNode, setHighlightedNode] = useState(null);
 
   console.log("NETWORKVIEW RENDERING---------------------");
 
@@ -31,33 +32,20 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
 
   useEffect(() => {
     setLoading(true);
-    console.log("RENDERING---------------------");
-    axios
-      .get(`http://localhost:8000/api/generateGraph/${queriedSpeciesId}`, {
-        responseType: "text",
-      })
-      .then((response) => {
-        const parsedData = JSON.parse(response.data);
-        console.log("Data: ", JSON.stringify(parsedData));
+    const worker = new Worker("/networkRenderer.js");
+    worker.postMessage({ queriedSpeciesId: parsedSpeciesId });
+    worker.onmessage = (event) => {
+      // This will be called when the worker sends back the result
+      const result = event.data;
+      setData(result);
+      console.log("RESULT: " + JSON.stringify(result));
+      setLoading(false);
+    };
 
-        setData(parsedData); // Set the fetched data
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching graph XML data:", error);
-        setLoading(false);
-      });
+    return () => {
+      worker.terminate();
+    };
   }, []);
-
-  // useEffect(() => {
-  //   if (data && !loading) {
-  //     setTimeout(() => {
-  //       if (fgRef.current) {
-  //         (fgRef.current as any).zoomToFit(10000); // Add type assertion
-  //       }
-  //     }, 10000);
-  //   }
-  // }, [data, loading]);
 
   return (
     <div className="App">
@@ -82,9 +70,11 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                 onNodeHover={(node) => {
                   document.body.style.cursor = node ? "pointer" : "";
                 }}
-                nodeLabel="name"
+                nodeLabel="label"
                 cooldownTicks={cooldownTicks} // Adjust this value as needed
                 warmupTicks={3000} // Adjust this value as needed
+                // onEngineStop={() => setLoading(false)}
+                // d3AlphaDecay={1}
               />
             </div>
           )}
@@ -95,7 +85,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
             Reload
           </Button> */}
         </div>
-        {/* <div className="species-detail-modal">
+        <div className="species-detail-modal">
           <div className="detail-heading">
             <p>Biological Classification</p>
           </div>
@@ -128,7 +118,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
               <span>{queriedSpecies?.publication_count}</span>
             </p>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

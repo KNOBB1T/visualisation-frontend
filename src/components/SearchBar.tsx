@@ -268,7 +268,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
                     className="dropdown-row"
                     key={item.compact_name}
                   >
-                    {item.compact_name}
+                    {item.compact_name} {String(item.species_id)}
                   </div>
                 ))}
             </div>
