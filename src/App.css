@@ -19,6 +19,7 @@
   /* min-height: 2vh; */
   width: 35vw;
   max-width: 35rem;
+  user-select: none;
 }
 
 .search-bar-container {
@@ -33,7 +34,7 @@
 }
 
 .species-pie-chart {
-  padding-top: 1vh;
+  padding-top: 3vh;
 }
 
 .filter-container {

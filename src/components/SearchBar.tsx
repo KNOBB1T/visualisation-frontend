@@ -252,6 +252,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
           <div className="results">
             {filteredResultsCount}{" "}
             {filteredResultsCount === 1 ? "result" : "results"}
+            {`${!emptyFilter ? " | FILTER APPLIED" : ""}`}
           </div>
         </div>
       )}
@@ -275,6 +276,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
           </div>
           <div className="results">
             {resultData.length} {resultData.length === 1 ? "result" : "results"}
+            {`${!emptyFilter ? " | FILTER APPLIED" : ""}`}
           </div>
         </div>
       )}

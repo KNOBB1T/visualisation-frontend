@@ -25,12 +25,16 @@
 }
 
 .network-frame {
-  height: 50vh;
-  width: 65vw;
+  height: 66.5vh;
+  width: 60vw;
   display: flex;
   flex-direction: column;
-  border: 5px solid #357aa1;
-  border-radius: 4px;
+  border-top: 5px solid #357aa1;
+  border-left: 5px solid #357aa1;
+  border-right: 5px solid #357aa1;
+  border-bottom: 3px solid #357aa1;
+  border-top-left-radius: 8px; 
+  border-top-right-radius: 8px; 
   background-color: white;
   justify-content: center;
   align-items: center;
@@ -38,11 +42,26 @@
   overflow: hidden;
 }
 
-/* .network-graph {
+.network-frame.fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.network-graph {
   width: 100%; 
   height: 100vh; 
   overflow: hidden;
-} */
+}
+
+.network-graph.fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0%;
+}
 
 .network-graph svg {
   width: 100%;
@@ -50,16 +69,18 @@
 }
 
 .sigma-container {
-    display: flex;
-    height: 100%;
-  width: 100%;
-  justify-content: center; /* Horizontal alignment */
-  align-items: center; /* Vertical alignment */
+  display: flex; /* Use flexbox to center */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 100%; /* Optionally set width */
+  height: 100%; /* Optionally set height */
+
   }
   
 
 .speciesName {
     font-weight:normal;
+    text-decoration: underline;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:xx-large;
 }
@@ -67,7 +88,19 @@
 .network-buttons {
     align-items: center;
     display: inline-block;
-    width: 100%;
+    width: 60vw;
+}
+
+.fullscreen-button {
+  font-weight:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:x-large;
+    border: 2px solid #357aa1;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    width: 10%;
+    background-color: eggsalad;
+    cursor: pointer;
 }
 
 .comparison-button {
@@ -75,9 +108,23 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:x-large;
     border: 2px solid #357aa1;
-    border-radius: 8px;
-    width: 65vw;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    width: 80%;
     background-color: greenyellow;
+    cursor: pointer;
+}
+
+.screenshot-button {
+  font-weight:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:x-large;
+    border: 2px solid #357aa1;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    width: 10%;
+    background-color: #357aa1;
+    cursor: pointer;
 }
 
 .loading-container {
@@ -87,7 +134,7 @@
   align-items: center;
   justify-content: center;
   height: 50vh;
-  width: 65vw;
+  width: 60vw;
 }
 
 .loading-text {
@@ -99,14 +146,16 @@
 }
 
 .species-detail-modal {
-    width: 65vw;
-    height: 18.5vh;
-    border-top: 1px solid #357aa1;
-    border-left: 2px solid #357aa1;
+    width: 20vw;
+    height: 69vh;
+    border-top: 5px solid #357aa1;
+    border-left: 5px solid #357aa1;
     border-right: 2px solid #357aa1;
-    border-bottom: 2px solid #357aa1;
+    border-bottom: 5px solid #357aa1;
     border-radius: 8px;
     overflow-y: auto;
+    left: 0;
+    position: absolute;
 }
 
 .detail-heading {
@@ -146,16 +195,24 @@
     color: black;
 }
 
-.fullscreen {
-justify-content: right; /* Adjust as needed */
-  position: relative;
-  display: flex;
-  background-color: red;
-  border: none;
-  cursor: pointer;
-  width: 30px;
-  top: -30px;
-  right: -62.6vw;
+.hovered-node-label {
+  font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+}
+
+.visualisation-interface {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.comparison {
+  width: 20vw;
+    height: 69vh;
+    border: 5px solid #e45e19;
+    border-radius: 8px;
+    justify-content:right;
+    position: absolute;
+    right: 0;
+    background-color: orange;
 }
 
 /* .force-graph-container {

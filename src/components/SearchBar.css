@@ -37,6 +37,7 @@
 
 .filter-button {
   display: inline-flex;
+  user-select: none;
 }
 
 
@@ -126,6 +127,7 @@ input:focus {
     font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
     color: #357aa1;
     font-size: medium;
+    user-select: none;
   }
 
 
