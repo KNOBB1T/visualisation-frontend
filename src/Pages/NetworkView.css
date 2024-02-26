@@ -25,16 +25,16 @@
 }
 
 .network-frame {
-  height: 66.5vh;
+  height: 68.9vh;
   width: 60vw;
   display: flex;
   flex-direction: column;
   border-top: 5px solid #357aa1;
-  border-left: 5px solid #357aa1;
-  border-right: 5px solid #357aa1;
-  border-bottom: 3px solid #357aa1;
-  border-top-left-radius: 8px; 
-  border-top-right-radius: 8px; 
+  border-left: 4px solid #357aa1;
+  border-right: 4px solid #357aa1;
+  border-bottom: 2px solid #357aa1;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   background-color: white;
   justify-content: center;
   align-items: center;
@@ -42,25 +42,24 @@
   overflow: hidden;
 }
 
-.network-frame.fullscreen {
+/* .network-frame.fullscreen {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .network-graph {
-  width: 100%; 
-  height: 100vh; 
+  height: 68.8vh;
+  width: 60vw;
   overflow: hidden;
 }
 
 .network-graph.fullscreen {
-  display: flex;
+  display:flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  margin: 0%;
+  width: 100%; 
+  height: 100%; 
 }
 
 .network-graph svg {
@@ -74,7 +73,6 @@
   align-items: center; /* Center vertically */
   width: 100%; /* Optionally set width */
   height: 100%; /* Optionally set height */
-
   }
   
 
@@ -84,6 +82,10 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:xx-large;
 }
+
+/* .buttons {
+  display:inline;
+} */
 
 .network-buttons {
     align-items: center;
@@ -98,7 +100,7 @@
     border: 2px solid #357aa1;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    width: 10%;
+    width: 10vw;
     background-color: eggsalad;
     cursor: pointer;
 }
@@ -110,7 +112,7 @@
     border: 2px solid #357aa1;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    width: 80%;
+    width: 40vw;
     background-color: greenyellow;
     cursor: pointer;
 }
@@ -122,7 +124,7 @@
     border: 2px solid #357aa1;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    width: 10%;
+    width: 10vw;
     background-color: #357aa1;
     cursor: pointer;
 }
@@ -147,25 +149,25 @@
 
 .species-detail-modal {
     width: 20vw;
-    height: 69vh;
+    height: 68.9vh;
     border-top: 5px solid #357aa1;
     border-left: 5px solid #357aa1;
     border-right: 2px solid #357aa1;
     border-bottom: 5px solid #357aa1;
-    border-radius: 8px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 8px;
     overflow-y: auto;
-    left: 0;
-    position: absolute;
 }
 
 .detail-heading {
     text-decoration: underline;
     position: relative;
-    display: inline-flex;
+    display: flex;
     justify-content: left;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: x-large;
-    width: 100%;
+    font-size: 1.5vw;
+    /* width: 100%; */
 }
 
 .species-details {
@@ -200,20 +202,19 @@
 }
 
 .visualisation-interface {
-  display: inline-flex;
-  justify-content: center;
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100vw;
+  height: 68.9vh;
 }
 
-.comparison {
-  width: 20vw;
-    height: 69vh;
-    border: 5px solid #e45e19;
-    border-radius: 8px;
-    justify-content:right;
-    position: absolute;
-    right: 0;
-    background-color: orange;
-}
+/* .comparison {
+  display:flex; 
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+} */
 
 /* .force-graph-container {
   position: relative;

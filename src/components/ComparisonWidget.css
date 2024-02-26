@@ -1,7 +1,18 @@
 .comparison-widget {
-    /* background-color: orange;
-    width: 16.8vw;
-    height: 49.2vh; */
+    width: 20vw;
+    height: 71.3vh;
+    border-top: 5px solid #e45e19;
+    border-left: 5px solid #e45e19;
+    border-right: 5px solid #e45e19;
+    /* justify-content: center; */
+    align-items: center;
+    border-radius: 5px;
+    display:flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    background-color: orange;
+    text-align: center;
 }
 
 .comparison-title {
@@ -9,4 +20,49 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:x-large;
     text-decoration: underline;
+    padding-bottom: 0.3vh;
 }
+
+.empty-text {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.network-images {
+    width: 19vw;
+    height: auto;
+    border: 2px solid #357aa1;
+    border-radius: 8px;
+}
+
+.compare-network-button{
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    width: 20vw;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border: 2px solid #e45e19;
+    border-radius: 5px;
+    background-color: #FFAE42;
+    font-weight:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: x-large;
+}
+
+.screen {
+    display: inline-flex;
+}
+
+/* justify-content:right;
+    position: absolute;
+    width: 20vw;
+    font-weight:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:x-large;
+    border: 2px solid #e45e19;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background-color: #FFAE42;
+    cursor: pointer;
+    right: 0; */

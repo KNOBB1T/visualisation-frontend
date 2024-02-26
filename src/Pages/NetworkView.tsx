@@ -29,12 +29,43 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const graphRef = createRef<HTMLDivElement>();
+  const handle = useFullScreenHandle();
+  const networkImages = Object.keys(sessionStorage).filter((key) =>
+    (sessionStorage.getItem(key) || "").startsWith("data:image/jpeg")
+  );
 
   console.log("NETWORKVIEW RENDERING---------------------");
 
   const queriedSpecies = speciesData.find(
     (species) => species.species_id === parsedSpeciesId
   );
+
+  const taxonomy = queriedSpecies?.taxonomy.split(";");
+
+  const addComparison = () => {
+    saveNetwork(graphRef.current).then(saveToSessionStorage);
+  };
+
+  console.log("NETWORK IMAGES: " + networkImages.length);
+
+  const saveToSessionStorage = (network: string) => {
+    let key = "networkScreenshot" + sessionStorage.length;
+    console.log("KEY: " + key);
+    sessionStorage.setItem(key, network);
+    sessionStorage.setItem(
+      key + "compactName",
+      queriedSpecies?.compact_name ?? ""
+    );
+    sessionStorage.setItem(key + "domain", queriedSpecies?.domain ?? "");
+    sessionStorage.setItem(
+      key + "nodes",
+      queriedSpecies?.total_nodes.toString() ?? ""
+    );
+    sessionStorage.setItem(
+      key + "edges",
+      queriedSpecies?.total_edges.toString() ?? ""
+    );
+  };
 
   const fullscreen = () => {
     if (graphRef.current) {
@@ -48,19 +79,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
       document.exitFullscreen();
       setIsFullscreen(false);
     }
-    //   if (!isFullscreen) {
-    //     // Enter fullscreen
-    //     const element = document.documentElement;
-    //     if (element.requestFullscreen) {
-    //       element.requestFullscreen();
-    //     }
-    //   } else {
-    //     // Exit fullscreen
-    //     if (document.exitFullscreen) {
-    //       document.exitFullscreen();
-    //     }
-    //   }
-    //   setIsFullscreen(!isFullscreen);
   };
 
   const screenshotNetwork = () =>
@@ -102,87 +120,105 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
         <div className="network">
           <p className="speciesName">{queriedSpecies?.compact_name}</p>
         </div>
-        <div className="visualisation-interface">
-          <div className={`network-frame ${isFullscreen ? "fullscreen" : ""}`}>
-            {loading && (
-              <div className="loading-container">
-                <TailSpin color="#e45e19" height="150px" width="150px" />
-                <p className="loading-text">Loading...</p>
+        <div className="screen">
+          <div className="visualisation-interface">
+            <div className="species-detail-modal">
+              <div>
+                <p className="detail-heading">Biological Classification</p>
               </div>
-            )}
-            {!loading && (
-              <div
-                className={`network-graph ${isFullscreen ? "fullscreen" : ""}`}
-                ref={graphRef}
-              >
-                <Cosmograph
-                  nodeLabelAccessor={(node) => node.label}
-                  showHoveredNodeLabel={true}
-                  hoveredNodeLabelClassName={"hovered-node-label"}
-                  showDynamicLabels={false}
-                  hoveredNodeLabelColor="white"
-                  nodes={data.nodes}
-                  nodeSize={1}
-                  nodeColor={"#357aa1"}
-                  hoveredNodeRingColor="#e45e19"
-                  focusedNodeRingColor="#e45e19"
-                  links={data.links}
-                  linkWidth={1}
-                  linkArrows={false}
-                  backgroundColor="white"
-                  fitViewOnInit={true}
-                  spaceSize={1000}
-                  // spaceSize={500}
-                />
+              <div className="species-details">
+                <p>
+                  Compact Name: <span>{queriedSpecies?.compact_name}</span>
+                </p>
+                <p>
+                  Domain of Life: <span>{queriedSpecies?.domain}</span>
+                </p>
+                <p>
+                  Evolution:{" "}
+                  <span>
+                    {queriedSpecies?.evolution === 0
+                      ? "Unknown"
+                      : queriedSpecies?.evolution}
+                  </span>
+                </p>
               </div>
-            )}
+              <div>
+                <p className="detail-heading">Network Statistics</p>
+              </div>
+              <div className="species-details">
+                <p>
+                  Nodes: <span>{queriedSpecies?.total_nodes}</span>
+                </p>
+                <p>
+                  Edges: <span>{queriedSpecies?.total_edges}</span>
+                </p>
+                <p>
+                  Publication Count:{" "}
+                  <span>{queriedSpecies?.publication_count}</span>
+                </p>
+              </div>
+              <div>
+                <p className="detail-heading">Taxonomy</p>
+              </div>
+            </div>
+            <div className={"network-frame"}>
+              {loading && (
+                <div className="loading-container">
+                  <TailSpin color="#e45e19" height="150px" width="150px" />
+                  <p className="loading-text">Loading...</p>
+                </div>
+              )}
+              {!loading && (
+                <FullScreen handle={handle}>
+                  <div className="network-graph" ref={graphRef}>
+                    <Cosmograph
+                      nodeLabelAccessor={(node) => node.label}
+                      showHoveredNodeLabel={true}
+                      hoveredNodeLabelClassName={"hovered-node-label"}
+                      showDynamicLabels={false}
+                      hoveredNodeLabelColor="white"
+                      nodes={data.nodes}
+                      nodeSize={1}
+                      nodeColor={"#357aa1"}
+                      hoveredNodeRingColor="#e45e19"
+                      focusedNodeRingColor="#e45e19"
+                      links={data.links}
+                      linkWidth={1}
+                      linkArrows={false}
+                      backgroundColor="white"
+                      fitViewOnInit={true}
+                      spaceSize={1000}
+                      // simulationLinkDistance={4}
+                      // simulationLinkSpring={0.1}
+
+                      // spaceSize={500}
+                    />
+                  </div>
+                </FullScreen>
+              )}
+            </div>
           </div>
-          <div className="comparison">
+          <div>
             <ComparisonWidget />
           </div>
-          <div className="species-detail-modal">
-            <div className="detail-heading">
-              <p>Biological Classification</p>
-            </div>
-            <div className="species-details">
-              <p>
-                Compact Name: <span>{queriedSpecies?.compact_name}</span>
-              </p>
-              <p className="taxonomy">
-                Taxonomy: <span>{queriedSpecies?.taxonomy}</span>
-              </p>
-              <p>
-                Domain of Life: <span>{queriedSpecies?.domain}</span>
-              </p>
-              <p>
-                Evolution: <span>{queriedSpecies?.evolution}</span>
-              </p>
-            </div>
-            <div className="detail-heading">
-              <p>Network Statistics</p>
-            </div>
-            <div className="species-details">
-              <p>
-                Nodes: <span>{queriedSpecies?.total_nodes}</span>
-              </p>
-              <p>
-                Edges: <span>{queriedSpecies?.total_edges}</span>
-              </p>
-              <p>
-                Publication Count:{" "}
-                <span>{queriedSpecies?.publication_count}</span>
-              </p>
-            </div>
-          </div>
         </div>
-        <div className="network-buttons">
-          <Button className="screenshot-button" onClick={screenshotNetwork}>
-            <FontAwesomeIcon icon={faCamera} color="white" />
-          </Button>
-          <Button className="comparison-button">Add to Comparison</Button>
-          <Button className="fullscreen-button" onClick={fullscreen}>
-            <FontAwesomeIcon icon={faExpandAlt} />
-          </Button>
+        <div className="buttons">
+          <div className="network-buttons">
+            <Button className="screenshot-button" onClick={screenshotNetwork}>
+              <FontAwesomeIcon icon={faCamera} color="white" />
+            </Button>
+            <Button
+              className="comparison-button"
+              onClick={addComparison}
+              disabled={networkImages.length >= 2}
+            >
+              Add to Comparison
+            </Button>
+            <Button className="fullscreen-button" onClick={handle.enter}>
+              <FontAwesomeIcon icon={faExpandAlt} />
+            </Button>
+          </div>
+          {/* <Button className="compare-network-button">Compare Networks</Button> */}
         </div>
       </div>
     </div>
