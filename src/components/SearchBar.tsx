@@ -18,6 +18,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
   const [resultData, setResultData] = useState<Species[]>(speciesData);
   const [isFilterPresent, setIsFilterPresent] = useState(false);
   const [emptyFilter, setEmptyFilter] = useState(true);
+  const [inputValidity, setInputValidity] = useState(true);
 
   const defaultFilterData: FilterData = {
     domain: "",
@@ -122,14 +123,6 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
             );
           });
           setResultData(filteredSpeciesData);
-
-          // } else {
-          //   filteredSpeciesData = filteredSpeciesData.filter((item) => {
-          //     const [minValue, maxValue] = filter.evolution.map((value) => value);
-          //     const evolution = { ev: item.evolution };
-          //     return math.evaluate(`${evolution.ev} == ${minValue}`);
-          //   });
-          // setResultData(filteredSpeciesData);
         }
       }
     };
@@ -158,7 +151,13 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
   const generateNetwork = () => {
     const trimmedInput = input.trim();
 
+    if (trimmedInput !== "") {
+      setInputValidity(true);
+    }
+
     if (trimmedInput === "" || !resultFound) {
+      setInput("");
+      setInputValidity(false);
       return;
     }
 
@@ -192,7 +191,11 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
 
   return (
     <div className="search-bar">
-      <div className="input-wrapper">
+      <div
+        className={`input-wrapper ${
+          inputValidity ? "valid-response" : "invalid-response"
+        }`}
+      >
         <div
           className="filter-button"
           onClick={() => {
@@ -205,10 +208,18 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
         <div className="divider" />
 
         <input
-          placeholder="Type to search..."
+          className={inputValidity ? "valid-input" : "invalid-input"}
+          placeholder={
+            inputValidity
+              ? "Type to search..."
+              : "Invalid species! Please try again."
+          }
           value={input}
           spellCheck="false"
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setInputValidity(true);
+          }}
         />
 
         <div className="search-divider" />

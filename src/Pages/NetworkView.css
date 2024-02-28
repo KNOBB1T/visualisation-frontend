@@ -42,24 +42,22 @@
   overflow: hidden;
 }
 
-/* .network-frame.fullscreen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* .fullscreenNetwork {
+  width: 100%;
+  height: 100%;
 } */
 
 .network-graph {
-  height: 68.8vh;
+  /* Size when not in fullscreen mode */
+  height: 68.9vh;
   width: 60vw;
-  overflow: hidden;
 }
 
 .network-graph.fullscreen {
-  display:flex;
+  /* Remove size restrictions when in fullscreen mode */
+  width: 100%;
+  height: 100%;
   justify-content: center;
-  align-items: center;
-  width: 100%; 
-  height: 100%; 
 }
 
 .network-graph svg {

@@ -23,10 +23,17 @@
     padding-bottom: 0.3vh;
 }
 
+
+
 .empty-text {
+    background-color: #e45e19;
+    height:15vh;
     justify-content: center;
+    display: flex;
     align-items: center;
-    text-align: center;
+    font-size: x-large;
+    font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    margin: auto;
 }
 
 .network-images {
@@ -44,14 +51,20 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border: 2px solid #e45e19;
     border-radius: 5px;
-    background-color: #FFAE42;
+    background-color: darkorange;
     font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: x-large;
+    cursor: pointer;
 }
 
 .screen {
     display: inline-flex;
+}
+
+.species-name {
+    text-decoration: underline;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 /* justify-content:right;

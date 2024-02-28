@@ -10,12 +10,15 @@
     align-items: center;
 }
 
+.input-wrapper.invalid-response {
+    border: 2px solid lightcoral;
+}
+
 .search-bar{
   max-width:40vw;
   width: 40vw;
   min-width: 40%;
 }
-
 
 .filter {
     font-weight:normal;
@@ -47,6 +50,11 @@ input {
     height: 100%;
     font-size: 1.25rem;
     width: 100%;
+}
+
+input.invalid-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: lightcoral;
+  
 }
 
 input:focus {

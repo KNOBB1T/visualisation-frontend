@@ -1,19 +1,37 @@
-import { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
 import visionet from "../visionet.png";
 import "./NetworkView.css";
 import { Button } from "react-bootstrap";
 import { TailSpin } from "react-loader-spinner";
-import { Cosmograph } from "@cosmograph/react";
+import {
+  Cosmograph,
+  CosmographProvider,
+  CosmographRef,
+} from "@cosmograph/react";
 import { ComparisonWidget } from "../components/ComparisonWidget";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faExpandAlt } from "@fortawesome/free-solid-svg-icons";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import {
+  FullScreen,
+  FullScreenHandle,
+  useFullScreenHandle,
+} from "react-full-screen";
+
+export type Node = {
+  id: string;
+  label: string;
+};
+
+export type Link = {
+  source: string;
+  target: string;
+};
 
 export type Data = {
-  nodes: { id: string; label: string }[];
-  links: { source: string; target: string }[];
+  nodes: Node[];
+  links: Link[];
 };
 
 export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
@@ -28,11 +46,14 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     quality: 1.0,
   });
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [selectedNodes, setSelectedNodes] = useState<Node[]>();
+  const [selectedLinks, setSelectedLinks] = useState<Link[]>();
   const graphRef = createRef<HTMLDivElement>();
   const handle = useFullScreenHandle();
   const networkImages = Object.keys(sessionStorage).filter((key) =>
     (sessionStorage.getItem(key) || "").startsWith("data:image/jpeg")
   );
+  const cosmograph = useRef<CosmographRef<Node, Link> | undefined>();
 
   console.log("NETWORKVIEW RENDERING---------------------");
 
@@ -40,46 +61,46 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     (species) => species.species_id === parsedSpeciesId
   );
 
-  const taxonomy = queriedSpecies?.taxonomy.split(";");
+  // const taxonomy = queriedSpecies?.taxonomy.split(";");
 
   const addComparison = () => {
     saveNetwork(graphRef.current).then(saveToSessionStorage);
   };
 
-  console.log("NETWORK IMAGES: " + networkImages.length);
+  console.log("NETWORK IMAGES: " + JSON.stringify(networkImages));
 
   const saveToSessionStorage = (network: string) => {
-    let key = "networkScreenshot" + sessionStorage.length;
+    let key = `${queriedSpecies?.compact_name}`;
     console.log("KEY: " + key);
     sessionStorage.setItem(key, network);
     sessionStorage.setItem(
-      key + "compactName",
+      key + "CompactName",
       queriedSpecies?.compact_name ?? ""
     );
-    sessionStorage.setItem(key + "domain", queriedSpecies?.domain ?? "");
+    sessionStorage.setItem(key + "Domain", queriedSpecies?.domain ?? "");
     sessionStorage.setItem(
-      key + "nodes",
+      key + "Evolution",
+      queriedSpecies?.evolution.toString() ?? ""
+    );
+    sessionStorage.setItem(
+      key + "Nodes",
       queriedSpecies?.total_nodes.toString() ?? ""
     );
     sessionStorage.setItem(
-      key + "edges",
+      key + "Edges",
       queriedSpecies?.total_edges.toString() ?? ""
     );
   };
 
-  const fullscreen = () => {
-    if (graphRef.current) {
-      graphRef.current.requestFullscreen().catch((err) => {
-        console.error(
-          `Error attempting to enable full-screen mode: ${err.message} (${err.name})`
-        );
-      });
-      setIsFullscreen(true);
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen();
-      setIsFullscreen(false);
-    }
-  };
+  const fullscreen = useCallback(
+    (state: boolean, handle: FullScreenHandle) => {
+      if (handle === handle) {
+        console.log("Screen 1 went to", state, handle);
+        setIsFullscreen(state);
+      }
+    },
+    [handle]
+  );
 
   const screenshotNetwork = () =>
     saveNetwork(graphRef.current).then(downloadNetwork);
@@ -93,6 +114,23 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     targetNetwork.download = createFileName(extension, name);
     targetNetwork.click();
   };
+
+  const returnAssociatedNodes = useCallback((nodes?: Node[]) => {
+    setSelectedNodes(nodes);
+  }, []);
+
+  const returnAssociatedLinks = useCallback((edges?: Link[]) => {
+    setSelectedLinks(edges);
+  }, []);
+
+  const selectNode = useCallback((node?: Node) => {
+    cosmograph.current?.focusNode(node);
+    if (node) {
+      cosmograph.current?.selectNode(node, true);
+    } else {
+      cosmograph.current?.unselectNodes();
+    }
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -169,30 +207,54 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                 </div>
               )}
               {!loading && (
-                <FullScreen handle={handle}>
-                  <div className="network-graph" ref={graphRef}>
-                    <Cosmograph
-                      nodeLabelAccessor={(node) => node.label}
-                      showHoveredNodeLabel={true}
-                      hoveredNodeLabelClassName={"hovered-node-label"}
-                      showDynamicLabels={false}
-                      hoveredNodeLabelColor="white"
-                      nodes={data.nodes}
-                      nodeSize={1}
-                      nodeColor={"#357aa1"}
-                      hoveredNodeRingColor="#e45e19"
-                      focusedNodeRingColor="#e45e19"
-                      links={data.links}
-                      linkWidth={1}
-                      linkArrows={false}
-                      backgroundColor="white"
-                      fitViewOnInit={true}
-                      spaceSize={1000}
-                      // simulationLinkDistance={4}
-                      // simulationLinkSpring={0.1}
+                <FullScreen
+                  handle={handle}
+                  onChange={fullscreen}
+                  className="fullScreenNetwork"
+                >
+                  <div
+                    className={`network-graph ${
+                      isFullscreen ? "fullscreen" : ""
+                    }`}
+                    ref={graphRef}
+                  >
+                    <CosmographProvider nodes={data.nodes} links={data.links}>
+                      <Cosmograph
+                        ref={cosmograph}
+                        key={isFullscreen ? "fullscreen" : "windowed"}
+                        nodes={data.nodes}
+                        nodeSizeScale={1}
+                        links={data.links}
+                        nodeLabelAccessor={(node) => `${node.label}`}
+                        showHoveredNodeLabel={true}
+                        hoveredNodeLabelClassName={"hovered-node-label"}
+                        showDynamicLabels={false}
+                        hoveredNodeLabelColor="white"
+                        nodeSize={3}
+                        nodeColor={"#357aa195"}
+                        hoveredNodeRingColor="#e45e19"
+                        focusedNodeRingColor="#e45e19"
+                        linkWidth={1}
+                        linkArrows={false}
+                        linkWidthScale={1}
+                        backgroundColor="white"
+                        fitViewOnInit={true}
+                        simulationGravity={0.15}
+                        simulationLinkDistance={4}
+                        simulationRepulsion={2}
+                        simulationRepulsionTheta={1.15}
+                        simulationFriction={0.85}
+                        simulationLinkSpring={0.4}
+                        nodeSamplingDistance={20}
+                        onClick={selectNode}
+                        onNodesFiltered={returnAssociatedNodes}
+                        onLinksFiltered={returnAssociatedLinks}
+                        nodeGreyoutOpacity={0}
+                        linkGreyoutOpacity={0}
 
-                      // spaceSize={500}
-                    />
+                        // spaceSize={500}
+                      />
+                    </CosmographProvider>
                   </div>
                 </FullScreen>
               )}
@@ -210,7 +272,10 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
             <Button
               className="comparison-button"
               onClick={addComparison}
-              disabled={networkImages.length >= 2}
+              disabled={
+                networkImages.length >= 2 &&
+                !sessionStorage.getItem(`${queriedSpecies?.compact_name}`)
+              }
             >
               Add to Comparison
             </Button>

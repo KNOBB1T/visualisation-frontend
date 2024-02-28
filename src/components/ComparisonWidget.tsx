@@ -16,26 +16,30 @@ export const ComparisonWidget = () => {
   return (
     <div className="comparison-widget">
       <p className="comparison-title">Comparison</p>
-      <div>
+      {networkImages.length == 0 && (
         <div className="empty-text">
-          {networkImages.length == 0 && (
-            <p>Please select two networks to start a comparison</p>
-          )}
+          <p>Please select two networks to start a comparison</p>
         </div>
-        {networkImages.map((key, index) => (
+      )}
+      {networkImages.map((key, index) => (
+        <div>
+          <img
+            className="network-images"
+            key={index}
+            src={sessionStorage.getItem(key) || undefined}
+            alt={`networkImage${index}`}
+          />
           <div>
-            <img
-              className="network-images"
-              key={index}
-              src={sessionStorage.getItem(key) || undefined}
-              alt={`networkImage${index}`}
-            />
-            <div>
-              <p>{sessionStorage.getItem(key + "compactName")}</p>
-            </div>
+            <p className="species-name">
+              {sessionStorage.getItem(key + "CompactName")}
+            </p>
+            <p>{sessionStorage.getItem(key + "Domain")}</p>
+            <p>{sessionStorage.getItem(key + "Evolution")}</p>
+            <p>{sessionStorage.getItem(key + "Nodes")}</p>
+            <p>{sessionStorage.getItem(key + "Edges")}</p>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
       <Button className="compare-network-button">Compare Networks</Button>
     </div>
   );
