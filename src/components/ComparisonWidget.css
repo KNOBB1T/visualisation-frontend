@@ -18,7 +18,7 @@
 .comparison-title {
     font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size:x-large;
+    font-size:xx-large;
     text-decoration: underline;
     padding-bottom: 0.3vh;
 }
@@ -62,9 +62,59 @@
     display: inline-flex;
 }
 
+.comparison-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
 .species-name {
     text-decoration: underline;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    justify-content: center;
+    padding-bottom: 0.2vh;
+    font-size: large;
+}
+
+.comparison-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    border-radius: 8px;
+    padding-bottom: 1vh;
+    /* height: 11vh; */
+}
+
+.comparison-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 8px;
+    width: 16vw;
+    border: 2px solid #357aa1;
+}
+
+.comparison-footer {
+    justify-content: center;
+    align-items: center;
+    /* display: inline-flex; */
+}
+
+.cancel-comparison {
+    color: red;
+    cursor: pointer;
+    font-size: xx-large;
+    width: 3vw;
+}
+
+.remove-comparison {
+    background-color: transparent;
+    border: none;
 }
 
 /* justify-content:right;
