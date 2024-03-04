@@ -21,13 +21,19 @@ interface filterModalProps {
 }
 
 export const Filter = ({ filterParams, filterData }: filterModalProps) => {
-  const [selectedDomain, setSelectedDomain] = useState("");
-  const [selectedDisease, setSelectedDisease] = useState("");
-  const [selectedNodeNum, setSelectedNodeNum] = useState("");
-  const [selectedEdgeNum, setSelectedEdgeNum] = useState("");
-  const [selectedPublicationNum, setSelectedPublicationNum] = useState("");
-  const [selectedEvolution, setSelectedEvolution] = useState([0, 5]);
-  const [evolutionInteraction, setEvolutionInteraction] = useState(false);
+  const [selectedDomain, setSelectedDomain] = useState(filterData.domain);
+  const [selectedDisease, setSelectedDisease] = useState(filterData.disease);
+  const [selectedNodeNum, setSelectedNodeNum] = useState(filterData.nodeNum);
+  const [selectedEdgeNum, setSelectedEdgeNum] = useState(filterData.edgeNum);
+  const [selectedPublicationNum, setSelectedPublicationNum] = useState(
+    filterData.publicationNum
+  );
+  const [selectedEvolution, setSelectedEvolution] = useState(
+    filterData.evolution
+  );
+  const [evolutionInteraction, setEvolutionInteraction] = useState(
+    filterData.evolutionInteraction
+  );
   const [emptyFilter, setEmptyFilter] = useState(true);
 
   const defaultFilterData: FilterData = {
@@ -108,7 +114,10 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
                 value={selectedDomain}
                 onChange={(e) => setSelectedDomain(e.target.value)}
               >
-                <option value=""> Select... </option>
+                <option value="" disabled selected>
+                  {" "}
+                  Select...{" "}
+                </option>
                 <option value="Archaea"> Archaea </option>
                 <option value="Bacteria"> Bacteria </option>
                 <option value="Eukaryota"> Eukaryota </option>
@@ -124,7 +133,10 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
                 value={selectedNodeNum}
                 onChange={(e) => setSelectedNodeNum(e.target.value)}
               >
-                <option value=""> Select... </option>
+                <option value="" disabled selected>
+                  {" "}
+                  Select...{" "}
+                </option>
                 <option value="n < 100"> Less than 100 </option>
                 <option value="n >= 100 && n <= 1000">
                   Between 100 and 1000
@@ -147,7 +159,10 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
                 value={selectedEdgeNum}
                 onChange={(e) => setSelectedEdgeNum(e.target.value)}
               >
-                <option value=""> Select... </option>
+                <option value="" disabled selected>
+                  {" "}
+                  Select...{" "}
+                </option>
                 <option value="e < 200"> Less than 200 </option>
                 <option value="e >= 200 && e <= 20000">
                   Between 200 and 20000
@@ -175,7 +190,10 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
                 value={selectedPublicationNum}
                 onChange={(e) => setSelectedPublicationNum(e.target.value)}
               >
-                <option value=""> Select... </option>
+                <option value="" disabled selected>
+                  {" "}
+                  Select...{" "}
+                </option>
                 <option value="p < 1000"> Less than 1000 </option>
                 <option value="p >= 1000 && p <= 10000">
                   Between 1000 and 10000
@@ -239,7 +257,7 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
             !evolutionInteraction
           }
         >
-          Apply
+          Apply Filter
         </Button>
         <Button className="clear" onClick={removeFilter} disabled={emptyFilter}>
           Remove Filter

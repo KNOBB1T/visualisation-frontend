@@ -1,12 +1,27 @@
 .App {
-  background-color: #eee;
+  background: linear-gradient(to right, #FDFCFB, #E2D1C3);
   height: 100vh;
   width: 100vw;
   display: inline-flex;
 }
 
+.home {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* .page-header {
+  display: inline-flex;
+} */
+
+.visionet-features {
+  left: 0;
+  /* height: 100%; */
+  position: absolute;
+}
+
 .main-title {
-  padding-top: 1vh;
+  padding-top: 0.5vh;
   font-weight: bold;
   text-decoration-line: underline;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -28,6 +43,13 @@
   user-select: none;
 }
 
+.visionet-container {
+  width: 100vw;
+  height: auto;
+  display: inline-flex;
+  justify-content: center;
+}
+
 .search-bar-container {
   padding-top: 1vh;
   width: 20vw;
@@ -37,10 +59,18 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: -95px;
+  width: 100vw;
 }
 
 .species-pie-chart {
-  padding-top: 3vh;
+  padding-top: 0.5vh;
+  height: 33vh;
+  width: 33vw;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
 }
 
 .filter-container {

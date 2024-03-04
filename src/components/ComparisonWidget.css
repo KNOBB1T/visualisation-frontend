@@ -18,12 +18,18 @@
 .comparison-title {
     font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size:xx-large;
+    font-size:x-large;
     text-decoration: underline;
     padding-bottom: 0.3vh;
 }
 
-
+.species-overview {
+    border: 2px solid #357aa1;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background-color: #357aa1;
+    height: 30vh;
+}
 
 .empty-text {
     background-color: #e45e19;
@@ -38,7 +44,7 @@
 
 .network-images {
     width: 19vw;
-    height: auto;
+    height: 19vh;
     border: 2px solid #357aa1;
     border-radius: 8px;
 }
@@ -56,6 +62,7 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: x-large;
     cursor: pointer;
+    user-select: none;
 }
 
 .screen {
@@ -67,7 +74,6 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
 }
 
 .species-name {
@@ -75,7 +81,7 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     justify-content: center;
     padding-bottom: 0.2vh;
-    font-size: large;
+    /* font-size: 1vw; */
 }
 
 .comparison-tab {
@@ -85,7 +91,7 @@
     /* flex-direction: column; */
     border-radius: 8px;
     padding-bottom: 1vh;
-    /* height: 11vh; */
+    height: 11vh;
 }
 
 .comparison-info {
@@ -96,7 +102,10 @@
     background-color: white;
     border-radius: 8px;
     width: 16vw;
+    height: 10.5vh;
     border: 2px solid #357aa1;
+    font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    overflow-y: auto;
 }
 
 .comparison-footer {
@@ -110,11 +119,16 @@
     cursor: pointer;
     font-size: xx-large;
     width: 3vw;
+    background-color: white;
+    border-radius: 10px;
 }
 
 .remove-comparison {
-    background-color: transparent;
+    background-color: white;
     border: none;
+    height: 10.5vh;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 /* justify-content:right;

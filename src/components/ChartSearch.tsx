@@ -52,7 +52,8 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
         const colorLabel =
           chart.config.data.datasets[chart._active[0].datasetIndex]
             .backgroundColor[chart._active[0].index];
-        ctx.font = "30px Franklin Gothic Medium";
+        const fontSize = window.innerWidth * 0.015; // 2vw
+        ctx.font = `${fontSize}px Franklin Gothic Medium`;
         ctx.fillStyle = colorLabel;
         ctx.textAlign = "center";
         ctx.fillText(
@@ -68,14 +69,21 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
   const options = {
     responsive: true, // Enable responsiveness
     maintainAspectRatio: false, // Allow resizing without maintaining aspect ratio
+    layout: {
+      padding: {
+        right: 10, // Adjust as needed
+      },
+    },
     plugins: {
       legend: {
         display: true,
-        position: "bottom" as "bottom",
+        position: "right" as "right",
         labels: {
+          color: "black",
           font: {
             size: 16,
           },
+          padding: 10,
         },
       },
       tooltip: {

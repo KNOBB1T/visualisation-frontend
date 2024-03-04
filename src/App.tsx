@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Home } from "./Pages/Home";
 import { NetworkView } from "./Pages/NetworkView";
+import { ComparisonView } from "./Pages/ComparisonView";
 
 function App() {
   const [speciesData, setSpeciesData] = useState<Species[]>([]);
@@ -34,6 +35,10 @@ function App() {
           <Route
             path="/generateNetwork/:queriedSpeciesId"
             element={<NetworkView speciesData={speciesData} />}
+          />
+          <Route
+            path="/networkComparison"
+            element={<ComparisonView speciesData={speciesData} />}
           />
         </Routes>
       </main>

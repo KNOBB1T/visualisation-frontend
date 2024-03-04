@@ -30,7 +30,7 @@
 
 .filter-text {
     font-weight:normal;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
     font-size:large;
     background-color: transparent;
     border: none;
@@ -43,7 +43,7 @@
 
 .evolution-text {
   font-weight:normal;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
   font-size:large;
   background-color: transparent;
   border: none;

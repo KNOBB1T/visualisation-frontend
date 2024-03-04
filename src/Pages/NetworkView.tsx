@@ -1,5 +1,5 @@
 import { createRef, useEffect, useState, useCallback, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import visionet from "../visionet.png";
 import "./NetworkView.css";
 import { Button } from "react-bootstrap";
@@ -12,7 +12,13 @@ import {
 import { ComparisonWidget } from "../components/ComparisonWidget";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera, faExpandAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCamera,
+  faExpandAlt,
+  faHouse,
+  faArrowsRotate,
+  faVirus,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   FullScreen,
   FullScreenHandle,
@@ -34,11 +40,19 @@ export type Data = {
   links: Link[];
 };
 
+export type Taxon = {
+  ScientificName: string;
+  Rank: string;
+};
+
 export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const { queriedSpeciesId } = useParams();
   const parsedSpeciesId = Number(queriedSpeciesId);
   const [data, setData] = useState<Data>({ nodes: [], links: [] });
-  const [loading, setLoading] = useState<boolean>(true); // Add loading state
+  const [taxonomy, setTaxonomy] = useState<Taxon[]>([]);
+  const [networkLoading, setNetworkLoading] = useState<boolean>(true);
+  const [taxonomyLoading, setTaxonomyLoading] = useState<boolean>(true);
+  const [visualisedDisease, setVisualisedDisease] = useState("");
   // const [cooldownTicks, setCooldownTicks] = useState(0);
   // const [highlightedNode, setHighlightedNode] = useState(null);
   const [network, saveNetwork] = useScreenshot({
@@ -53,7 +67,12 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const networkImages = Object.keys(sessionStorage).filter((key) =>
     (sessionStorage.getItem(key) || "").startsWith("data:image/jpeg")
   );
+  const networkTaxonomy = Object.keys(sessionStorage)
+    .filter((key) => key.endsWith("Taxonomy"))
+    .map((key) => sessionStorage.getItem(key));
+
   const cosmograph = useRef<CosmographRef<Node, Link> | undefined>();
+  const navigateHome = useNavigate();
 
   console.log("NETWORKVIEW RENDERING---------------------");
 
@@ -61,13 +80,17 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     (species) => species.species_id === parsedSpeciesId
   );
 
-  // const taxonomy = queriedSpecies?.taxonomy.split(";");
-
   const addComparison = () => {
     saveNetwork(graphRef.current).then(saveToSessionStorage);
   };
 
+  // console.log("storage: " + JSON.stringify(sessionStorage));
+
   console.log("NETWORK IMAGES: " + JSON.stringify(networkImages));
+
+  console.log("NETWORK TAXONOMY: " + JSON.stringify(networkTaxonomy));
+
+  console.log("TAXONOMY: " + JSON.stringify(taxonomy));
 
   const saveToSessionStorage = (network: string) => {
     let key = `${queriedSpecies?.compact_name}`;
@@ -90,6 +113,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
       key + "Edges",
       queriedSpecies?.total_edges.toString() ?? ""
     );
+    sessionStorage.setItem(key + "Taxonomy", JSON.stringify(taxonomy));
   };
 
   const fullscreen = useCallback(
@@ -132,26 +156,45 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     }
   }, []);
 
+  function capitalizeRankFirstLetter(rank: string) {
+    return rank.charAt(0).toUpperCase() + rank.slice(1);
+  }
+
   useEffect(() => {
-    setLoading(true);
-    const worker = new Worker("/networkRenderer.js");
-    worker.postMessage({ queriedSpeciesId: parsedSpeciesId });
-    worker.onmessage = (event) => {
+    setNetworkLoading(true);
+    const networkWorker = new Worker("/networkRenderer.js");
+    const taxonomyWorker = new Worker("/taxonomyRetriever.js");
+
+    taxonomyWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
+    taxonomyWorker.onmessage = (event) => {
+      // This will be called when the worker sends back the result
+      const result = event.data;
+      setTaxonomy(result);
+      console.log("TAXONOMY RESULT: " + JSON.stringify(result));
+      setTaxonomyLoading(false);
+    };
+
+    networkWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
+    networkWorker.onmessage = (event) => {
       // This will be called when the worker sends back the result
       const result = event.data;
       setData(result);
       console.log("RESULT: " + JSON.stringify(result));
-      setLoading(false);
+      setNetworkLoading(false);
     };
 
     return () => {
-      worker.terminate();
+      networkWorker.terminate();
+      taxonomyWorker.terminate();
     };
   }, []);
 
   return (
     <div className="App">
       <div className="content">
+        <button className="home-button" onClick={() => navigateHome("/")}>
+          <FontAwesomeIcon icon={faHouse} color="white" className="home-icon" />
+        </button>
         <div className="main-title">
           <img className="visionet" src={visionet} alt="visionet" />
         </div>
@@ -161,52 +204,77 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
         <div className="screen">
           <div className="visualisation-interface">
             <div className="species-detail-modal">
-              <div>
-                <p className="detail-heading">Biological Classification</p>
-              </div>
-              <div className="species-details">
-                <p>
-                  Compact Name: <span>{queriedSpecies?.compact_name}</span>
-                </p>
-                <p>
-                  Domain of Life: <span>{queriedSpecies?.domain}</span>
-                </p>
-                <p>
-                  Evolution:{" "}
-                  <span>
-                    {queriedSpecies?.evolution === 0
-                      ? "Unknown"
-                      : queriedSpecies?.evolution}
-                  </span>
-                </p>
-              </div>
-              <div>
-                <p className="detail-heading">Network Statistics</p>
-              </div>
-              <div className="species-details">
-                <p>
-                  Nodes: <span>{queriedSpecies?.total_nodes}</span>
-                </p>
-                <p>
-                  Edges: <span>{queriedSpecies?.total_edges}</span>
-                </p>
-                <p>
-                  Publication Count:{" "}
-                  <span>{queriedSpecies?.publication_count}</span>
-                </p>
-              </div>
-              <div>
-                <p className="detail-heading">Taxonomy</p>
-              </div>
-            </div>
-            <div className={"network-frame"}>
-              {loading && (
-                <div className="loading-container">
+              {taxonomyLoading && (
+                <div className="taxonomy-loading-container">
                   <TailSpin color="#e45e19" height="150px" width="150px" />
                   <p className="loading-text">Loading...</p>
                 </div>
               )}
-              {!loading && (
+              {!networkLoading && (
+                <div>
+                  <div>
+                    <p className="detail-heading">Biological Classification</p>
+                  </div>
+                  <div className="species-details">
+                    <p>
+                      Compact Name: <span>{queriedSpecies?.compact_name}</span>
+                    </p>
+                    <p>
+                      Domain of Life: <span>{queriedSpecies?.domain}</span>
+                    </p>
+                    <p>
+                      Evolution:{" "}
+                      <span>
+                        {queriedSpecies?.evolution === 0
+                          ? "Unknown"
+                          : queriedSpecies?.evolution}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="detail-heading">Network Statistics</p>
+                  </div>
+                  <div className="species-details">
+                    <p>
+                      Nodes: <span>{queriedSpecies?.total_nodes}</span>
+                    </p>
+                    <p>
+                      Edges: <span>{queriedSpecies?.total_edges}</span>
+                    </p>
+                    <p>
+                      Publication Count:{" "}
+                      <span>{queriedSpecies?.publication_count}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="detail-heading">Taxonomy</p>
+                  </div>
+                  <div className="species-details">
+                    {taxonomy.map((taxon: any) => (
+                      <div key={taxon.id}>
+                        {taxon.ScientificName}:
+                        <span className="rank-style">
+                          {" "}
+                          {capitalizeRankFirstLetter(
+                            taxon.Rank === "superkingdom"
+                              ? "domain"
+                              : taxon.Rank
+                          )}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className={"network-frame"}>
+              {networkLoading && (
+                <div className="network-loading-container">
+                  <TailSpin color="#e45e19" height="150px" width="150px" />
+                  <p className="loading-text">Loading...</p>
+                </div>
+              )}
+              {!networkLoading && (
                 <FullScreen
                   handle={handle}
                   onChange={fullscreen}
@@ -270,6 +338,14 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
               <FontAwesomeIcon icon={faCamera} color="white" />
             </Button>
             <Button
+              className="reload-button"
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              <FontAwesomeIcon icon={faArrowsRotate} />
+            </Button>
+            <Button
               className="comparison-button"
               onClick={addComparison}
               disabled={
@@ -279,11 +355,29 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
             >
               Add to Comparison
             </Button>
+            <Button className="disease-button">
+              <FontAwesomeIcon icon={faVirus} />
+            </Button>
+            <select
+              className="visualised-disease"
+              value={visualisedDisease}
+              onChange={(e) => setVisualisedDisease(e.target.value)}
+            >
+              <option value="" disabled selected>
+                {" "}
+                Select a disease...{" "}
+              </option>
+              <option value="Dementia"> Dementia </option>
+              <option value="Huntington's Disease">
+                {" "}
+                Huntington's Disease{" "}
+              </option>
+              <option value="Sickle Cell Disease"> Sickle Cell Disease </option>
+            </select>
             <Button className="fullscreen-button" onClick={handle.enter}>
               <FontAwesomeIcon icon={faExpandAlt} />
             </Button>
           </div>
-          {/* <Button className="compare-network-button">Compare Networks</Button> */}
         </div>
       </div>
     </div>

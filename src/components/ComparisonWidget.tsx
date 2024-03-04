@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./ComparisonWidget.css";
+import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -9,25 +10,31 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 // }
 
 export const ComparisonWidget = () => {
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const networkImages = Object.keys(sessionStorage).filter((key) =>
     (sessionStorage.getItem(key) || "").startsWith("data:image/jpeg")
   );
 
-  // console.log(sessionStorage.);
+  const networkTaxonomy = Object.keys(sessionStorage)
+    .filter((key) => key.endsWith("Taxonomy"))
+    .map((key) => JSON.parse(sessionStorage.getItem(key) || "[]"));
+
+  const navigate = useNavigate();
 
   return (
     <div className="comparison-widget">
       <p className="comparison-title">Comparison</p>
       {networkImages.length == 0 && (
         <div className="empty-text">
-          <p>Please select two networks to start a comparison</p>
+          <p>Please add two networks to start a comparison</p>
         </div>
       )}
       {networkImages.map((key, index) => (
-        <div>
+        <div className="species-overview">
           <img
             className="network-images"
-            key={index}
+            key={key}
             src={sessionStorage.getItem(key) || undefined}
             alt={`networkImage${index}`}
           />
@@ -39,15 +46,32 @@ export const ComparisonWidget = () => {
                 </p>
               </div>
               <div className="comparison-footer">
-                <p>Domain: {sessionStorage.getItem(key + "Domain")}</p>
+                <p>
+                  Domain:{" "}
+                  <span className="comparison-value">
+                    {sessionStorage.getItem(key + "Domain")}
+                  </span>
+                </p>
                 <p>
                   Evolution:{" "}
-                  {sessionStorage.getItem(key + "Evolution") === "0"
-                    ? "Unknown"
-                    : sessionStorage.getItem(key + "Evolution")}
+                  <span className="comparison-value">
+                    {sessionStorage.getItem(key + "Evolution") === "0"
+                      ? "Unknown"
+                      : sessionStorage.getItem(key + "Evolution")}
+                  </span>
                 </p>
-                <p>Total Nodes:{sessionStorage.getItem(key + "Nodes")}</p>
-                <p>Total Edges:{sessionStorage.getItem(key + "Edges")}</p>
+                <p>
+                  Total Nodes:{" "}
+                  <span className="comparison-value">
+                    {sessionStorage.getItem(key + "Nodes")}
+                  </span>
+                </p>
+                <p>
+                  Total Edges:{" "}
+                  <span className="comparison-value">
+                    {sessionStorage.getItem(key + "Edges")}
+                  </span>
+                </p>
               </div>
             </div>
             <div>
@@ -60,7 +84,8 @@ export const ComparisonWidget = () => {
                   sessionStorage.removeItem(key + "Evolution");
                   sessionStorage.removeItem(key + "Nodes");
                   sessionStorage.removeItem(key + "Edges");
-                  window.location.reload();
+                  sessionStorage.removeItem(key + "Taxonomy");
+                  setRefreshKey((oldKey) => oldKey + 1); // This will trigger a re-render of your component
                 }}
               >
                 <FontAwesomeIcon icon={faXmark} className="cancel-comparison" />
@@ -72,6 +97,11 @@ export const ComparisonWidget = () => {
       <Button
         className="compare-network-button"
         disabled={sessionStorage.length < 12}
+        onClick={() =>
+          navigate("/networkComparison", {
+            state: { networkImages, networkTaxonomy },
+          })
+        }
       >
         Compare Networks
       </Button>
