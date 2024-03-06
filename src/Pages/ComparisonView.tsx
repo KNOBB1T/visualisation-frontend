@@ -8,6 +8,7 @@ import { Taxon } from "./NetworkView";
 export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
   const location = useLocation();
   const comparedSpecies = location.state.networkImages;
+  const speciesDensity = location.state.networkDensity;
   const speciesTaxonomy = location.state.networkTaxonomy;
 
   const navigateHome = useNavigate();
@@ -102,15 +103,20 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
                     </div>
                     <div className="comparison-statistics">
                       <p className="detail-heading">Network Statistics</p>
-                      <p>
-                        Nodes: <span>{speciesCompare1?.total_nodes}</span>
-                      </p>
-                      <p>
-                        Edges: <span>{speciesCompare1?.total_edges}</span>
-                      </p>
+                      <div className="nodes-edges">
+                        <p className="nodes">
+                          Nodes: <span>{speciesCompare1?.total_nodes}</span>
+                        </p>
+                        <p>
+                          Edges: <span>{speciesCompare1?.total_edges}</span>
+                        </p>
+                      </div>
                       <p>
                         Publication Count:{" "}
                         <span>{speciesCompare1?.publication_count}</span>
+                      </p>
+                      <p>
+                        Density: <span>{speciesDensity[0]}</span>
                       </p>
                     </div>
                   </div>
@@ -174,15 +180,20 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
                     </div>
                     <div className="comparison-statistics">
                       <p className="detail-heading">Network Statistics</p>
-                      <p>
-                        Nodes: <span>{speciesCompare2?.total_nodes}</span>
-                      </p>
-                      <p>
-                        Edges: <span>{speciesCompare2?.total_edges}</span>
-                      </p>
+                      <div className="nodes-edges">
+                        <p className="nodes">
+                          Nodes: <span>{speciesCompare2?.total_nodes}</span>
+                        </p>
+                        <p>
+                          Edges: <span>{speciesCompare2?.total_edges}</span>
+                        </p>
+                      </div>
                       <p>
                         Publication Count:{" "}
                         <span>{speciesCompare2?.publication_count}</span>
+                      </p>
+                      <p>
+                        Density: <span>{speciesDensity[1]}</span>
                       </p>
                     </div>
                   </div>

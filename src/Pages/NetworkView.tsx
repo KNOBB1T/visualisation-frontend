@@ -28,6 +28,8 @@ import {
 export type Node = {
   id: string;
   label: string;
+  clustering_coefficient: number;
+  degree: number;
 };
 
 export type Link = {
@@ -53,6 +55,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const [networkLoading, setNetworkLoading] = useState<boolean>(true);
   const [taxonomyLoading, setTaxonomyLoading] = useState<boolean>(true);
   const [visualisedDisease, setVisualisedDisease] = useState("");
+  const [networkDensity, setNetworkDensity] = useState(0);
   // const [cooldownTicks, setCooldownTicks] = useState(0);
   // const [highlightedNode, setHighlightedNode] = useState(null);
   const [network, saveNetwork] = useScreenshot({
@@ -90,8 +93,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
 
   console.log("NETWORK TAXONOMY: " + JSON.stringify(networkTaxonomy));
 
-  console.log("TAXONOMY: " + JSON.stringify(taxonomy));
-
   const saveToSessionStorage = (network: string) => {
     let key = `${queriedSpecies?.compact_name}`;
     console.log("KEY: " + key);
@@ -114,6 +115,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
       queriedSpecies?.total_edges.toString() ?? ""
     );
     sessionStorage.setItem(key + "Taxonomy", JSON.stringify(taxonomy));
+    sessionStorage.setItem(key + "Density", networkDensity.toString() ?? "");
   };
 
   const fullscreen = useCallback(
@@ -163,16 +165,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   useEffect(() => {
     setNetworkLoading(true);
     const networkWorker = new Worker("/networkRenderer.js");
-    const taxonomyWorker = new Worker("/taxonomyRetriever.js");
-
-    taxonomyWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
-    taxonomyWorker.onmessage = (event) => {
-      // This will be called when the worker sends back the result
-      const result = event.data;
-      setTaxonomy(result);
-      console.log("TAXONOMY RESULT: " + JSON.stringify(result));
-      setTaxonomyLoading(false);
-    };
 
     networkWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
     networkWorker.onmessage = (event) => {
@@ -180,14 +172,48 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
       const result = event.data;
       setData(result);
       console.log("RESULT: " + JSON.stringify(result));
-      setNetworkLoading(false);
+      setTaxonomyLoading(false);
     };
 
     return () => {
       networkWorker.terminate();
-      taxonomyWorker.terminate();
     };
   }, []);
+
+  useEffect(() => {
+    const taxonomyWorker = new Worker("/taxonomyRetriever.js");
+
+    let newDensity = 0;
+
+    if (queriedSpecies && queriedSpecies.total_nodes !== 1) {
+      newDensity = parseFloat(
+        (
+          (2 * (queriedSpecies?.total_edges ?? 0)) /
+          ((queriedSpecies?.total_nodes ?? 1) *
+            (queriedSpecies?.total_nodes ?? 1 - 1))
+        ).toFixed(2)
+      );
+    }
+
+    if (newDensity !== networkDensity) {
+      setNetworkDensity(newDensity);
+    }
+
+    taxonomyWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
+    taxonomyWorker.onmessage = (event) => {
+      // This will be called when the worker sends back the result
+      const result = event.data;
+      setTaxonomy(result);
+      setNetworkLoading(false);
+      console.log("TAXONOMY RESULT: " + JSON.stringify(result));
+    };
+
+    return () => {
+      taxonomyWorker.terminate();
+    };
+  }, [queriedSpecies]);
+
+  console.log("DENSITY: " + networkDensity.toString);
 
   return (
     <div className="App">
@@ -204,6 +230,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
         <div className="screen">
           <div className="visualisation-interface">
             <div className="species-detail-modal">
+              <p className="attribute-title">Attributes</p>
               {taxonomyLoading && (
                 <div className="taxonomy-loading-container">
                   <TailSpin color="#e45e19" height="150px" width="150px" />
@@ -211,7 +238,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                 </div>
               )}
               {!networkLoading && (
-                <div>
+                <div className="attributes">
                   <div>
                     <p className="detail-heading">Biological Classification</p>
                   </div>
@@ -245,24 +272,28 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                       Publication Count:{" "}
                       <span>{queriedSpecies?.publication_count}</span>
                     </p>
+                    <p>
+                      Density: <span>{networkDensity}</span>
+                    </p>
                   </div>
                   <div>
                     <p className="detail-heading">Taxonomy</p>
                   </div>
                   <div className="species-details">
-                    {taxonomy.map((taxon: any) => (
-                      <div key={taxon.id}>
-                        {taxon.ScientificName}:
-                        <span className="rank-style">
-                          {" "}
-                          {capitalizeRankFirstLetter(
-                            taxon.Rank === "superkingdom"
-                              ? "domain"
-                              : taxon.Rank
-                          )}
-                        </span>
-                      </div>
-                    ))}
+                    {Array.isArray(taxonomy) &&
+                      taxonomy.map((taxon: Taxon) => (
+                        <div key={taxon.ScientificName}>
+                          {taxon.ScientificName}:
+                          <span className="rank-style">
+                            {" "}
+                            {capitalizeRankFirstLetter(
+                              taxon.Rank === "superkingdom"
+                                ? "domain"
+                                : taxon.Rank
+                            )}
+                          </span>
+                        </div>
+                      ))}
                   </div>
                 </div>
               )}
@@ -293,11 +324,19 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                         nodes={data.nodes}
                         nodeSizeScale={1}
                         links={data.links}
-                        nodeLabelAccessor={(node) => `${node.label}`}
+                        nodeLabelAccessor={(node): string => {
+                          return `<div><u>${
+                            node.label
+                          }</u><br/>Clustering Coefficient: ${node.clustering_coefficient.toFixed(
+                            2
+                          )}<br/>
+                          Degree: ${node.degree}</div>
+                          </div>`;
+                        }}
                         showHoveredNodeLabel={true}
                         hoveredNodeLabelClassName={"hovered-node-label"}
                         showDynamicLabels={false}
-                        hoveredNodeLabelColor="white"
+                        hoveredNodeLabelColor={"#e45e19"}
                         nodeSize={3}
                         nodeColor={"#357aa195"}
                         hoveredNodeRingColor="#e45e19"
@@ -317,7 +356,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                         onClick={selectNode}
                         onNodesFiltered={returnAssociatedNodes}
                         onLinksFiltered={returnAssociatedLinks}
-                        nodeGreyoutOpacity={0}
                         linkGreyoutOpacity={0}
 
                         // spaceSize={500}

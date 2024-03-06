@@ -17,10 +17,15 @@ export interface FilterData {
 
 interface filterModalProps {
   filterParams: (filterData: FilterData) => void;
+  removeFilterParams: (filterData: FilterData) => void;
   filterData: FilterData;
 }
 
-export const Filter = ({ filterParams, filterData }: filterModalProps) => {
+export const Filter = ({
+  filterParams,
+  removeFilterParams,
+  filterData,
+}: filterModalProps) => {
   const [selectedDomain, setSelectedDomain] = useState(filterData.domain);
   const [selectedDisease, setSelectedDisease] = useState(filterData.disease);
   const [selectedNodeNum, setSelectedNodeNum] = useState(filterData.nodeNum);
@@ -77,7 +82,7 @@ export const Filter = ({ filterParams, filterData }: filterModalProps) => {
     setSelectedEvolution([0, 5]);
     setEvolutionInteraction(false);
 
-    filterParams(defaultFilterData);
+    removeFilterParams(defaultFilterData);
 
     console.log(filterData);
   };

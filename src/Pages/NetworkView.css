@@ -193,6 +193,10 @@
     color: #357aa1;
 }
 
+.attributes {
+  white-space: nowrap;
+}
+
 .species-detail-modal {
     width: 20vw;
     height: 68.9vh;
@@ -205,6 +209,14 @@
     border-bottom-left-radius: 8px;
     overflow-y: auto;
     background-color: lightblue;
+}
+
+.attribute-title {
+    font-weight:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:x-large;
+    text-decoration: underline;
+    padding-bottom: 0.3vh;
 }
 
 .detail-heading {

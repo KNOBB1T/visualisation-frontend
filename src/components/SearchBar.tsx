@@ -182,8 +182,19 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
     );
   }).length;
 
+  const clearInput = () => {
+    setInput("");
+  };
+
   const handleFilter = (filterData: FilterData) => {
     setFilter(filterData);
+    clearInput();
+    console.log("Filter: " + JSON.stringify(filterData));
+  };
+
+  const handleRemoveFilter = (filterData: FilterData) => {
+    setFilter(filterData);
+    // Do not clear the input when a filter is removed
     console.log("Filter: " + JSON.stringify(filterData));
   };
 
@@ -230,7 +241,11 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
       </div>
 
       {isFilterPresent && (
-        <Filter filterParams={handleFilter} filterData={filter} />
+        <Filter
+          filterParams={handleFilter}
+          removeFilterParams={handleRemoveFilter}
+          filterData={filter}
+        />
       )}
 
       {input.trim() && !resultFound && (

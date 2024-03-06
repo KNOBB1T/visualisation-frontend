@@ -130,7 +130,7 @@
 }
 
 .comparison-taxonomy > div {
-    margin-bottom: 0.5vh; /* Adjust as needed */
+    margin-bottom: 0.25vh; /* Adjust as needed */
   }
 
 .comparison-classification {
@@ -139,8 +139,17 @@
     justify-content: left;
     align-items: flex-start;
     position: relative;
-    width: 69vw;
+    width: 60vw;
     font-family: 'Franklin Gothic Light', 'Arial Narrow', Arial, sans-serif;
+}
+
+.nodes {
+    padding-right: 0.5vw;
+}
+
+.nodes-edges {
+    display: inline-flex;
+    /* margin-bottom: 0.25vh; */
 }
 
 .comparison-statistics {
@@ -149,7 +158,7 @@
     justify-content: left;
     align-items: flex-start;
     position: relative;
-    width: 31vw;
+    width: 40vw;
     font-family: 'Franklin Gothic Light', 'Arial Narrow', Arial, sans-serif;
 }
 

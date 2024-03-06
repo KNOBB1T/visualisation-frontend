@@ -16,6 +16,10 @@ export const ComparisonWidget = () => {
     (sessionStorage.getItem(key) || "").startsWith("data:image/jpeg")
   );
 
+  const networkDensity = Object.keys(sessionStorage)
+    .filter((key) => key.endsWith("Density"))
+    .map((key) => JSON.parse(sessionStorage.getItem(key) || "[]"));
+
   const networkTaxonomy = Object.keys(sessionStorage)
     .filter((key) => key.endsWith("Taxonomy"))
     .map((key) => JSON.parse(sessionStorage.getItem(key) || "[]"));
@@ -85,7 +89,8 @@ export const ComparisonWidget = () => {
                   sessionStorage.removeItem(key + "Nodes");
                   sessionStorage.removeItem(key + "Edges");
                   sessionStorage.removeItem(key + "Taxonomy");
-                  setRefreshKey((oldKey) => oldKey + 1); // This will trigger a re-render of your component
+                  sessionStorage.removeItem(key + "Density");
+                  window.location.reload();
                 }}
               >
                 <FontAwesomeIcon icon={faXmark} className="cancel-comparison" />
@@ -99,7 +104,7 @@ export const ComparisonWidget = () => {
         disabled={sessionStorage.length < 12}
         onClick={() =>
           navigate("/networkComparison", {
-            state: { networkImages, networkTaxonomy },
+            state: { networkImages, networkDensity, networkTaxonomy },
           })
         }
       >
