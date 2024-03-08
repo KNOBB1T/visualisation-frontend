@@ -14,22 +14,18 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
   const eukaryotaRecords = speciesData.filter(
     (item) => item.domain === "Eukaryota"
   );
-  const undefinedRecords = speciesData.filter(
-    (item) => item.domain === "Undefined"
-  );
 
   const data = {
-    labels: ["Archaea", "Bacteria", "Eukaryota", "Undefined"],
+    labels: ["Archaea", "Bacteria", "Eukaryota"],
     datasets: [
       {
         data: [
           archaeaRecords.length,
           bacteriaRecords.length,
           eukaryotaRecords.length,
-          undefinedRecords.length,
         ],
         borderColor: "black",
-        backgroundColor: ["green", "blue", "orange", "red"],
+        backgroundColor: ["red", "blue", "green"],
       },
     ],
   };

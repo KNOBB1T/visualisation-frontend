@@ -40,6 +40,7 @@ export type Link = {
 export type Data = {
   nodes: Node[];
   links: Link[];
+  density: number;
 };
 
 export type Taxon = {
@@ -50,11 +51,16 @@ export type Taxon = {
 export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const { queriedSpeciesId } = useParams();
   const parsedSpeciesId = Number(queriedSpeciesId);
-  const [data, setData] = useState<Data>({ nodes: [], links: [] });
+  const [data, setData] = useState<Data>({
+    nodes: [],
+    links: [],
+    density: 0,
+  });
   const [taxonomy, setTaxonomy] = useState<Taxon[]>([]);
   const [networkLoading, setNetworkLoading] = useState<boolean>(true);
   const [taxonomyLoading, setTaxonomyLoading] = useState<boolean>(true);
   const [visualisedDisease, setVisualisedDisease] = useState("");
+  const [diseaseProteins, setDiseaseProteins] = useState<Node[]>([]);
   const [networkDensity, setNetworkDensity] = useState(0);
   // const [cooldownTicks, setCooldownTicks] = useState(0);
   // const [highlightedNode, setHighlightedNode] = useState(null);
@@ -75,6 +81,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     .map((key) => sessionStorage.getItem(key));
 
   const cosmograph = useRef<CosmographRef<Node, Link> | undefined>();
+  const [diseases, setDiseases] = useState([]);
   const navigateHome = useNavigate();
 
   console.log("NETWORKVIEW RENDERING---------------------");
@@ -171,47 +178,61 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
       // This will be called when the worker sends back the result
       const result = event.data;
       setData(result);
-      console.log("RESULT: " + JSON.stringify(result));
+      console.log("RESULT: " + JSON.stringify(result.density));
+      setNetworkLoading(false);
       setTaxonomyLoading(false);
     };
 
-    return () => {
-      networkWorker.terminate();
-    };
+    return () => {};
   }, []);
 
   useEffect(() => {
+    setTaxonomyLoading(true);
     const taxonomyWorker = new Worker("/taxonomyRetriever.js");
-
-    let newDensity = 0;
-
-    if (queriedSpecies && queriedSpecies.total_nodes !== 1) {
-      newDensity = parseFloat(
-        (
-          (2 * (queriedSpecies?.total_edges ?? 0)) /
-          ((queriedSpecies?.total_nodes ?? 1) *
-            (queriedSpecies?.total_nodes ?? 1 - 1))
-        ).toFixed(2)
-      );
-    }
-
-    if (newDensity !== networkDensity) {
-      setNetworkDensity(newDensity);
-    }
 
     taxonomyWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
     taxonomyWorker.onmessage = (event) => {
       // This will be called when the worker sends back the result
       const result = event.data;
       setTaxonomy(result);
-      setNetworkLoading(false);
+      console.log("TAXONOMY RESULT: " + JSON.stringify(result));
       console.log("TAXONOMY RESULT: " + JSON.stringify(result));
     };
 
     return () => {
       taxonomyWorker.terminate();
     };
-  }, [queriedSpecies]);
+  }, []);
+
+  const highlightDisease = (
+    visualisedDisease: string,
+    queriedSpeciesId: any
+  ) => {
+    const diseaseWorker = new Worker("/diseaseRetriever.js");
+
+    diseaseWorker.postMessage({
+      visualisedDisease: visualisedDisease,
+      queriedSpeciesId: queriedSpeciesId,
+    });
+    diseaseWorker.onmessage = (event) => {
+      // This will be called when the worker sends back the result
+      const proteins = event.data;
+
+      console.log(proteins);
+
+      const diseaseNodes = data.nodes.filter((node) =>
+        proteins.includes(node.label)
+      );
+
+      setDiseaseProteins(diseaseNodes);
+
+      const returnAssociatedNodes = useCallback((diseaseProteins: Node[]) => {
+        setSelectedNodes(diseaseProteins);
+      }, []);
+
+      // Rest of your code...
+    };
+  };
 
   console.log("DENSITY: " + networkDensity.toString);
 
@@ -240,25 +261,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
               {!networkLoading && (
                 <div className="attributes">
                   <div>
-                    <p className="detail-heading">Biological Classification</p>
-                  </div>
-                  <div className="species-details">
-                    <p>
-                      Compact Name: <span>{queriedSpecies?.compact_name}</span>
-                    </p>
-                    <p>
-                      Domain of Life: <span>{queriedSpecies?.domain}</span>
-                    </p>
-                    <p>
-                      Evolution:{" "}
-                      <span>
-                        {queriedSpecies?.evolution === 0
-                          ? "Unknown"
-                          : queriedSpecies?.evolution}
-                      </span>
-                    </p>
-                  </div>
-                  <div>
                     <p className="detail-heading">Network Statistics</p>
                   </div>
                   <div className="species-details">
@@ -269,11 +271,19 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                       Edges: <span>{queriedSpecies?.total_edges}</span>
                     </p>
                     <p>
+                      Evolution:{" "}
+                      <span>
+                        {queriedSpecies?.evolution === 0
+                          ? "Unknown"
+                          : queriedSpecies?.evolution}
+                      </span>
+                    </p>
+                    <p>
                       Publication Count:{" "}
                       <span>{queriedSpecies?.publication_count}</span>
                     </p>
                     <p>
-                      Density: <span>{networkDensity}</span>
+                      Density: <span>{data.density}</span>
                     </p>
                   </div>
                   <div>
@@ -281,19 +291,22 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                   </div>
                   <div className="species-details">
                     {Array.isArray(taxonomy) &&
-                      taxonomy.map((taxon: Taxon) => (
-                        <div key={taxon.ScientificName}>
-                          {taxon.ScientificName}:
-                          <span className="rank-style">
-                            {" "}
-                            {capitalizeRankFirstLetter(
-                              taxon.Rank === "superkingdom"
-                                ? "domain"
-                                : taxon.Rank
-                            )}
-                          </span>
-                        </div>
-                      ))}
+                      taxonomy.map(
+                        (taxon: Taxon) =>
+                          taxon.Rank !== "no rank" && (
+                            <div key={taxon.ScientificName}>
+                              {capitalizeRankFirstLetter(
+                                taxon.Rank === "superkingdom"
+                                  ? "domain"
+                                  : taxon.Rank
+                              )}
+                              :{" "}
+                              <span className="rank-style">
+                                {taxon.ScientificName}
+                              </span>
+                            </div>
+                          )
+                      )}
                   </div>
                 </div>
               )}
@@ -346,17 +359,18 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                         linkWidthScale={1}
                         backgroundColor="white"
                         fitViewOnInit={true}
-                        simulationGravity={0.15}
+                        simulationGravity={0.1}
                         simulationLinkDistance={4}
                         simulationRepulsion={2}
                         simulationRepulsionTheta={1.15}
-                        simulationFriction={0.85}
+                        simulationFriction={0.5}
                         simulationLinkSpring={0.4}
                         nodeSamplingDistance={20}
                         onClick={selectNode}
                         onNodesFiltered={returnAssociatedNodes}
                         onLinksFiltered={returnAssociatedLinks}
                         linkGreyoutOpacity={0}
+                        disableSimulation={false}
 
                         // spaceSize={500}
                       />
@@ -393,7 +407,12 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
             >
               Add to Comparison
             </Button>
-            <Button className="disease-button">
+            <Button
+              className="disease-button"
+              onClick={() =>
+                highlightDisease(visualisedDisease, queriedSpeciesId)
+              }
+            >
               <FontAwesomeIcon icon={faVirus} />
             </Button>
             <select
@@ -401,16 +420,15 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
               value={visualisedDisease}
               onChange={(e) => setVisualisedDisease(e.target.value)}
             >
-              <option value="" disabled selected>
+              <option value="" selected disabled>
                 {" "}
                 Select a disease...{" "}
               </option>
-              <option value="Dementia"> Dementia </option>
-              <option value="Huntington's Disease">
-                {" "}
-                Huntington's Disease{" "}
-              </option>
-              <option value="Sickle Cell Disease"> Sickle Cell Disease </option>
+              {queriedSpecies?.diseases.map((disease) => (
+                <option key={disease} value={disease}>
+                  {disease}
+                </option>
+              ))}
             </select>
             <Button className="fullscreen-button" onClick={handle.enter}>
               <FontAwesomeIcon icon={faExpandAlt} />

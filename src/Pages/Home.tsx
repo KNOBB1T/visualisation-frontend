@@ -24,7 +24,6 @@ export const Home = ({ speciesData }: { speciesData: Species[] }) => {
             </div>
             <div className="search-bar-container">
               <SearchBar speciesData={speciesData} />
-              {/* <div>SearchResults</div> */}
             </div>
           </div>
           <div>

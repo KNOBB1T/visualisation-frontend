@@ -40,7 +40,7 @@ export const Filter = ({
     filterData.evolutionInteraction
   );
   const [emptyFilter, setEmptyFilter] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(false);
   const defaultFilterData: FilterData = {
     domain: "",
     disease: "",
@@ -126,7 +126,6 @@ export const Filter = ({
                 <option value="Archaea"> Archaea </option>
                 <option value="Bacteria"> Bacteria </option>
                 <option value="Eukaryota"> Eukaryota </option>
-                <option value="Undefined"> Undefined </option>
               </select>
             </div>
           </div>
@@ -178,10 +177,7 @@ export const Filter = ({
                 <option value="e >= 200000 && e <= 400000">
                   Between 200000 and 400000
                 </option>
-                <option value="e >= 400000 && e <= 800000">
-                  Between 400000 and 800000
-                </option>
-                <option value="e > 800000">Greater than 800000</option>
+                <option value="e > 400000">Greater than 400000</option>
               </select>
             </div>
           </div>
@@ -224,8 +220,25 @@ export const Filter = ({
                 value={selectedDisease}
                 onChange={(e) => setSelectedDisease(e.target.value)}
               >
-                <option value=""> No </option>
-                <option value="true"> Yes </option>
+                <option value="" disabled selected>
+                  {" "}
+                  Select...{" "}
+                </option>
+                <option value="Alzheimer's"> Alzheimer's Disease </option>
+                <option value="Amyotrophic lateral sclerosis">
+                  {" "}
+                  Amyotrophic lateral sclerosis (ALS){" "}
+                </option>
+                <option value="Cancer"> Cancer </option>
+                <option value="Creutzfeldt-Jakob">
+                  {" "}
+                  Creutzfeldt-Jakob Disease{" "}
+                </option>
+                <option value="Cystic Fibrosis"> Cystic Fibrosis </option>
+                <option value="Gaucher"> Gaucher's Disease </option>
+                <option value="Huntington"> Huntington's Disease </option>
+                <option value="Parkinson"> Parkinson's Disease </option>
+                <option value="Prion"> Prion Disease </option>
               </select>
             </div>
           </div>

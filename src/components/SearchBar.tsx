@@ -8,6 +8,7 @@ import { FilterArrow } from "./FilterArrow";
 import { Filter, FilterData } from "./FilterModal";
 import { useNavigate } from "react-router-dom";
 import * as math from "mathjs";
+import axios from "axios";
 
 interface searchBarProps {
   speciesData: Species[];
@@ -19,6 +20,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
   const [isFilterPresent, setIsFilterPresent] = useState(false);
   const [emptyFilter, setEmptyFilter] = useState(true);
   const [inputValidity, setInputValidity] = useState(true);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const defaultFilterData: FilterData = {
     domain: "",
@@ -50,6 +52,8 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
 
     const updateResults = () => {
       console.log(speciesData.length);
+
+      // setIsLoading(true);
 
       if (filter.domain != "") {
         filteredSpeciesData = filteredSpeciesData.filter(
@@ -112,6 +116,37 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
         }
       }
 
+      if (filter.disease != "") {
+        filteredSpeciesData = filteredSpeciesData.filter((item) =>
+          item.diseases.includes(filter.disease)
+        );
+        setResultData(filteredSpeciesData);
+        // setIsLoading(true);
+        // const fetchData = async () => {
+        //   try {
+        //     const diseaseWorker = new Worker("/diseaseRetriever.js");
+
+        //     diseaseWorker.postMessage({ queriedDisease: filter.disease });
+        //     diseaseWorker.onmessage = (event) => {
+        //       // This will be called when the worker sends back the result
+        //       const result = event.data;
+        //       const taxonIds = result.map((item: any) => item.organism.taxonId);
+        //       filteredSpeciesData = filteredSpeciesData.filter((item) =>
+        //         taxonIds.includes(item.species_id)
+        //       );
+        //       setResultData(filteredSpeciesData);
+        //       diseaseWorker.terminate();
+        //       setIsLoading(false);
+        //     };
+        //   } catch (error) {
+        //     // handle the error
+        //     console.error(error);
+        //     setIsLoading(false);
+        //   }
+        // };
+        // fetchData();
+      }
+
       if (filter.evolutionInteraction == true) {
         if (filter.evolution[0] !== filter.evolution[1]) {
           const [minValue, maxValue] = filter.evolution.map((value) => value);
@@ -125,6 +160,8 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
           setResultData(filteredSpeciesData);
         }
       }
+
+      // setIsLoading(false);
     };
 
     updateResults();
@@ -149,7 +186,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
   };
 
   const generateNetwork = () => {
-    const trimmedInput = input.trim();
+    const trimmedInput = input.trim().toLowerCase();
 
     if (trimmedInput !== "") {
       setInputValidity(true);
@@ -162,7 +199,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
     }
 
     const queriedSpecies = speciesData.find(
-      (species) => species.compact_name === trimmedInput
+      (species) => species.compact_name.toLowerCase() === trimmedInput
     );
     const queriedSpeciesId = queriedSpecies?.species_id;
 
@@ -247,6 +284,8 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
           filterData={filter}
         />
       )}
+
+      {/* {isLoading && <div className="results">LOADING...</div>} */}
 
       {input.trim() && !resultFound && (
         <div className="search-results-container">
