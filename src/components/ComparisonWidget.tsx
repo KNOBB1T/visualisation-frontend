@@ -10,8 +10,6 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 // }
 
 export const ComparisonWidget = () => {
-  const [refreshKey, setRefreshKey] = useState(0);
-
   const networkImages = Object.keys(sessionStorage).filter((key) =>
     (sessionStorage.getItem(key) || "").startsWith("data:image/jpeg")
   );
@@ -23,6 +21,12 @@ export const ComparisonWidget = () => {
   const networkTaxonomy = Object.keys(sessionStorage)
     .filter((key) => key.endsWith("Taxonomy"))
     .map((key) => JSON.parse(sessionStorage.getItem(key) || "[]"));
+
+  const [displayedKeys, setDisplayedKeys] = useState(() => {
+    // Initialize the state with the keys from the session storage
+    const initialKeys = Object.keys(sessionStorage);
+    return initialKeys;
+  });
 
   const navigate = useNavigate();
 
@@ -82,15 +86,21 @@ export const ComparisonWidget = () => {
               <Button
                 className="remove-comparison"
                 onClick={() => {
-                  sessionStorage.removeItem(key);
-                  sessionStorage.removeItem(key + "CompactName");
-                  sessionStorage.removeItem(key + "Domain");
-                  sessionStorage.removeItem(key + "Evolution");
-                  sessionStorage.removeItem(key + "Nodes");
-                  sessionStorage.removeItem(key + "Edges");
-                  sessionStorage.removeItem(key + "Taxonomy");
-                  sessionStorage.removeItem(key + "Density");
-                  window.location.reload();
+                  const keysToRemove = [
+                    key,
+                    key + "CompactName",
+                    key + "Domain",
+                    key + "Evolution",
+                    key + "Nodes",
+                    key + "Edges",
+                    key + "Taxonomy",
+                    key + "Density",
+                  ];
+                  keysToRemove.forEach((keyToRemove) => {
+                    sessionStorage.removeItem(keyToRemove);
+                  });
+                  // Force a re-render to update the components
+                  setDisplayedKeys(Object.keys(sessionStorage));
                 }}
               >
                 <FontAwesomeIcon icon={faXmark} className="cancel-comparison" />

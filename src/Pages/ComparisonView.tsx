@@ -123,20 +123,25 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
                   <div>
                     <p className="detail-heading">Taxonomy</p>
                     <div className="comparison-taxonomy">
-                      {speciesTaxonomy[0].map((taxon: any, i: number) => (
-                        <div key={i}>
-                          {taxon.ScientificName}:
-                          <span className="rank-style">
-                            {" "}
-                            {capitalizeRankFirstLetter(
-                              taxon.Rank === "superkingdom"
-                                ? "domain"
-                                : taxon.Rank
-                            )}
-                          </span>
-                          {i < speciesTaxonomy[0].length - 1 ? ",\u00A0" : ""}
-                        </div>
-                      ))}
+                      {speciesTaxonomy[0].map((taxon: any, i: number) => {
+                        if (taxon.Rank === "no rank") {
+                          return null; // Skip this item
+                        }
+
+                        return (
+                          <div key={i}>
+                            <span className="rank-style">
+                              {capitalizeRankFirstLetter(
+                                taxon.Rank === "superkingdom"
+                                  ? "domain"
+                                  : taxon.Rank
+                              )}
+                            </span>
+                            : {taxon.ScientificName}
+                            {i < speciesTaxonomy[0].length - 1 ? ",\u00A0" : ""}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -200,20 +205,25 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
                   <div>
                     <p className="detail-heading">Taxonomy</p>
                     <div className="comparison-taxonomy">
-                      {speciesTaxonomy[1].map((taxon: any, i: number) => (
-                        <div key={i}>
-                          {taxon.ScientificName}:
-                          <span className="rank-style">
-                            {" "}
-                            {capitalizeRankFirstLetter(
-                              taxon.Rank === "superkingdom"
-                                ? "domain"
-                                : taxon.Rank
-                            )}
-                          </span>
-                          {i < speciesTaxonomy[1].length - 1 ? ",\u00A0" : ""}
-                        </div>
-                      ))}
+                      {speciesTaxonomy[1].map((taxon: any, i: number) => {
+                        if (taxon.Rank === "no rank") {
+                          return null; // Skip this item
+                        }
+
+                        return (
+                          <div key={i}>
+                            <span className="rank-style">
+                              {capitalizeRankFirstLetter(
+                                taxon.Rank === "superkingdom"
+                                  ? "domain"
+                                  : taxon.Rank
+                              )}
+                            </span>
+                            : {taxon.ScientificName}
+                            {i < speciesTaxonomy[1].length - 1 ? ",\u00A0" : ""}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

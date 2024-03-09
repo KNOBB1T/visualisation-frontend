@@ -122,7 +122,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
       queriedSpecies?.total_edges.toString() ?? ""
     );
     sessionStorage.setItem(key + "Taxonomy", JSON.stringify(taxonomy));
-    sessionStorage.setItem(key + "Density", networkDensity.toString() ?? "");
+    sessionStorage.setItem(key + "Density", data.density.toString());
   };
 
   const fullscreen = useCallback(
@@ -196,7 +196,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
       const result = event.data;
       setTaxonomy(result);
       console.log("TAXONOMY RESULT: " + JSON.stringify(result));
-      console.log("TAXONOMY RESULT: " + JSON.stringify(result));
     };
 
     return () => {
@@ -208,6 +207,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     visualisedDisease: string,
     queriedSpeciesId: any
   ) => {
+    setDiseaseProteins([]);
     const diseaseWorker = new Worker("/diseaseRetriever.js");
 
     diseaseWorker.postMessage({
@@ -224,13 +224,9 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
         proteins.includes(node.label)
       );
 
+      console.log(diseaseNodes);
+
       setDiseaseProteins(diseaseNodes);
-
-      const returnAssociatedNodes = useCallback((diseaseProteins: Node[]) => {
-        setSelectedNodes(diseaseProteins);
-      }, []);
-
-      // Rest of your code...
     };
   };
 
@@ -249,190 +245,212 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
           <p className="speciesName">{queriedSpecies?.compact_name}</p>
         </div>
         <div className="screen">
-          <div className="visualisation-interface">
-            <div className="species-detail-modal">
-              <p className="attribute-title">Attributes</p>
-              {taxonomyLoading && (
-                <div className="taxonomy-loading-container">
-                  <TailSpin color="#e45e19" height="150px" width="150px" />
-                  <p className="loading-text">Loading...</p>
-                </div>
-              )}
-              {!networkLoading && (
-                <div className="attributes">
-                  <div>
-                    <p className="detail-heading">Network Statistics</p>
+          <div className="visualisation-pane">
+            <div className="visualisation-interface">
+              <div className="species-detail-modal">
+                <p className="attribute-title">Attributes</p>
+                {taxonomyLoading && (
+                  <div className="taxonomy-loading-container">
+                    <TailSpin color="#e45e19" height="150px" width="150px" />
+                    <p className="loading-text">Loading...</p>
                   </div>
-                  <div className="species-details">
-                    <p>
-                      Nodes: <span>{queriedSpecies?.total_nodes}</span>
-                    </p>
-                    <p>
-                      Edges: <span>{queriedSpecies?.total_edges}</span>
-                    </p>
-                    <p>
-                      Evolution:{" "}
-                      <span>
-                        {queriedSpecies?.evolution === 0
-                          ? "Unknown"
-                          : queriedSpecies?.evolution}
-                      </span>
-                    </p>
-                    <p>
-                      Publication Count:{" "}
-                      <span>{queriedSpecies?.publication_count}</span>
-                    </p>
-                    <p>
-                      Density: <span>{data.density}</span>
-                    </p>
+                )}
+                {!networkLoading && (
+                  <div className="attributes">
+                    <div>
+                      <p className="detail-heading">Network Statistics</p>
+                    </div>
+                    <div className="species-details">
+                      <p>
+                        Nodes: <span>{queriedSpecies?.total_nodes}</span>
+                      </p>
+                      <p>
+                        Edges: <span>{queriedSpecies?.total_edges}</span>
+                      </p>
+                      <p>
+                        Evolution:{" "}
+                        <span>
+                          {queriedSpecies?.evolution === 0
+                            ? "Unknown"
+                            : queriedSpecies?.evolution}
+                        </span>
+                      </p>
+                      <p>
+                        Publication Count:{" "}
+                        <span>{queriedSpecies?.publication_count}</span>
+                      </p>
+                      <p>
+                        Density: <span>{data.density}</span>
+                      </p>
+                    </div>
+                    <div>
+                      <p className="detail-heading">Taxonomy</p>
+                    </div>
+                    <div className="species-details">
+                      {Array.isArray(taxonomy) &&
+                        taxonomy.map(
+                          (taxon: Taxon, index: number) =>
+                            taxon.Rank !== "no rank" && (
+                              <div key={index}>
+                                {capitalizeRankFirstLetter(
+                                  taxon.Rank === "superkingdom"
+                                    ? "domain"
+                                    : taxon.Rank
+                                )}
+                                :{" "}
+                                <span className="rank-style">
+                                  {taxon.ScientificName}
+                                </span>
+                              </div>
+                            )
+                        )}
+                    </div>
                   </div>
-                  <div>
-                    <p className="detail-heading">Taxonomy</p>
+                )}
+              </div>
+              <div className={"network-frame"}>
+                {networkLoading && (
+                  <div className="network-loading-container">
+                    <TailSpin color="#e45e19" height="150px" width="150px" />
+                    <p className="loading-text">Loading...</p>
                   </div>
-                  <div className="species-details">
-                    {Array.isArray(taxonomy) &&
-                      taxonomy.map(
-                        (taxon: Taxon) =>
-                          taxon.Rank !== "no rank" && (
-                            <div key={taxon.ScientificName}>
-                              {capitalizeRankFirstLetter(
-                                taxon.Rank === "superkingdom"
-                                  ? "domain"
-                                  : taxon.Rank
-                              )}
-                              :{" "}
-                              <span className="rank-style">
-                                {taxon.ScientificName}
-                              </span>
-                            </div>
-                          )
-                      )}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className={"network-frame"}>
-              {networkLoading && (
-                <div className="network-loading-container">
-                  <TailSpin color="#e45e19" height="150px" width="150px" />
-                  <p className="loading-text">Loading...</p>
-                </div>
-              )}
-              {!networkLoading && (
-                <FullScreen
-                  handle={handle}
-                  onChange={fullscreen}
-                  className="fullScreenNetwork"
-                >
-                  <div
-                    className={`network-graph ${
-                      isFullscreen ? "fullscreen" : ""
-                    }`}
-                    ref={graphRef}
+                )}
+                {!networkLoading && (
+                  <FullScreen
+                    handle={handle}
+                    onChange={fullscreen}
+                    className="fullScreenNetwork"
                   >
-                    <CosmographProvider nodes={data.nodes} links={data.links}>
-                      <Cosmograph
-                        ref={cosmograph}
-                        key={isFullscreen ? "fullscreen" : "windowed"}
-                        nodes={data.nodes}
-                        nodeSizeScale={1}
-                        links={data.links}
-                        nodeLabelAccessor={(node): string => {
-                          return `<div><u>${
-                            node.label
-                          }</u><br/>Clustering Coefficient: ${node.clustering_coefficient.toFixed(
-                            2
-                          )}<br/>
+                    <div
+                      className={`network-graph ${
+                        isFullscreen ? "fullscreen" : ""
+                      }`}
+                      ref={graphRef}
+                    >
+                      <CosmographProvider nodes={data.nodes} links={data.links}>
+                        <Cosmograph
+                          ref={cosmograph}
+                          key={isFullscreen ? "fullscreen" : "windowed"}
+                          nodes={data.nodes}
+                          nodeSizeScale={1}
+                          links={data.links}
+                          nodeLabelAccessor={(node): string => {
+                            return `<div><u>${
+                              node.label
+                            }</u><br/>Clustering Coefficient: ${node.clustering_coefficient.toFixed(
+                              2
+                            )}<br/>
                           Degree: ${node.degree}</div>
                           </div>`;
-                        }}
-                        showHoveredNodeLabel={true}
-                        hoveredNodeLabelClassName={"hovered-node-label"}
-                        showDynamicLabels={false}
-                        hoveredNodeLabelColor={"#e45e19"}
-                        nodeSize={3}
-                        nodeColor={"#357aa195"}
-                        hoveredNodeRingColor="#e45e19"
-                        focusedNodeRingColor="#e45e19"
-                        linkWidth={1}
-                        linkArrows={false}
-                        linkWidthScale={1}
-                        backgroundColor="white"
-                        fitViewOnInit={true}
-                        simulationGravity={0.1}
-                        simulationLinkDistance={4}
-                        simulationRepulsion={2}
-                        simulationRepulsionTheta={1.15}
-                        simulationFriction={0.5}
-                        simulationLinkSpring={0.4}
-                        nodeSamplingDistance={20}
-                        onClick={selectNode}
-                        onNodesFiltered={returnAssociatedNodes}
-                        onLinksFiltered={returnAssociatedLinks}
-                        linkGreyoutOpacity={0}
-                        disableSimulation={false}
+                          }}
+                          showHoveredNodeLabel={true}
+                          hoveredNodeLabelClassName={"hovered-node-label"}
+                          showDynamicLabels={false}
+                          hoveredNodeLabelColor={"#e45e19"}
+                          nodeSize={3}
+                          nodeColor={(node) =>
+                            diseaseProteins.find(
+                              (diseaseNode) => diseaseNode.id === node.id
+                            )
+                              ? "red"
+                              : "#357aa195"
+                          }
+                          hoveredNodeRingColor="#e45e19"
+                          focusedNodeRingColor="#e45e19"
+                          linkWidth={1}
+                          linkArrows={false}
+                          linkWidthScale={1}
+                          backgroundColor="white"
+                          fitViewOnInit={true}
+                          simulationGravity={0.1}
+                          simulationLinkDistance={4}
+                          simulationRepulsion={2}
+                          simulationRepulsionTheta={1.15}
+                          simulationFriction={0.5}
+                          simulationLinkSpring={0.4}
+                          nodeSamplingDistance={20}
+                          onClick={selectNode}
+                          onNodesFiltered={returnAssociatedNodes}
+                          onLinksFiltered={returnAssociatedLinks}
+                          linkGreyoutOpacity={0}
+                          disableSimulation={false}
 
-                        // spaceSize={500}
-                      />
-                    </CosmographProvider>
-                  </div>
-                </FullScreen>
-              )}
+                          // spaceSize={500}
+                        />
+                      </CosmographProvider>
+                    </div>
+                  </FullScreen>
+                )}
+              </div>
+            </div>
+            <div className="visualisation-features">
+              <div className="network-buttons">
+                <Button className="interactome-button">
+                  Download Interactomes
+                </Button>
+                <Button
+                  className="disease-button"
+                  onClick={() => {
+                    highlightDisease(visualisedDisease, queriedSpeciesId);
+                    // diseaseProteins.forEach((node) => selectNode(node));
+                  }}
+                  disabled={queriedSpecies?.diseases.length === 0}
+                >
+                  <FontAwesomeIcon icon={faVirus} />
+                </Button>
+                <select
+                  className="visualised-disease"
+                  value={visualisedDisease}
+                  onChange={(e) => setVisualisedDisease(e.target.value)}
+                  disabled={queriedSpecies?.diseases.length === 0}
+                >
+                  {queriedSpecies?.diseases.length === 0 ? (
+                    <option value="" selected disabled>
+                      No Diseases
+                    </option>
+                  ) : (
+                    <option value="" selected disabled>
+                      Select a disease...
+                    </option>
+                  )}
+                  {queriedSpecies?.diseases.map((disease) => (
+                    <option key={disease} value={disease}>
+                      {disease}
+                    </option>
+                  ))}
+                </select>
+                <Button
+                  className="comparison-button"
+                  onClick={addComparison}
+                  disabled={
+                    networkImages.length >= 2 &&
+                    !sessionStorage.getItem(`${queriedSpecies?.compact_name}`)
+                  }
+                >
+                  Add to Comparison
+                </Button>
+                <Button
+                  className="screenshot-button"
+                  onClick={screenshotNetwork}
+                >
+                  <FontAwesomeIcon icon={faCamera} color="white" />
+                </Button>
+                <Button
+                  className="reload-button"
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faArrowsRotate} />
+                </Button>
+                <Button className="fullscreen-button" onClick={handle.enter}>
+                  <FontAwesomeIcon icon={faExpandAlt} />
+                </Button>
+              </div>
             </div>
           </div>
           <div>
             <ComparisonWidget />
-          </div>
-        </div>
-        <div className="buttons">
-          <div className="network-buttons">
-            <Button className="screenshot-button" onClick={screenshotNetwork}>
-              <FontAwesomeIcon icon={faCamera} color="white" />
-            </Button>
-            <Button
-              className="reload-button"
-              onClick={() => {
-                window.location.reload();
-              }}
-            >
-              <FontAwesomeIcon icon={faArrowsRotate} />
-            </Button>
-            <Button
-              className="comparison-button"
-              onClick={addComparison}
-              disabled={
-                networkImages.length >= 2 &&
-                !sessionStorage.getItem(`${queriedSpecies?.compact_name}`)
-              }
-            >
-              Add to Comparison
-            </Button>
-            <Button
-              className="disease-button"
-              onClick={() =>
-                highlightDisease(visualisedDisease, queriedSpeciesId)
-              }
-            >
-              <FontAwesomeIcon icon={faVirus} />
-            </Button>
-            <select
-              className="visualised-disease"
-              value={visualisedDisease}
-              onChange={(e) => setVisualisedDisease(e.target.value)}
-            >
-              <option value="" selected disabled>
-                {" "}
-                Select a disease...{" "}
-              </option>
-              {queriedSpecies?.diseases.map((disease) => (
-                <option key={disease} value={disease}>
-                  {disease}
-                </option>
-              ))}
-            </select>
-            <Button className="fullscreen-button" onClick={handle.enter}>
-              <FontAwesomeIcon icon={faExpandAlt} />
-            </Button>
           </div>
         </div>
       </div>

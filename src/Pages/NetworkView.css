@@ -87,7 +87,7 @@
 .network-buttons {
     align-items: center;
     display: flex;
-    width: 60vw;
+    width: 80vw;
     user-select: none;
 }
 
@@ -156,6 +156,10 @@
     cursor: pointer;
 }
 
+.disease-button:disabled {
+  background-color: #734f96;
+}
+
 .visualised-disease {
   width: 12vw;
   height: 1.9rem;
@@ -163,6 +167,23 @@
   border: 2px solid #357aa1;
   border-left: #734f96;
   background-color: #DFC5FE;
+}
+
+.visualised-disease:disabled {
+  cursor: not-allowed;
+}
+
+.interactome-button {
+  font-weight:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:x-large;
+    border: 2px solid #357aa1;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    width: 20vw;
+    /* height: 3vh; */
+    background-color: #357aa1;
+    cursor: pointer;
 }
 
 .network-loading-container {
@@ -197,16 +218,25 @@
   white-space: nowrap;
 }
 
+.network-view-left {
+  display: flex;
+  flex-direction: column;
+  height: 68.9vh;
+}
+
+.interactome-data {
+  height: 3vh;;
+}
+
 .species-detail-modal {
     width: 20vw;
     height: 68.9vh;
     border-top: 5px solid #357aa1;
     border-left: 5px solid #357aa1;
     border-right: 2px solid #357aa1;
-    border-bottom: 5px solid #357aa1;
+    border-bottom: 1px solid #357aa1;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
-    border-bottom-left-radius: 8px;
     overflow-y: auto;
     background-color: lightblue;
 }
@@ -267,6 +297,16 @@
 
 .hovered-node-label {
   font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+}
+
+.screen {
+  display: flex;
+  justify-content: space-between;
+}
+
+.visualisation-pane {
+  display: flex;
+  flex-direction: column;
 }
 
 .visualisation-interface {
