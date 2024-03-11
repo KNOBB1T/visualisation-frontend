@@ -1,16 +1,23 @@
-.comparison-widget {
-    width: 20vw;
-    height: 71.8vh;
-    border-top: 5px solid #e45e19;
-    border-left: 5px solid #e45e19;
-    border-right: 5px solid #e45e19;
-    /* justify-content: center; */
-    align-items: center;
-    border-radius: 5px;
-    display:flex;
+.comparison-container {
+    display: flex;
     flex-direction: column;
     position: absolute;
     right: 0;
+    height: 72vh;
+    width: 20vw;
+}
+
+.comparison-widget {
+    height: 68.9vh;
+    width: 100%;
+    border-top: 5px solid #e45e19;
+    border-left: 5px solid #e45e19;
+    border-right: 5px solid #e45e19;
+    align-items: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    display:flex;
+    flex-direction: column;
     background-color: orange;
     text-align: center;
 }
@@ -29,6 +36,7 @@
     margin-bottom: 20px;
     background-color: #357aa1;
     height: 30vh;
+    text-align: left;
 }
 
 .empty-text {
@@ -38,7 +46,7 @@
     display: flex;
     align-items: center;
     font-size: x-large;
-    font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: auto;
 }
 
@@ -51,18 +59,24 @@
 
 .compare-network-button{
     align-items: center;
-    position: absolute;
+    /* position: absolute; */
     bottom: 0;
-    width: 20vw;
+    width: 100%;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    border: 2px solid #e45e19;
-    border-radius: 5px;
+    border: 3px solid black;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     background-color: darkorange;
     font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: x-large;
     cursor: pointer;
     user-select: none;
+}
+
+.compare-network-button:disabled {
+    color: grey;
+    cursor: not-allowed;
 }
 
 .screen {
@@ -80,8 +94,14 @@
     text-decoration: underline;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     justify-content: center;
+    text-align: center;
     padding-bottom: 0.2vh;
+    cursor: pointer;
     /* font-size: 1vw; */
+}
+
+.species-name:hover {
+    color: #357aa1;
 }
 
 .comparison-tab {
@@ -96,7 +116,7 @@
 
 .comparison-info {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     flex-direction: column;
     background-color: white;
@@ -104,6 +124,7 @@
     width: 16vw;
     height: 10.5vh;
     border: 2px solid #357aa1;
+    background-color: lightblue;
     font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
     overflow-y: auto;
 }
@@ -119,27 +140,14 @@
     cursor: pointer;
     font-size: xx-large;
     width: 3vw;
-    background-color: white;
+    background-color: lightblue;
     border-radius: 10px;
 }
 
 .remove-comparison {
-    background-color: white;
+    background-color: lightblue;
     border: none;
     height: 10.5vh;
     border-radius: 10px;
     cursor: pointer;
 }
-
-/* justify-content:right;
-    position: absolute;
-    width: 20vw;
-    font-weight:normal;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size:x-large;
-    border: 2px solid #e45e19;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    background-color: #FFAE42;
-    cursor: pointer;
-    right: 0; */

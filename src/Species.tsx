@@ -1,3 +1,8 @@
+interface Diseases {
+  species_disease: string;
+  uniprot_disease: string;
+}
+
 interface Species {
   index: bigint;
   species_id: number;
@@ -11,5 +16,5 @@ interface Species {
   total_nodes: number;
   total_edges: number;
   taxonomy: string;
-  diseases: string[];
+  diseases: Diseases[];
 }

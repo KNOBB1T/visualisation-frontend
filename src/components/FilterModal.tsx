@@ -41,6 +41,25 @@ export const Filter = ({
   );
   const [emptyFilter, setEmptyFilter] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+  const Diseases = [
+    { species_disease: "Alzheimer's Disease", uniprot_disease: "Alzheimer's" },
+    {
+      species_disease: "Amyotrophic lateral sclerosis (ALS)",
+      uniprot_disease: "Amyotrophic lateral sclerosis",
+    },
+    { species_disease: "Cancer", uniprot_disease: "Cancer" },
+    {
+      species_disease: "Creutzfeldt-Jakob Disease",
+      uniprot_disease: "Creutzfeldt-Jakob",
+    },
+    { species_disease: "Cystic Fibrosis", uniprot_disease: "Cystic Fibrosis" },
+    { species_disease: "Gaucher's Disease", uniprot_disease: "Gaucher" },
+    { species_disease: "Huntington's Disease", uniprot_disease: "Huntington" },
+    { species_disease: "Parkinson's Disease", uniprot_disease: "Parkinson" },
+    { species_disease: "Prion Disease", uniprot_disease: "Prion" },
+  ];
+
   const defaultFilterData: FilterData = {
     domain: "",
     disease: "",
@@ -224,26 +243,19 @@ export const Filter = ({
                   {" "}
                   Select...{" "}
                 </option>
-                <option value="Alzheimer's"> Alzheimer's Disease </option>
-                <option value="Amyotrophic lateral sclerosis">
-                  {" "}
-                  Amyotrophic lateral sclerosis (ALS){" "}
-                </option>
-                <option value="Cancer"> Cancer </option>
-                <option value="Creutzfeldt-Jakob">
-                  {" "}
-                  Creutzfeldt-Jakob Disease{" "}
-                </option>
-                <option value="Cystic Fibrosis"> Cystic Fibrosis </option>
-                <option value="Gaucher"> Gaucher's Disease </option>
-                <option value="Huntington"> Huntington's Disease </option>
-                <option value="Parkinson"> Parkinson's Disease </option>
-                <option value="Prion"> Prion Disease </option>
+                {Diseases.map((disease) => (
+                  <option
+                    key={disease.species_disease}
+                    value={disease.uniprot_disease}
+                  >
+                    {disease.species_disease}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
           <div id="evolution-option">
-            <p className="evolution-text">Evolution:</p>
+            <p className="evolution-text">Evolutionary Distance:</p>
             <div>
               <Slider
                 className="selectedEvolution"

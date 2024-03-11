@@ -95,7 +95,7 @@
   font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:x-large;
-    border: 2px solid #357aa1;
+    border: 3px solid black;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     width: 5vw;
@@ -108,7 +108,7 @@
     font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:x-large;
-    border: 2px solid #357aa1;
+    border: 3px solid black;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     width: 30vw;
@@ -121,7 +121,7 @@
   font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:x-large;
-    border: 2px solid #357aa1;
+    border: 3px solid black;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     width: 5vw;
@@ -134,7 +134,7 @@
   font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:x-large;
-    border: 2px solid #357aa1;
+    border: 3px solid black;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     width: 5vw;
@@ -147,12 +147,13 @@
   font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:x-large;
-    border: 2px solid #357aa1;
+    border: 3px solid black;
     border-bottom-left-radius: 8px;
     /* border-bottom-right-radius: 8px; */
     width: 3vw;
     /* height: 3vh; */
     background-color: #734f96;
+    color: black;
     cursor: pointer;
 }
 
@@ -162,22 +163,28 @@
 
 .visualised-disease {
   width: 12vw;
-  height: 1.9rem;
+  height: 2rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   border-bottom-right-radius: 8px;
-  border: 2px solid #357aa1;
+  border: 3px solid black;
   border-left: #734f96;
   background-color: #DFC5FE;
 }
 
 .visualised-disease:disabled {
   cursor: not-allowed;
+  color: black;
+}
+
+.disease-icon {
+  color: black;
 }
 
 .interactome-button {
   font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:x-large;
-    border: 2px solid #357aa1;
+    border: 3px solid black;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     width: 20vw;
@@ -204,6 +211,16 @@
   justify-content: center;
   width: 20vw;
     height: 68.9vh;
+}
+
+.page-loading-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .loading-text {
@@ -301,7 +318,8 @@
 
 .screen {
   display: flex;
-  justify-content: space-between;
+  justify-content: row;
+  height: 72.9vh;
 }
 
 .visualisation-pane {
@@ -314,5 +332,5 @@
   align-items: center;
   position: relative;
   width: 100vw;
-  height: 68.9vh;
+  /* height: 68.9vh; */
 }

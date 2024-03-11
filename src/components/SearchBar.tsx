@@ -117,9 +117,14 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
       }
 
       if (filter.disease != "") {
+        console.log("Disease: " + filter.disease);
         filteredSpeciesData = filteredSpeciesData.filter((item) =>
-          item.diseases.includes(filter.disease)
+          item.diseases.some(
+            (disease) => disease.uniprot_disease === filter.disease
+          )
         );
+
+        console.log("DiseaseData: " + filteredSpeciesData);
         setResultData(filteredSpeciesData);
         // setIsLoading(true);
         // const fetchData = async () => {

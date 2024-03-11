@@ -1,7 +1,7 @@
 .filter-modal {
-  /* border: 1px solid #357aa1; */
+  border: 1px solid #357aa1;
   border-radius: 10px;
-  /* background-color: #FF8C00; */
+  background-color: #e45e19;
 }
 
 .filter-modal.Button[disabled] {
@@ -44,7 +44,7 @@
 .evolution-text {
   font-weight:normal;
   font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
-  font-size:large;
+  font-size:medium;
   background-color: transparent;
   border: none;
   color: #357aa1;
