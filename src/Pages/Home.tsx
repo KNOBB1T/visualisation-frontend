@@ -1,11 +1,12 @@
 import "../App.css";
-import { SearchBar } from "../components/SearchBar";
+import { SearchBar } from "../Components/SearchBar";
 // import { useEffect, useRef, useState } from "react";
 import visionet from "../visionet.png";
-import { ChartSearch } from "../components/ChartSearch";
-import { ComparisonWidget } from "../components/ComparisonWidget";
+import { ChartSearch } from "../Components/ChartSearch";
+import { ComparisonWidget } from "../Components/ComparisonWidget";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 export const Home = ({ speciesData }: { speciesData: Species[] }) => {
   console.log("HOME RENDERING---------------------");

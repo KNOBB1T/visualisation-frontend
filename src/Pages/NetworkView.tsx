@@ -1,7 +1,7 @@
 import { createRef, useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import visionet from "../visionet.png";
-import "./NetworkView.css";
+import "../Styling/NetworkView.css";
 import { Button } from "react-bootstrap";
 import { TailSpin } from "react-loader-spinner";
 import {
@@ -9,7 +9,7 @@ import {
   CosmographProvider,
   CosmographRef,
 } from "@cosmograph/react";
-import { ComparisonWidget } from "../components/ComparisonWidget";
+import { ComparisonWidget } from "../Components/ComparisonWidget";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,7 +24,7 @@ import {
   FullScreenHandle,
   useFullScreenHandle,
 } from "react-full-screen";
-import axios from "axios";
+import React from "react";
 
 export type Node = {
   id: string;
@@ -227,12 +227,17 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     setNetworkLoading(true);
     const networkWorker = new Worker("/networkRenderer.js");
 
-    networkWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
+    networkWorker.postMessage({ parsedSpeciesId: parsedSpeciesId });
     networkWorker.onmessage = (event) => {
       // This will be called when the worker sends back the result
       const result = event.data;
-      setData(result);
-      console.log("RESULT: " + JSON.stringify(result.density));
+      console.log("RESULT: " + JSON.stringify(result));
+      if (result) {
+        setData(result);
+        console.log("RESULT: " + JSON.stringify(result.density));
+      } else {
+        console.error("Unexpected result:", result);
+      }
       setNetworkLoading(false);
     };
 
@@ -245,7 +250,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     setTaxonomyLoading(true);
     const taxonomyWorker = new Worker("/taxonomyRetriever.js");
 
-    taxonomyWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
+    taxonomyWorker.postMessage({ parsedSpeciesId: parsedSpeciesId });
     taxonomyWorker.onmessage = (event) => {
       // This will be called when the worker sends back the result
       const result = event.data;
@@ -323,8 +328,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
       setLastHighlightedDisease(visualisedDisease);
     };
   };
-
-  console.log("DENSITY: " + networkDensity.toString);
 
   if (isLoading) {
     return (

@@ -75,6 +75,16 @@
     border-radius: 4px;
 }
 
+.speciesName span {
+    color: black;
+}
+
+.speciesName span:hover {
+    color:#357aa1;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .detail-heading {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }

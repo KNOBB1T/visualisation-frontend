@@ -1,9 +1,10 @@
 import { Button } from "react-bootstrap";
-import "./FilterModal.css";
+import "../Styling/FilterModal.css";
 import { useEffect, useState } from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faClose } from "@fortawesome/free-solid-svg-icons";
 import Slider from "react-slider";
+import React from "react";
 
 export interface FilterData {
   domain: string;
@@ -24,7 +25,15 @@ interface filterModalProps {
 export const Filter = ({
   filterParams,
   removeFilterParams,
-  filterData,
+  filterData = {
+    domain: "",
+    disease: "",
+    nodeNum: "",
+    edgeNum: "",
+    publicationNum: "",
+    evolution: [0, 5],
+    evolutionInteraction: false,
+  },
 }: filterModalProps) => {
   const [selectedDomain, setSelectedDomain] = useState(filterData.domain);
   const [selectedDisease, setSelectedDisease] = useState(filterData.disease);
@@ -40,7 +49,6 @@ export const Filter = ({
     filterData.evolutionInteraction
   );
   const [emptyFilter, setEmptyFilter] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
 
   const Diseases = [
     { species_disease: "Alzheimer's Disease", uniprot_disease: "Alzheimer's" },
@@ -134,11 +142,12 @@ export const Filter = ({
             <p className="filter-text">Domain of Life:</p>
             <div>
               <select
+                data-testid="selectedDomain"
                 className="selectedDomain"
                 value={selectedDomain}
                 onChange={(e) => setSelectedDomain(e.target.value)}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   {" "}
                   Select...{" "}
                 </option>
@@ -152,11 +161,12 @@ export const Filter = ({
             <p className="filter-text">Nodes:</p>
             <div>
               <select
+                data-testid="selectedNodeNum"
                 className="selectedNodeNum"
                 value={selectedNodeNum}
                 onChange={(e) => setSelectedNodeNum(e.target.value)}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   {" "}
                   Select...{" "}
                 </option>
@@ -178,11 +188,12 @@ export const Filter = ({
             <p className="filter-text">Edges:</p>
             <div>
               <select
+                data-testid="selectedEdgeNum"
                 className="selectedEdgeNum"
                 value={selectedEdgeNum}
                 onChange={(e) => setSelectedEdgeNum(e.target.value)}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   {" "}
                   Select...{" "}
                 </option>
@@ -206,11 +217,12 @@ export const Filter = ({
             <p className="filter-text">Publication Count:</p>
             <div>
               <select
+                data-testid="selectedPublicationNum"
                 className="selectedPublicationNum"
                 value={selectedPublicationNum}
                 onChange={(e) => setSelectedPublicationNum(e.target.value)}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   {" "}
                   Select...{" "}
                 </option>
@@ -235,11 +247,12 @@ export const Filter = ({
             <p className="filter-text">Disease Related:</p>
             <div>
               <select
+                data-testid="selectedDisease"
                 className="selectedDisease"
                 value={selectedDisease}
                 onChange={(e) => setSelectedDisease(e.target.value)}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   {" "}
                   Select...{" "}
                 </option>
@@ -258,6 +271,7 @@ export const Filter = ({
             <p className="evolution-text">Evolutionary Distance:</p>
             <div>
               <Slider
+                data-testid="selectedEvolution"
                 className="selectedEvolution"
                 thumbClassName="evolutionThumb"
                 pearling

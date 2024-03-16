@@ -1,6 +1,7 @@
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import "./ChartSearch.css";
+import "../Styling/ChartSearch.css";
+import React from "react";
 
 //Providing plugins to my Domain chart
 Chart.register(ArcElement, Tooltip, Legend);
@@ -56,7 +57,7 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
           chart.config.data.datasets[chart._active[0].datasetIndex]
             .backgroundColor[chart._active[0].index];
         //adjusts the font size of the label based on the window's width
-        const fontSize = window.innerWidth * 0.015;
+        const fontSize = window.innerWidth * 0.019;
         ctx.font = `${fontSize}px Franklin Gothic Medium`;
         ctx.fillStyle = colorLabel;
         ctx.textAlign = "center";
@@ -100,11 +101,13 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
   };
 
   return (
-    <Doughnut
-      data={data}
-      className="chart-wrapper"
-      options={options}
-      plugins={[hoverlabel]}
-    />
+    <div data-testid="chart-wrapper" className="chart-wrapper">
+      <Doughnut
+        data={data}
+        className="chart"
+        options={options}
+        plugins={[hoverlabel]}
+      />
+    </div>
   );
 };

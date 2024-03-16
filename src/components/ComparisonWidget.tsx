@@ -1,26 +1,28 @@
 import { useState } from "react";
-import "./ComparisonWidget.css";
+import "../Styling/ComparisonWidget.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 export const ComparisonWidget = () => {
-  //The images of the species prepared for comparison
+  // The images of the species prepared for comparison
   let networkImages = Object.keys(sessionStorage).filter((key) =>
     (sessionStorage.getItem(key) || "").startsWith("data:image/jpeg")
   );
 
+  // The Network Densities of the species prepared for comparison
   const networkDensity = Object.keys(sessionStorage)
     .filter((key) => key.endsWith("Density"))
     .map((key) => JSON.parse(sessionStorage.getItem(key) || "[]"));
 
+  // The Network Taxonomies of the species prepared for comparison
   const networkTaxonomy = Object.keys(sessionStorage)
     .filter((key) => key.endsWith("Taxonomy"))
     .map((key) => JSON.parse(sessionStorage.getItem(key) || "[]"));
 
   const [displayedKeys, setDisplayedKeys] = useState(() => {
-    // Initialize the state with the keys from the session storage
     const initialKeys = Object.keys(sessionStorage);
     return initialKeys;
   });
@@ -41,7 +43,7 @@ export const ComparisonWidget = () => {
           </div>
         )}
         {networkImages.map((key, index) => (
-          <div className="species-overview">
+          <div className="species-overview" key={key}>
             <img
               className="network-images"
               key={key}
@@ -97,6 +99,7 @@ export const ComparisonWidget = () => {
               <div>
                 <Button
                   className="remove-comparison"
+                  aria-label="remove comparison"
                   onClick={() => {
                     const keysToRemove = [
                       key,

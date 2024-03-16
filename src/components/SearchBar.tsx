@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import "./SearchBar.css";
-import "./FilterModal.css";
+import "../Styling/SearchBar.css";
+import "../Styling/FilterModal.css";
 import { Button } from "react-bootstrap";
-import { FilterArrow } from "./FilterArrow";
-import { Filter, FilterData } from "./FilterModal";
+import { FilterArrow } from "../Components/FilterArrow";
+import { Filter, FilterData } from "../Components/FilterModal";
 import { useNavigate } from "react-router-dom";
 import * as math from "mathjs";
-import axios from "axios";
+import React from "react";
 
 interface searchBarProps {
   speciesData: Species[];
@@ -126,30 +126,6 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
 
         console.log("DiseaseData: " + filteredSpeciesData);
         setResultData(filteredSpeciesData);
-        // setIsLoading(true);
-        // const fetchData = async () => {
-        //   try {
-        //     const diseaseWorker = new Worker("/diseaseRetriever.js");
-
-        //     diseaseWorker.postMessage({ queriedDisease: filter.disease });
-        //     diseaseWorker.onmessage = (event) => {
-        //       // This will be called when the worker sends back the result
-        //       const result = event.data;
-        //       const taxonIds = result.map((item: any) => item.organism.taxonId);
-        //       filteredSpeciesData = filteredSpeciesData.filter((item) =>
-        //         taxonIds.includes(item.species_id)
-        //       );
-        //       setResultData(filteredSpeciesData);
-        //       diseaseWorker.terminate();
-        //       setIsLoading(false);
-        //     };
-        //   } catch (error) {
-        //     // handle the error
-        //     console.error(error);
-        //     setIsLoading(false);
-        //   }
-        // };
-        // fetchData();
       }
 
       if (filter.evolutionInteraction == true) {
@@ -165,8 +141,6 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
           setResultData(filteredSpeciesData);
         }
       }
-
-      // setIsLoading(false);
     };
 
     updateResults();
@@ -251,11 +225,14 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
       >
         <div
           className="filter-button"
+          data-testid="filter-button"
           onClick={() => {
             toggleFilterModal();
           }}
         >
-          <Button className="filter">Filter</Button>
+          <Button className="filter" data-testid="filter-button-inner">
+            Filter
+          </Button>
           <FilterArrow filter={isFilterPresent} />
         </div>
         <div className="divider" />
@@ -277,7 +254,11 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
 
         <div className="search-divider" />
 
-        <Button id="search-icon" onClick={generateNetwork}>
+        <Button
+          id="search-icon"
+          data-testid="search-icon"
+          onClick={generateNetwork}
+        >
           <FontAwesomeIcon icon={faSearch} />
         </Button>
       </div>
@@ -295,7 +276,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
       {input.trim() && !resultFound && (
         <div className="search-results-container">
           <div className="dropdown">
-            <div className="dropdown-container">
+            <div className="dropdown-container" data-testid="search-results">
               {resultData
                 .filter((item) => {
                   const searchTerm = input.toLowerCase();
@@ -312,6 +293,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
                   <div
                     onClick={() => onSearch(item.compact_name)}
                     className="dropdown-row"
+                    data-testid="dropdown-row"
                     key={item.compact_name}
                   >
                     {item.compact_name}
@@ -330,7 +312,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
       {!input.trim() && !resultFound && !emptyFilter && (
         <div className="search-results-container">
           <div className="dropdown">
-            <div className="dropdown-container">
+            <div className="dropdown-container" data-testid="search-results">
               {resultData
                 .sort((a, b) => a.compact_name.localeCompare(b.compact_name))
                 .map((item) => (
@@ -338,6 +320,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
                     onClick={() => onSearch(item.compact_name)}
                     className="dropdown-row"
                     key={item.compact_name}
+                    data-testid="resultData"
                   >
                     {item.compact_name}
                   </div>
