@@ -4,8 +4,6 @@ import { SearchBar } from "../Components/SearchBar";
 import visionet from "../visionet.png";
 import { ChartSearch } from "../Components/ChartSearch";
 import { ComparisonWidget } from "../Components/ComparisonWidget";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 
 export const Home = ({ speciesData }: { speciesData: Species[] }) => {

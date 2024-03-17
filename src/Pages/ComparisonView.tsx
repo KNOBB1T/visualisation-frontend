@@ -3,7 +3,6 @@ import visionet from "../visionet.png";
 import "../Styling/ComparisonView.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import { Taxon } from "./NetworkView";
 import React from "react";
 
 export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {

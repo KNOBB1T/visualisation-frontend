@@ -5,6 +5,7 @@ import "./App.css";
 import { Home } from "./Pages/Home";
 import { NetworkView } from "./Pages/NetworkView";
 import { ComparisonView } from "./Pages/ComparisonView";
+import React from "react";
 
 function App() {
   const [speciesData, setSpeciesData] = useState<Species[]>([]);

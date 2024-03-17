@@ -64,7 +64,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const [visualisedDisease, setVisualisedDisease] = useState("");
   const [diseaseProteins, setDiseaseProteins] = useState<Node[]>([]);
   const [lastHighlightedDisease, setLastHighlightedDisease] = useState("");
-  const [networkDensity, setNetworkDensity] = useState(0);
   const [reload, setReload] = useState(false);
   const [comparisonLength, setComparisonLength] = useState(
     Object.keys(sessionStorage).filter((key) =>
@@ -74,13 +73,13 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const validSpeciesIds = speciesData.map((species) => species.species_id);
   // const [cooldownTicks, setCooldownTicks] = useState(0);
   // const [highlightedNode, setHighlightedNode] = useState(null);
-  const [network, saveNetwork] = useScreenshot({
+  const [, saveNetwork] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,
   });
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [selectedNodes, setSelectedNodes] = useState<Node[]>();
-  const [selectedLinks, setSelectedLinks] = useState<Link[]>();
+  const [, setSelectedNodes] = useState<Node[]>();
+  const [, setSelectedLinks] = useState<Link[]>();
   const graphRef = createRef<HTMLDivElement>();
   const handle = useFullScreenHandle();
   const networkTaxonomy = Object.keys(sessionStorage)
@@ -516,6 +515,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                             onLinksFiltered={returnAssociatedLinks}
                             linkGreyoutOpacity={0}
                             disableSimulation={false}
+                            fitViewDelay={5000}
                           />
                         </CosmographProvider>
                       </div>
