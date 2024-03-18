@@ -3,7 +3,7 @@
     flex-direction: column;
     position: absolute;
     right: 0;
-    height: 72vh;
+    /* height: 73vh; */
     width: 20vw;
 }
 
@@ -45,7 +45,7 @@
     justify-content: center;
     display: flex;
     align-items: center;
-    font-size: x-large;
+    font-size: 1.7vw;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: auto;
 }
@@ -59,7 +59,7 @@
 
 .compare-network-button{
     align-items: center;
-    /* position: absolute; */
+    height: 2.6rem;
     bottom: 0;
     width: 100%;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -69,7 +69,7 @@
     background-color: darkorange;
     font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: x-large;
+    font-size:1.7vw;
     cursor: pointer;
     user-select: none;
 }

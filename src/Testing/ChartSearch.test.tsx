@@ -1,43 +1,24 @@
 import { render, screen } from "@testing-library/react";
 import { ChartSearch } from "../Components/ChartSearch";
+import { afterDraw } from "../Components/ChartSearch";
 import "@testing-library/jest-dom";
 import React from "react";
-import { Doughnut } from "react-chartjs-2";
+import "jest-canvas-mock";
+// import { Doughnut } from "react-chartjs-2";
 
-jest.mock("chart.js", () => ({
-  Chart: {
-    register: jest.fn(),
-  },
-  ArcElement: jest.fn(),
-  Tooltip: jest.fn(),
-  Legend: jest.fn(),
-}));
-
-jest.mock("react-chartjs-2", () => ({
-  Doughnut: jest.fn().mockImplementation(({ plugins }) => {
-    // Simulate a hover event by calling the afterDraw function of the hoverlabel plugin
-    const hoverEvent = {
-      ctx: {
-        save: jest.fn(),
-        restore: jest.fn(),
-        font: "",
-        fillStyle: "",
-        textAlign: "",
-        fillText: jest.fn(),
-      },
-      chartArea: { top: 0, width: 0, height: 0 },
-      _active: [{ index: 0, datasetIndex: 0 }],
-      config: {
-        data: {
-          labels: ["Archaea"],
-          datasets: [{ data: [1], backgroundColor: ["red"] }],
-        },
-      },
-    };
-    plugins[0].afterDraw(hoverEvent);
-    return null;
-  }),
-}));
+beforeAll(() => {
+  global.ResizeObserver = class ResizeObserver {
+    observe() {
+      // do nothing
+    }
+    unobserve() {
+      // do nothing
+    }
+    disconnect() {
+      // do nothing
+    }
+  };
+});
 
 const speciesData: Species[] = [
   {
@@ -90,11 +71,52 @@ const speciesData: Species[] = [
 describe("ChartSearch", () => {
   it("renders without crashing", () => {
     render(<ChartSearch speciesData={speciesData} />);
-    expect(screen.getByTestId("chart-wrapper")).toBeInTheDocument();
+    const chartWrapper = screen.getByTestId("chart-wrapper");
+    expect(chartWrapper).toBeInTheDocument();
   });
 
-  it("renders Doughnut component", () => {
-    render(<ChartSearch speciesData={speciesData} />);
-    expect(Doughnut).toHaveBeenCalled();
+  it("calls afterDraw when a chart element is hovered over", () => {
+    const mockChart = {
+      ctx: {
+        save: jest.fn(),
+        restore: jest.fn(),
+        fillText: jest.fn(),
+        measureText: jest.fn().mockReturnValue({ width: 100 }), // Add this line
+
+        // add other necessary mock context methods here
+      },
+      chartArea: { top: 0, width: 500, height: 500 },
+      config: {
+        data: {
+          labels: ["Archaea", "Bacteria", "Eukaryota"],
+          datasets: [
+            {
+              data: [1, 2, 3],
+              backgroundColor: ["red", "blue", "green"],
+            },
+          ],
+        },
+      },
+      _active: [{ index: 0, datasetIndex: 0 }],
+    };
+
+    afterDraw(mockChart);
+
+    expect(mockChart.ctx.fillText).toHaveBeenCalled();
   });
 });
+
+//   it('renders the correct data', () => {
+//   render(<ChartSearch speciesData={speciesData} />);
+//   const chart = screen.getByTestId('chart-wrapper').firstChild;
+//   const chartInstance = Chart.getChart(chart.id);
+//   expect(chartInstance.data.datasets[0].data).toEqual(speciesData.map(species => species.evolution));
+// });
+
+// it('updates the chart when new data is provided', () => {
+//   const { rerender } = render(<ChartSearch speciesData={speciesData} />);
+//   const newData = [...speciesData, createSpeciesData('New Domain', 4)];
+//   rerender(<ChartSearch speciesData={newData} />);
+//   const dataPoints = screen.getAllByTestId('data-point');
+//   expect(dataPoints).toHaveLength(newData.length);
+// });

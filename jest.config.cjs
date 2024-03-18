@@ -13,6 +13,7 @@ module.exports = {
   moduleNameMapper: {
     "\\.(css|less)$": "identity-obj-proxy",
   },
+
   collectCoverageFrom: [
     "src/Components/**/*.{js,jsx,ts,tsx}", // replace with the file formats you use
     "!**/node_modules/**",

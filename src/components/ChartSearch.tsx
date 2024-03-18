@@ -6,6 +6,54 @@ import React from "react";
 //Providing plugins to my Domain chart
 Chart.register(ArcElement, Tooltip, Legend);
 
+//takes the chart's top, width and height to display the label in the center of the doughnut chart
+export function afterDraw(chart: any) {
+  const {
+    ctx,
+    chartArea: { top, width, height },
+  } = chart;
+  ctx.save();
+
+  //if the chart is active, display the label
+  if (chart._active && chart._active.length > 0) {
+    //takes the text label, number label and color label of the hovered wedge
+    const textLabel = chart.config.data.labels[chart._active[0].index];
+    const numberLabel =
+      chart.config.data.datasets[chart._active[0].datasetIndex].data[
+        chart._active[0].index
+      ];
+    const colorLabel =
+      chart.config.data.datasets[chart._active[0].datasetIndex].backgroundColor[
+        chart._active[0].index
+      ];
+
+    //adjusts the font size of the label based on the window's width
+    let fontSize = Math.min(window.innerWidth, window.innerHeight);
+
+    // Calculate the radius of the chart based on the smaller of the width and height
+    const radius = Math.min(width, height) / 2;
+
+    // Calculate the maximum possible width of the text
+    const maxTextWidth = radius;
+
+    // Measure the width of the text
+    ctx.font = `${fontSize}px Franklin Gothic Medium`;
+    let textWidth = ctx.measureText(`${textLabel}: ${numberLabel}`).width;
+
+    // Decrease the font size until the text fits in the inner circle
+    while (textWidth > maxTextWidth) {
+      fontSize -= 1;
+      ctx.font = `${fontSize}px Franklin Gothic Medium`;
+      textWidth = ctx.measureText(`${textLabel}: ${numberLabel}`).width;
+    }
+
+    ctx.fillStyle = colorLabel;
+    ctx.textAlign = "center";
+    ctx.fillText(`${textLabel}: ${numberLabel}`, width / 2, height / 2 + top);
+  }
+  ctx.restore();
+}
+
 export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
   //Gathering each domain's total count for each wedge of the doughnut chart
   const archaeaRecords = speciesData.filter(
@@ -37,38 +85,7 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
   //creating an onHover feature that allows users to see the count of each domain
   const hoverlabel = {
     id: "hoverlabel",
-    //takes the chart's top, width and height to display the label in the center of the doughnut chart
-    afterDraw(chart: any) {
-      const {
-        ctx,
-        chartArea: { top, width, height },
-      } = chart;
-      ctx.save();
-
-      //if the chart is active, display the label
-      if (chart._active && chart._active.length > 0) {
-        //takes the text label, number label and color label of the hovered wedge
-        const textLabel = chart.config.data.labels[chart._active[0].index];
-        const numberLabel =
-          chart.config.data.datasets[chart._active[0].datasetIndex].data[
-            chart._active[0].index
-          ];
-        const colorLabel =
-          chart.config.data.datasets[chart._active[0].datasetIndex]
-            .backgroundColor[chart._active[0].index];
-        //adjusts the font size of the label based on the window's width
-        const fontSize = window.innerWidth * 0.019;
-        ctx.font = `${fontSize}px Franklin Gothic Medium`;
-        ctx.fillStyle = colorLabel;
-        ctx.textAlign = "center";
-        ctx.fillText(
-          `${textLabel}: ${numberLabel}`,
-          width / 2,
-          height / 2 + top
-        );
-      }
-      ctx.restore();
-    },
+    afterDraw: afterDraw,
   };
 
   const options = {

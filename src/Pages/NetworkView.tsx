@@ -515,7 +515,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                             onLinksFiltered={returnAssociatedLinks}
                             linkGreyoutOpacity={0}
                             disableSimulation={false}
-                            fitViewDelay={5000}
                           />
                         </CosmographProvider>
                       </div>
