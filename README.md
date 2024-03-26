@@ -1,30 +1,23 @@
-# React + TypeScript + Vite
+To start using Visionet's Frontend, please run "npm install" to load all of the necessary dependencies required for it to run.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ensure that the backend code is running on your localhost before running the code. If you start this before the backend, reload
+your browser window to let them sync up together.
 
-Currently, two official plugins are available:
+To run the frontend, simply run "npm run dev" into your terminal window.
+Once Vite has successfully rendered an instance for you, click on the blue localhost link generated in the terminal window.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+For if at any point you require the build files/ folder, run "npm run build" in the terminal.
 
-## Expanding the ESLint configuration
+Thank you, and hopefully you enjoy Visionet!
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+_Bugs to look out for_
+if at any point the taxonomy doesn't load in the left handside of the Network View, reload the page until it generates.
+This is due to the incosistency of the API calls between Visionet and NCBI/ Uniprot.
 
-- Configure the top-level `parserOptions` property like this:
+Considering that the app will continue development alongside the university, this will be aimed to be one of the first
+fixes made.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Secondly, the taxonomy values on the Comparison View page may be flipped. This is apparent when you compare the species
+genus or subgenus with the species name, as both should have similar, if not the same value.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Again, thank you!

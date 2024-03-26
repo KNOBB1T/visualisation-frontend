@@ -305,7 +305,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     }
 
     setDiseaseProteins([]);
-    const diseaseWorker = new Worker("/diseaseRetriever.js");
+    const diseaseWorker = new Worker("/DiseaseRetriever.js");
 
     diseaseWorker.postMessage({
       visualisedDisease: visualisedDisease,

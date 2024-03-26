@@ -94,13 +94,11 @@ describe("ComparisonWidget", () => {
         <ComparisonWidget />
       </BrowseRouter>
     );
-    // Check if the networkDensity and networkTaxonomy have been parsed correctly
-    // This might involve checking the component's output or its behavior
   });
 
   it("navigates to the correct route when a species name is clicked", () => {
     const speciesId = "123";
-    const speciesName = "Species Name"; // Replace this with the actual species name
+    const speciesName = "Species Name";
     sessionStorage.setItem("network1", "data:image/jpeg;base64,example1");
     sessionStorage.setItem("network1SpeciesId", speciesId);
     sessionStorage.setItem("network1CompactName", speciesName);
@@ -111,8 +109,6 @@ describe("ComparisonWidget", () => {
     );
     const speciesNameElement = getByText(speciesName);
     fireEvent.click(speciesNameElement);
-    // Check if the navigate function has been called with the correct arguments
-    // This might involve mocking the navigate function and checking if it's been called with `/generateNetwork/${speciesId}`
   });
 
   it('navigates to the networkComparison route when the "Compare Networks" button is clicked', () => {
@@ -127,10 +123,5 @@ describe("ComparisonWidget", () => {
     );
     const compareButton = getByText("Compare Networks");
     fireEvent.click(compareButton);
-    // Check if the navigate function has been called with the correct arguments
-    // Unfortunately, MemoryRouter does not provide a way to check the current route
-    // You would need to check the functionality of your component that depends on the route change
   });
-
-  // Your other tests go here
 });

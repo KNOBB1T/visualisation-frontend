@@ -5,7 +5,6 @@ import { MemoryRouter, BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import ResizeObserver from "resize-observer-polyfill";
-// import "@testing-library/jest-dom/extend-expect";
 
 global.ResizeObserver = ResizeObserver;
 
@@ -331,49 +330,4 @@ describe("SearchBar", () => {
       expect(resultData[0]).toHaveTextContent("Homo sapiens");
     });
   });
-
-  //   test("filters species data by evolution", async () => {
-  //     // initial render of the SearchBar component
-  //     const { rerender } = render(
-  //       <MemoryRouter>
-  //         <SearchBar speciesData={speciesData} />
-  //       </MemoryRouter>
-  //     );
-
-  //     // simulate opening the filter form
-  //     userEvent.click(screen.getByTestId("filter-button"));
-
-  //     // update the evolution prop and re-render the component
-  //     speciesData[0].evolution = 3.2;
-  //     rerender(
-  //       <MemoryRouter>
-  //         <SearchBar speciesData={speciesData} />
-  //       </MemoryRouter>
-  //     );
-
-  //     userEvent.click(screen.getByText("Apply Filter"));
-
-  //     // wait for any asynchronous operations to complete
-  //     await waitFor(() => {
-  //       // check that the filtered data only includes items with the correct evolution
-  //       const resultData: HTMLElement[] = screen.getAllByTestId("resultData");
-  //       expect(resultData).toHaveLength(1); // adjust this to the expected number of results
-  //       expect(resultData[0]).toHaveTextContent("Homo sapiens"); // adjust this to the expected text content
-  //     });
-  //   });
-
-  //   test("filters by nodeNum", () => {
-  //     render(
-  //       <Router>
-  //         <SearchBar speciesData={speciesData} />
-  //       </Router>
-  //     );
-  //     // simulate opening the filter form
-  //     userEvent.click(screen.getByTestId("filter-button"));
-  //     // then fill in the form
-  //     userEvent.type(screen.getByPlaceholderText("Node Number"), "n > 20");
-  //     userEvent.click(screen.getByText("Apply Filter"));
-  //     expect(screen.getByText("domain2")).toBeInTheDocument();
-  //     expect(screen.queryByText("domain1")).not.toBeInTheDocument();
-  //   });
 });
