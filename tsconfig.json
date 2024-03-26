@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "public/networkRenderer.js"],
+  "include": ["src", "public/NetworkRenderer.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

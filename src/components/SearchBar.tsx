@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "../Styling/SearchBar.css";
-import "../Styling/FilterModal.css";
+import "../Styling/Filter.css";
 import { Button } from "react-bootstrap";
 import { FilterArrow } from "../Components/FilterArrow";
-import { Filter, FilterData } from "../Components/FilterModal";
+import { Filter, FilterData } from "./Filter";
 import { useNavigate } from "react-router-dom";
 import * as math from "mathjs";
 import React from "react";
@@ -20,7 +20,6 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
   const [isFilterPresent, setIsFilterPresent] = useState(false);
   const [emptyFilter, setEmptyFilter] = useState(true);
   const [inputValidity, setInputValidity] = useState(true);
-  // const [isLoading, setIsLoading] = useState(false);
 
   const defaultFilterData: FilterData = {
     domain: "",
@@ -53,13 +52,10 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
     const updateResults = () => {
       console.log(speciesData.length);
 
-      // setIsLoading(true);
-
       if (filter.domain != "") {
         filteredSpeciesData = filteredSpeciesData.filter(
           (item) => item.domain == filter.domain
         );
-        // console.log(filteredSpeciesData.length);
         setResultData(filteredSpeciesData);
       }
 
@@ -210,7 +206,6 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
 
   const handleRemoveFilter = (filterData: FilterData) => {
     setFilter(filterData);
-    // Do not clear the input when a filter is removed
     console.log("Filter: " + JSON.stringify(filterData));
   };
 
@@ -253,14 +248,11 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
         />
 
         <div className="search-divider" />
-
-        <Button
-          id="search-icon"
-          data-testid="search-icon"
-          onClick={generateNetwork}
-        >
-          <FontAwesomeIcon icon={faSearch} />
-        </Button>
+        <div className="search-button" onClick={generateNetwork}>
+          <Button id="search-icon" data-testid="search-icon">
+            <FontAwesomeIcon icon={faSearch} />
+          </Button>
+        </div>
       </div>
 
       {isFilterPresent && (
@@ -270,8 +262,6 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
           filterData={filter}
         />
       )}
-
-      {/* {isLoading && <div className="results">LOADING...</div>} */}
 
       {input.trim() && !resultFound && (
         <div className="search-results-container">

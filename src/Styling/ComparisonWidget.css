@@ -25,10 +25,18 @@
 .comparison-title {
     font-weight:normal;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size:x-large;
+    font-size:1.7vw;
     text-decoration: underline;
     padding-bottom: 0.3vh;
 }
+
+.comparison-stat {
+    font-size: 1.1vw;
+}
+
+/* .comparison-value {
+    font-size: 1vw;
+} */
 
 .species-overview {
     border: 2px solid #357aa1;
@@ -59,9 +67,10 @@
 
 .compare-network-button{
     align-items: center;
-    height: 2.6rem;
     bottom: 0;
     width: 100%;
+    min-height: 2.6rem;
+    height: auto;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border: 3px solid black;
     border-bottom-left-radius: 5px;
@@ -93,6 +102,7 @@
 .species-name {
     text-decoration: underline;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.1vw;
     justify-content: center;
     text-align: center;
     padding-bottom: 0.2vh;

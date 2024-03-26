@@ -109,10 +109,11 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
                       <p className="detail-heading">Network Statistics</p>
                       <div className="nodes-edges">
                         <p className="nodes">
-                          Nodes: <span>{speciesCompare0?.total_nodes}</span>
+                          Proteins: <span>{speciesCompare0?.total_nodes}</span>
                         </p>
                         <p>
-                          Edges: <span>{speciesCompare0?.total_edges}</span>
+                          Interactions:{" "}
+                          <span>{speciesCompare0?.total_edges}</span>
                         </p>
                       </div>
                       <p>
@@ -202,10 +203,11 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
                       <p className="detail-heading">Network Statistics</p>
                       <div className="nodes-edges">
                         <p className="nodes">
-                          Nodes: <span>{speciesCompare1?.total_nodes}</span>
+                          Proteins: <span>{speciesCompare1?.total_nodes}</span>
                         </p>
                         <p>
-                          Edges: <span>{speciesCompare1?.total_edges}</span>
+                          Interactions:{" "}
+                          <span>{speciesCompare1?.total_edges}</span>
                         </p>
                       </div>
                       <p>

@@ -185,7 +185,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
 
   const returnInteractomes = () => {
     return new Promise((resolve, reject) => {
-      const interactomeWorker = new Worker("/interactomeRetriever.js");
+      const interactomeWorker = new Worker("/InteractomeRetriever.js");
 
       interactomeWorker.postMessage({ queriedSpeciesId: parsedSpeciesId });
       interactomeWorker.onmessage = (event) => {
@@ -224,7 +224,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
 
   useEffect(() => {
     setNetworkLoading(true);
-    const networkWorker = new Worker("/networkRenderer.js");
+    const networkWorker = new Worker("/NetworkRenderer.js");
 
     networkWorker.postMessage({ parsedSpeciesId: parsedSpeciesId });
     networkWorker.onmessage = (event) => {
@@ -247,7 +247,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
 
   useEffect(() => {
     setTaxonomyLoading(true);
-    const taxonomyWorker = new Worker("/taxonomyRetriever.js");
+    const taxonomyWorker = new Worker("/TaxonomyRetriever.js");
 
     taxonomyWorker.postMessage({ parsedSpeciesId: parsedSpeciesId });
     taxonomyWorker.onmessage = (event) => {
@@ -397,13 +397,15 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                         <p className="detail-heading">Network Statistics</p>
                       </div>
                       <div className="species-details">
-                        <p>
-                          Nodes: <span>{queriedSpecies?.total_nodes}</span>
+                        <p className="detail-stat">
+                          No. of Proteins:{" "}
+                          <span>{queriedSpecies?.total_nodes}</span>
                         </p>
-                        <p>
-                          Edges: <span>{queriedSpecies?.total_edges}</span>
+                        <p className="detail-stat">
+                          No. of Interactions:{" "}
+                          <span>{queriedSpecies?.total_edges}</span>
                         </p>
-                        <p>
+                        <p className="detail-stat">
                           Evolutionary Distance:{" "}
                           <span>
                             {queriedSpecies?.evolution === 0
@@ -411,11 +413,11 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                               : queriedSpecies?.evolution}
                           </span>
                         </p>
-                        <p>
+                        <p className="detail-stat">
                           Publication Count:{" "}
                           <span>{queriedSpecies?.publication_count}</span>
                         </p>
-                        <p>
+                        <p className="detail-stat">
                           Density: <span>{data.density}</span>
                         </p>
                       </div>
@@ -427,7 +429,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                           taxonomy.map(
                             (taxon: Taxon, index: number) =>
                               taxon.Rank !== "no rank" && (
-                                <div key={index}>
+                                <div key={index} className="detail-stat">
                                   {capitalizeRankFirstLetter(
                                     taxon.Rank === "superkingdom"
                                       ? "domain"

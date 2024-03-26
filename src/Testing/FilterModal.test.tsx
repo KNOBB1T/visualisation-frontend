@@ -1,5 +1,5 @@
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import { Filter, FilterData } from "../Components/FilterModal";
+import { Filter, FilterData } from "../Components/Filter";
 import ResizeObserver from "resize-observer-polyfill";
 import "@testing-library/jest-dom";
 import React from "react";

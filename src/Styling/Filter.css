@@ -9,7 +9,7 @@
 }
 
 .filter-wrapper {
-    background-color: white;
+    background-color: lightblue;
     width: 100%;
     border-radius: 10px;
     border-left: 2px solid #357aa1;
@@ -30,12 +30,11 @@
 
 .filter-text {
     font-weight:normal;
-    font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:large;
     background-color: transparent;
     border: none;
-    color: #357aa1;
-    background-color: white;
+    color: #e45e19;
     position: relative;
     display: inline-flex;
     user-select: none;
@@ -43,12 +42,11 @@
 
 .evolution-text {
   font-weight:normal;
-  font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size:medium;
   background-color: transparent;
   border: none;
-  color: #357aa1;
-  background-color: white;
+  color: #e45e19;
   position: relative;
   display: inline-flex;
   padding-bottom: 0.4rem;
@@ -167,8 +165,10 @@
   .apply {
     /* position: relative; */
     width: 75%;    
+    min-height: 2.6rem;
+    height: auto; 
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size:large;
+    font-size:1.3vw;
     color: #357aa1;
     background-color: greenyellow;
     padding-top: 0.5vh;
@@ -185,9 +185,11 @@
 
   .clear {
     /* position:relative; */
-    width: 25%;    
+    width: 25%;
+    min-height: 2.6rem;
+    height: auto;    
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size:large;
+    font-size:1.3vw;
     color: white;
     background-color: #D21404;
     padding-top: 0.5vh;

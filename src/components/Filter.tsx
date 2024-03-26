@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import "../Styling/FilterModal.css";
+import "../Styling/Filter.css";
 import { useEffect, useState } from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faClose } from "@fortawesome/free-solid-svg-icons";
@@ -158,7 +158,7 @@ export const Filter = ({
             </div>
           </div>
           <div id="node-option">
-            <p className="filter-text">Nodes:</p>
+            <p className="filter-text">No. of Proteins:</p>
             <div>
               <select
                 data-testid="selectedNodeNum"
@@ -185,7 +185,7 @@ export const Filter = ({
             </div>
           </div>
           <div id="edge-option">
-            <p className="filter-text">Edges:</p>
+            <p className="filter-text">No. of Interactions:</p>
             <div>
               <select
                 data-testid="selectedEdgeNum"

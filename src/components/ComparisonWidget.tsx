@@ -68,13 +68,13 @@ export const ComparisonWidget = () => {
                   </p>
                 </div>
                 <div className="comparison-footer">
-                  <p>
+                  <p className="comparison-stat">
                     Domain:{" "}
                     <span className="comparison-value">
                       {sessionStorage.getItem(key + "Domain")}
                     </span>
                   </p>
-                  <p>
+                  <p className="comparison-stat">
                     Evolution:{" "}
                     <span className="comparison-value">
                       {sessionStorage.getItem(key + "Evolution") === "0"
@@ -82,14 +82,14 @@ export const ComparisonWidget = () => {
                         : sessionStorage.getItem(key + "Evolution")}
                     </span>
                   </p>
-                  <p>
-                    Total Nodes:{" "}
+                  <p className="comparison-stat">
+                    Proteins:{" "}
                     <span className="comparison-value">
                       {sessionStorage.getItem(key + "Nodes")}
                     </span>
                   </p>
-                  <p>
-                    Total Edges:{" "}
+                  <p className="comparison-stat">
+                    Interactions:{" "}
                     <span className="comparison-value">
                       {sessionStorage.getItem(key + "Edges")}
                     </span>
