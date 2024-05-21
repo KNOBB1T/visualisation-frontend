@@ -1,0 +1,128 @@
+.options {
+  padding-top: 1.3vh;
+  padding-left: 1.5vw;
+  left: 0;
+  position: absolute;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.button-container {
+  display: flex;
+}
+
+.settings-button {
+    width: 4.5vw;
+    height: 6vh;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right-color: lightgray;
+    cursor: pointer;
+    justify-items: center;
+    align-items: center;
+}
+
+.settings-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.settings-arrow {
+  height: 6vh;
+  width: 1.5vw;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-left-color: lightgray;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
+}
+
+.settings-arrow.closed {
+  transform: translateX(0);
+}
+
+.settings-icon {
+  height: 3vh;
+  border-radius: 8px;
+}
+
+.settings-options {
+  transition: width 1s ease-in-out;
+  overflow: hidden;
+  width: 100%;
+}
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  height: 6vh;
+  width: 6vw;
+  overflow: hidden;
+  transition: width 0.3s ease-in-out;
+}
+
+.settings-container.closed {
+  width: 0;
+}
+
+.Theme-text {
+  height: 1.5vh;
+  width: 100%;
+  font-size: calc(1vw);
+  font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+  background-color: lightgray;
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  white-space: nowrap;
+  border-top: 1px solid black;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.Light-theme {
+  background-color: #20a7db;
+}
+
+.Dark-theme {
+  background-color: #040348;
+} 
+
+.Dark-theme,
+.Light-theme {
+  height: 4.5vh;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 2px solid black;
+  border-bottom: 1px solid black;
+}
+
+.moon-icon {
+  height: 3vh;
+  color: #f0c420;
+}
+
+.sun-icon {
+  height: 3vh;
+  color: rgb(246, 194, 38);
+  transform: rotate(23deg);
+}
+
+.arrow-icon {
+  width: 1.1vw;
+  height: 2vh;
+  color: black;
+}

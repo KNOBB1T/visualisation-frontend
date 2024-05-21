@@ -1,9 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import visionet from "../visionet.png";
+import visionet from "../assets/visionet.png";
 import "../Styling/ComparisonView.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import { OptionsMenu } from "../Components/OptionsMenu";
 
 export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
   const location = useLocation();
@@ -20,12 +21,15 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
   if (sessionStorage.length < 12) {
     return (
       <div className="App">
-        <button className="home-button" onClick={() => navigate("/")}>
-          <FontAwesomeIcon icon={faHouse} color="white" className="home-icon" />
-        </button>
+        <OptionsMenu />
         <div className="error-content">
           <div className="main-title">
-            <img className="visionet" src={visionet} alt="visionet" />
+            <img
+              className="visionet"
+              src={visionet}
+              alt="visionet"
+              onClick={() => navigate("/")}
+            />
           </div>
           <div className="error-box">
             <p className="error-text">
@@ -50,15 +54,14 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
     return (
       <div className="App">
         <div className="content">
-          <button className="home-button" onClick={() => navigate("/")}>
-            <FontAwesomeIcon
-              icon={faHouse}
-              color="white"
-              className="home-icon"
-            />
-          </button>
           <div className="main-title">
-            <img className="visionet" src={visionet} alt="visionet" />
+            <OptionsMenu />
+            <img
+              className="visionet"
+              src={visionet}
+              alt="visionet"
+              onClick={() => navigate("/")}
+            />
           </div>
           <div className="comparison-interface">
             <div className="species1">

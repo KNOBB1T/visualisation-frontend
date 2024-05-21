@@ -1,14 +1,18 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Home } from "./Pages/Home";
 import { NetworkView } from "./Pages/NetworkView";
 import { ComparisonView } from "./Pages/ComparisonView";
 import React from "react";
+import { ThemeContext } from "./theme-context";
 
 function App() {
   const [speciesData, setSpeciesData] = useState<Species[]>([]);
+
+  const themeContext = useContext(ThemeContext);
+  const theme = themeContext?.theme;
 
   console.log("APP RENDERING---------------------");
 
@@ -28,9 +32,13 @@ function App() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("theme", theme ?? "Light");
+  }, [theme]);
+
   return (
     <BrowserRouter>
-      <main>
+      <main className={theme === "Light" ? "light-theme" : "dark-theme"}>
         <Routes>
           <Route path="/" element={<Home speciesData={speciesData} />} />
           <Route

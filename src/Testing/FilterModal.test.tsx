@@ -185,23 +185,4 @@ describe("Filter", () => {
       (getByTestId("selectedPublicationNum") as HTMLSelectElement).value
     ).toBe("p < 1000");
   });
-
-  //   it("updates text when handleEvolutionInteraction is called", async () => {
-  //     const { findByTestId, getByText } = render(
-  //       <Filter
-  //         filterParams={mockFilterParams}
-  //         removeFilterParams={mockRemoveFilterParams}
-  //         filterData={filterData}
-  //       />
-  //     );
-
-  //     // Simulate the Slider onChange event
-  //     const selectedEvolution = await findByTestId("selectedEvolution");
-  //     fireEvent.change(selectedEvolution, {
-  //       target: { value: [1, 3] },
-  //     });
-
-  //     // Assuming changing the slider updates a text in the component
-  //     expect(getByText("Updated text")).toBeInTheDocument();
-  //   });
 });

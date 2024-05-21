@@ -1,10 +1,12 @@
 import "../App.css";
 import { SearchBar } from "../Components/SearchBar";
-// import { useEffect, useRef, useState } from "react";
-import visionet from "../visionet.png";
+import visionet from "../assets/visionet.png";
+import darkVisionet from "../assets/dark-visionet.png";
 import { ChartSearch } from "../Components/ChartSearch";
 import { ComparisonWidget } from "../Components/ComparisonWidget";
-import React from "react";
+import React, { useContext } from "react";
+import { OptionsMenu } from "../Components/OptionsMenu";
+import "../Styling/OptionsMenu.css";
 
 export const Home = ({ speciesData }: { speciesData: Species[] }) => {
   console.log("HOME RENDERING---------------------");
@@ -13,7 +15,8 @@ export const Home = ({ speciesData }: { speciesData: Species[] }) => {
       <div className="home">
         <div className="visionet-container">
           <div className="main-title">
-            <img className="visionet" src={visionet} alt="visionet" />
+            <OptionsMenu />
+            <img className="home-visionet" src={visionet} alt="visionet" />
           </div>
         </div>
         <div className="home-content">

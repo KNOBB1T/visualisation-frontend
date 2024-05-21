@@ -1,6 +1,6 @@
 import { createRef, useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import visionet from "../visionet.png";
+import visionet from "../assets/visionet.png";
 import "../Styling/NetworkView.css";
 import { Button } from "react-bootstrap";
 import { TailSpin } from "react-loader-spinner";
@@ -15,9 +15,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCamera,
   faExpandAlt,
-  faHouse,
   faArrowsRotate,
   faVirus,
+  faMoon,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   FullScreen,
@@ -25,6 +25,7 @@ import {
   useFullScreenHandle,
 } from "react-full-screen";
 import React from "react";
+import { OptionsMenu } from "../Components/OptionsMenu";
 
 export type Node = {
   id: string;
@@ -71,8 +72,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     ).length
   );
   const validSpeciesIds = speciesData.map((species) => species.species_id);
-  // const [cooldownTicks, setCooldownTicks] = useState(0);
-  // const [highlightedNode, setHighlightedNode] = useState(null);
   const [, saveNetwork] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,
@@ -94,10 +93,6 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   const queriedSpecies = speciesData.find(
     (species) => species.species_id === parsedSpeciesId
   );
-
-  // console.log("storage: " + JSON.stringify(sessionStorage));
-
-  // console.log("NETWORK IMAGES: " + JSON.stringify(networkImages));
 
   console.log("NETWORK TAXONOMY: " + JSON.stringify(networkTaxonomy));
 
@@ -344,12 +339,15 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
   if (!validSpeciesIds.includes(parsedSpeciesId)) {
     return (
       <div className="App">
-        <button className="home-button" onClick={() => navigateHome("/")}>
-          <FontAwesomeIcon icon={faHouse} color="white" className="home-icon" />
-        </button>
+        <OptionsMenu />
         <div className="error-content">
           <div className="main-title">
-            <img className="visionet" src={visionet} alt="visionet" />
+            <img
+              className="visionet"
+              src={visionet}
+              alt="visionet"
+              onClick={() => navigateHome("/")}
+            />
           </div>
           <div className="error-box">
             <p className="error-text">
@@ -367,15 +365,14 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     return (
       <div className="App">
         <div className="content">
-          <button className="home-button" onClick={() => navigateHome("/")}>
-            <FontAwesomeIcon
-              icon={faHouse}
-              color="white"
-              className="home-icon"
-            />
-          </button>
           <div className="main-title">
-            <img className="visionet" src={visionet} alt="visionet" />
+            <OptionsMenu />
+            <img
+              className="visionet"
+              src={visionet}
+              alt="visionet"
+              onClick={() => navigateHome("/")}
+            />
           </div>
           <div className="network">
             <p className="speciesName">{queriedSpecies?.compact_name}</p>

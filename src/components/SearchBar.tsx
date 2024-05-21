@@ -20,6 +20,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
   const [isFilterPresent, setIsFilterPresent] = useState(false);
   const [emptyFilter, setEmptyFilter] = useState(true);
   const [inputValidity, setInputValidity] = useState(true);
+  const [isFilterHovering, setIsFilterHovering] = useState(false);
 
   const defaultFilterData: FilterData = {
     domain: "",
@@ -29,6 +30,13 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
     publicationNum: "",
     evolution: [0, 5],
     evolutionInteraction: false,
+  };
+
+  const handleEnterKey = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      console.log("Enter key pressed!");
+      generateNetwork();
+    }
   };
 
   let [filter, setFilter] = useState<FilterData>(defaultFilterData);
@@ -146,6 +154,7 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
 
   const onSearch = (searchTerm: string) => {
     setInput(searchTerm);
+    setInputValidity(true);
     if (isFilterPresent) {
       toggleFilterModal();
     }
@@ -214,54 +223,68 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
   return (
     <div className="search-bar">
       <div
-        className={`input-wrapper ${
-          inputValidity ? "valid-response" : "invalid-response"
-        }`}
+        className={`input-wrapper ${inputValidity ? "" : "invalid-species"} ${
+          isFilterPresent ? "filter-present" : ""
+        } ${isFilterHovering ? "filter-hover" : ""}`}
       >
-        <div
-          className="filter-button"
-          data-testid="filter-button"
+        <Button
+          className={`filter-button ${isFilterPresent ? "closed" : ""}`}
+          data-testid="filter-button-inner"
+          onMouseEnter={() => setIsFilterHovering(true)}
+          onMouseLeave={() => setIsFilterHovering(false)}
           onClick={() => {
             toggleFilterModal();
           }}
         >
-          <Button className="filter" data-testid="filter-button-inner">
-            Filter
-          </Button>
+          Filter
           <FilterArrow filter={isFilterPresent} />
+        </Button>
+        <div className={`divider ${inputValidity ? "" : "invalid-species"}`} />
+        <div
+          className={`search-input ${isFilterPresent ? "filter-present" : ""} ${
+            isFilterHovering ? "filter-hover" : ""
+          } ${inputValidity ? "" : "invalid-species"}`}
+        >
+          <input
+            className={inputValidity ? "valid-input" : "invalid-input"}
+            placeholder={
+              inputValidity
+                ? "Type to search..."
+                : "Invalid species! Please try again."
+            }
+            value={input}
+            spellCheck="false"
+            onChange={(e) => {
+              setInput(e.target.value);
+              setInputValidity(true);
+            }}
+            onKeyDown={handleEnterKey}
+          />
         </div>
-        <div className="divider" />
 
-        <input
-          className={inputValidity ? "valid-input" : "invalid-input"}
-          placeholder={
-            inputValidity
-              ? "Type to search..."
-              : "Invalid species! Please try again."
-          }
-          value={input}
-          spellCheck="false"
-          onChange={(e) => {
-            setInput(e.target.value);
-            setInputValidity(true);
-          }}
+        <div
+          className={`search-divider ${inputValidity ? "" : "invalid-species"}`}
         />
-
-        <div className="search-divider" />
-        <div className="search-button" onClick={generateNetwork}>
-          <Button id="search-icon" data-testid="search-icon">
+        <div
+          className={`search-button ${inputValidity ? "" : "invalid-species"}`}
+          onClick={generateNetwork}
+        >
+          <Button
+            className={`search-icon ${inputValidity ? "" : "invalid-species"}`}
+            data-testid="search-icon"
+          >
             <FontAwesomeIcon icon={faSearch} />
           </Button>
         </div>
       </div>
 
-      {isFilterPresent && (
+      <div className={isFilterPresent ? "filter-present" : "filter-absent"}>
         <Filter
           filterParams={handleFilter}
           removeFilterParams={handleRemoveFilter}
           filterData={filter}
         />
-      )}
+      </div>
 
       {input.trim() && !resultFound && (
         <div className="search-results-container">

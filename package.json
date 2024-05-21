@@ -48,6 +48,7 @@
     "react-select": "^5.8.0",
     "react-sigma": "^1.2.35",
     "react-slider": "^2.0.6",
+    "react-storage-complete": "^1.1.10",
     "rollup-plugin-off-main-thread": "^1.1.0",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",

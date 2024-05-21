@@ -1,8 +1,6 @@
 import { Button } from "react-bootstrap";
 import "../Styling/Filter.css";
 import { useEffect, useState } from "react";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faClose } from "@fortawesome/free-solid-svg-icons";
 import Slider from "react-slider";
 import React from "react";
 
@@ -50,6 +48,7 @@ export const Filter = ({
   );
   const [emptyFilter, setEmptyFilter] = useState(true);
 
+  //List of possible diseases accessible in Visionet
   const Diseases = [
     { species_disease: "Alzheimer's Disease", uniprot_disease: "Alzheimer's" },
     {
@@ -68,6 +67,7 @@ export const Filter = ({
     { species_disease: "Prion Disease", uniprot_disease: "Prion" },
   ];
 
+  // Empty filter placeholder
   const defaultFilterData: FilterData = {
     domain: "",
     disease: "",
@@ -78,6 +78,7 @@ export const Filter = ({
     evolutionInteraction: false,
   };
 
+  // If there is no filter, set it as empty
   useEffect(() => {
     const objectsAreEqual =
       JSON.stringify(filterData) === JSON.stringify(defaultFilterData);
@@ -285,7 +286,6 @@ export const Filter = ({
               <p className="evolution-value">{handleEvolutionInput()}</p>
             </div>
           </div>
-          {/* <FontAwesomeIcon icon={faClose} className="closeEvolution" /> */}
         </div>
       </div>
       <div className="filter-buttons">

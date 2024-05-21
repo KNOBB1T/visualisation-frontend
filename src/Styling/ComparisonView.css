@@ -4,7 +4,7 @@
     align-items: center;
 }
 
-.home-button {
+/* .home-button {
     width: 11vw;
     aspect-ratio: 1.5/0.5;
     background-color: #357aa1;
@@ -14,11 +14,11 @@
     cursor: pointer;
     left: 0;
     position: absolute;
-  }
+  } */
   
-  .home-icon {
+  /* .home-icon {
     height: 2vh;
-  }
+  } */
 
 .error-content {
     align-items: center;

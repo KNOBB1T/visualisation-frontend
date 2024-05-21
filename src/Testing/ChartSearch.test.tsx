@@ -30,11 +30,11 @@ const speciesData: Species[] = [
     domain: "Archaea",
     taxonomy_level2: "",
     species_name_compact: "",
-    publication_count: 0, // Add the missing properties here
-    total_nodes: 0, // Add the missing properties here
-    total_edges: 0, // Add the missing properties here
-    taxonomy: "", // Add the missing properties here
-    diseases: [], // Add the missing properties here
+    publication_count: 0,
+    total_nodes: 0,
+    total_edges: 0,
+    taxonomy: "",
+    diseases: [],
   },
   {
     index: BigInt(2),
@@ -45,11 +45,11 @@ const speciesData: Species[] = [
     domain: "Bacteria",
     taxonomy_level2: "",
     species_name_compact: "",
-    publication_count: 0, // Add the missing properties here
-    total_nodes: 0, // Add the missing properties here
-    total_edges: 0, // Add the missing properties here
-    taxonomy: "", // Add the missing properties here
-    diseases: [], // Add the missing properties here
+    publication_count: 0,
+    total_nodes: 0,
+    total_edges: 0,
+    taxonomy: "",
+    diseases: [],
   },
   {
     index: BigInt(3),
@@ -60,11 +60,11 @@ const speciesData: Species[] = [
     domain: "Eukaryota",
     taxonomy_level2: "",
     species_name_compact: "",
-    publication_count: 0, // Add the missing properties here
-    total_nodes: 0, // Add the missing properties here
-    total_edges: 0, // Add the missing properties here
-    taxonomy: "", // Add the missing properties here
-    diseases: [], // Add the missing properties here
+    publication_count: 0,
+    total_nodes: 0,
+    total_edges: 0,
+    taxonomy: "",
+    diseases: [],
   },
 ];
 
@@ -81,9 +81,7 @@ describe("ChartSearch", () => {
         save: jest.fn(),
         restore: jest.fn(),
         fillText: jest.fn(),
-        measureText: jest.fn().mockReturnValue({ width: 100 }), // Add this line
-
-        // add other necessary mock context methods here
+        measureText: jest.fn().mockReturnValue({ width: 100 }),
       },
       chartArea: { top: 0, width: 500, height: 500 },
       config: {
@@ -105,18 +103,3 @@ describe("ChartSearch", () => {
     expect(mockChart.ctx.fillText).toHaveBeenCalled();
   });
 });
-
-//   it('renders the correct data', () => {
-//   render(<ChartSearch speciesData={speciesData} />);
-//   const chart = screen.getByTestId('chart-wrapper').firstChild;
-//   const chartInstance = Chart.getChart(chart.id);
-//   expect(chartInstance.data.datasets[0].data).toEqual(speciesData.map(species => species.evolution));
-// });
-
-// it('updates the chart when new data is provided', () => {
-//   const { rerender } = render(<ChartSearch speciesData={speciesData} />);
-//   const newData = [...speciesData, createSpeciesData('New Domain', 4)];
-//   rerender(<ChartSearch speciesData={newData} />);
-//   const dataPoints = screen.getAllByTestId('data-point');
-//   expect(dataPoints).toHaveLength(newData.length);
-// });

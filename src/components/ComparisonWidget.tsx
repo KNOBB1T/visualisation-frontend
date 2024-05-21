@@ -22,6 +22,7 @@ export const ComparisonWidget = () => {
     .filter((key) => key.endsWith("Taxonomy"))
     .map((key) => JSON.parse(sessionStorage.getItem(key) || "[]"));
 
+  // Comparison Keys
   const [displayedKeys, setDisplayedKeys] = useState(() => {
     const initialKeys = Object.keys(sessionStorage);
     return initialKeys;

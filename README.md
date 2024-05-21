@@ -1,4 +1,4 @@
-To start using Visionet's Frontend, please run "npm install" to load all of the necessary dependencies required for it to run.
+To start using Visionet's Frontend, please run "npm install" to load all of the necessary dependencies/ node modules required for it to run.
 
 Ensure that the backend code is running on your localhost before running the code. If you start this before the backend, reload
 your browser window to let them sync up together.

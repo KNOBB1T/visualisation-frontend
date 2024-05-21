@@ -1,13 +1,21 @@
 .App {
-  background: linear-gradient(to right, #FDFCFB, #f5c69f);
+  /* background-color: #F9E1CD; */
+  /* background-color: #09143C; */
   height: 100vh;
   width: 100vw;
   display: inline-flex;
 }
 
+.light-theme {
+  background-color: #F9E1CD;
+}
+
+.dark-theme {
+  background-color: #09143C;
+}
+
 .visionet-features {
   left: 0;
-  /* height: 100%; */
   position: absolute;
 }
 
@@ -26,13 +34,19 @@
   width: 100vw;
 }
 
+.home-visionet {
+    height: auto;
+    width: 35vw;
+    max-width: 35rem;
+    user-select: none;
+}
+
 .visionet {
   height: auto;
-  /* max-height: 10vh; */
-  /* min-height: 2vh; */
   width: 35vw;
   max-width: 35rem;
   user-select: none;
+  cursor: pointer;
 }
 
 .visionet-container {
@@ -44,7 +58,6 @@
 
 .search-bar-container {
   padding-top: 1vh;
-  /* width: 20vw; */
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -67,7 +80,6 @@
   padding-top: 3vh;
   width:100;
   height: 10vh;
-  /* left: 422px; */
   margin: auto;
   display:flex;
   flex-direction: column;
@@ -79,4 +91,3 @@
   top: 0;
   left: 0;
 }
-
