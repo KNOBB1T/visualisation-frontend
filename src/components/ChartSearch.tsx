@@ -1,7 +1,8 @@
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import "../Styling/ChartSearch.css";
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 //Providing plugins to my Domain chart
 Chart.register(ArcElement, Tooltip, Legend);
@@ -82,6 +83,8 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
     ],
   };
 
+  const { theme } = useContext(ThemeContext);
+
   //creating an onHover feature that allows users to see the count of each domain
   const hoverlabel = {
     id: "hoverlabel",
@@ -102,7 +105,7 @@ export const ChartSearch = ({ speciesData }: { speciesData: Species[] }) => {
         display: true,
         position: "right" as "right",
         labels: {
-          color: "black",
+          color: theme === "Dark" ? "white" : "black",
           font: {
             size: 16,
           },

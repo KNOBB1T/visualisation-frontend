@@ -1,12 +1,14 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import visionet from "../assets/visionet.png";
+import darkVisionet from "../assets/dark-visionet.png";
 import "../Styling/ComparisonView.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import "../App.css";
+import React, { useContext } from "react";
 import { OptionsMenu } from "../Components/OptionsMenu";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
+  const { theme } = useContext(ThemeContext);
   const location = useLocation();
   const comparedSpecies = location.state.networkImages;
   const speciesDensity = location.state.networkDensity;
@@ -20,13 +22,17 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
 
   if (sessionStorage.length < 12) {
     return (
-      <div className="App">
+      <div
+        className={`App ${theme === "Light" ? "light-theme" : "dark-theme"}`}
+      >
         <OptionsMenu />
         <div className="error-content">
           <div className="main-title">
             <img
-              className="visionet"
-              src={visionet}
+              className={`visionet ${
+                theme === "Light" ? "light-visionet" : "dark-visionet"
+              }`}
+              src={theme === "Light" ? visionet : darkVisionet}
               alt="visionet"
               onClick={() => navigate("/")}
             />
@@ -52,20 +58,28 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
     );
 
     return (
-      <div className="App">
+      <div
+        className={`App ${theme === "Light" ? "light-theme" : "dark-theme"}`}
+      >
         <div className="content">
           <div className="main-title">
             <OptionsMenu />
             <img
-              className="visionet"
-              src={visionet}
+              className={`visionet ${
+                theme === "Light" ? "light-visionet" : "dark-visionet"
+              }`}
+              src={theme === "Light" ? visionet : darkVisionet}
               alt="visionet"
               onClick={() => navigate("/")}
             />
           </div>
           <div className="comparison-interface">
             <div className="species1">
-              <div className="speciesName">
+              <div
+                className={`speciesName ${
+                  theme === "Light" ? "light-theme" : "dark-theme"
+                }`}
+              >
                 <span
                   onClick={() => {
                     navigate(`/generateNetwork/${speciesCompare0?.species_id}`);
@@ -159,7 +173,11 @@ export const ComparisonView = ({ speciesData }: { speciesData: Species[] }) => {
               </div>
             </div>
             <div className="species2">
-              <div className="speciesName">
+              <div
+                className={`speciesName ${
+                  theme === "Light" ? "light-theme" : "dark-theme"
+                }`}
+              >
                 <span
                   onClick={() => {
                     navigate(`/generateNetwork/${speciesCompare1?.species_id}`);

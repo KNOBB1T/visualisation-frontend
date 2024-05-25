@@ -266,12 +266,12 @@ export const SearchBar = ({ speciesData }: searchBarProps) => {
           className={`search-divider ${inputValidity ? "" : "invalid-species"}`}
         />
         <div
-          className={`search-button ${inputValidity ? "" : "invalid-species"}`}
-          onClick={generateNetwork}
+          className={`search-button ${inputValidity ? "" : "invalid-species"} `}
         >
           <Button
             className={`search-icon ${inputValidity ? "" : "invalid-species"}`}
             data-testid="search-icon"
+            onClick={generateNetwork}
           >
             <FontAwesomeIcon icon={faSearch} />
           </Button>

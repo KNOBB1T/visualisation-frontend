@@ -6,15 +6,11 @@
     border-bottom: 2px solid #357aa1;
     /* height: 3rem; */
     /* padding: 0 10px; */
-    box-shadow: 0px 0px 8px #ddd;
+    /* box-shadow: 0px 0px 8px #ddd; */
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
-/* .input-wrapper.invalid-species {
-    border: 2px solid red;
-} */
 
 .input-wrapper.filter-present {
   border-top-left-radius: 10px;
@@ -47,6 +43,7 @@
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 10px;
   background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .search-input.filter-hover {
@@ -146,6 +143,10 @@ input:focus {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* .search-button.filter-present {
+  border-bottom: 2px solid black;
+} */
+
 .search-button.invalid-species {
   border-top: 2px solid red;
   border-right: 2px solid red;
@@ -189,9 +190,10 @@ input:focus {
   }
 
   .divider {
-    height: 20px; /* Adjust the height as needed */
+    height: 1.5vh; /* Adjust the height as needed */
     width: 1px;
     background-color: #357aa1; /* Color of the divider */
+    position: relative;
   }
 
   .divider.invalid-species {
@@ -202,7 +204,7 @@ input:focus {
     height: 3vh; /* Adjust the height as needed */
     width: 1px;
     background-color: #357aa1; /* Color of the divider */
-    /* margin: 0 10px; Adjust the margin as needed */
+    position: relative;
   }
 
   .search-divider.invalid-species {

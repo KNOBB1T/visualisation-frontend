@@ -75,8 +75,12 @@
     border-radius: 4px;
 }
 
-.speciesName span {
-    color: black;
+.speciesName.light-theme span {
+    color: black; /* color for light mode */
+}
+
+.speciesName.dark-theme span {
+    color: white; /* color for dark mode */
 }
 
 .speciesName span:hover {

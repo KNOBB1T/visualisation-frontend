@@ -1,32 +1,37 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { SettingsArrow } from "./SettingsArrow";
 import { SettingsIcon } from "./SettingsIcon";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
-export type Theme = "Light" | "Dark";
+// export type Theme = "Light" | "Dark";
 
 export const OptionsMenu = () => {
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(() => {
+    return sessionStorage.getItem("settingsOpen") === "true";
+  });
 
   const themeDetails = {
     Dark: { icon: faSun, className: "sun-icon", oppositeTheme: "Light" },
     Light: { icon: faMoon, className: "moon-icon", oppositeTheme: "Dark" },
   };
 
-  const [theme, setTheme] = useState<Theme>(() => {
-    return (localStorage.getItem("theme") as Theme) || "Light";
-  });
+  // const [theme, setTheme] = useState<Theme>(() => {
+  //   return (localStorage.getItem("theme") as Theme) || "Light";
+  // });
+
+  const { theme, setTheme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    sessionStorage.setItem("settingsOpen", settingsOpen.toString());
+  }, [settingsOpen]);
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
     console.log(theme);
   }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === "Light" ? "Dark" : "Light"));
-  };
 
   return (
     <div className="options">
@@ -42,14 +47,21 @@ export const OptionsMenu = () => {
         <div className={`settings-container ${!settingsOpen ? "closed" : ""}`}>
           <Button
             className={`${themeDetails[theme].oppositeTheme}-theme`}
-            onClick={toggleTheme}
+            onClick={() =>
+              setTheme((prev) => (prev === "Light" ? "Dark" : "Light"))
+            }
           >
             <FontAwesomeIcon
               icon={themeDetails[theme].icon}
               className={themeDetails[theme].className}
             />
           </Button>
-          <div className={`Theme-text`} onClick={toggleTheme}>
+          <div
+            className={`Theme-text`}
+            onClick={() =>
+              setTheme((prev) => (prev === "Light" ? "Dark" : "Light"))
+            }
+          >
             <p>{themeDetails[theme].oppositeTheme} Mode</p>
           </div>
         </div>

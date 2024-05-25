@@ -1,7 +1,17 @@
-import { createRef, useEffect, useState, useCallback, useRef } from "react";
+import {
+  createRef,
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useContext,
+} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import visionet from "../assets/visionet.png";
+import darkVisionet from "../assets/dark-visionet.png";
+
 import "../Styling/NetworkView.css";
+import "../App.css";
 import { Button } from "react-bootstrap";
 import { TailSpin } from "react-loader-spinner";
 import {
@@ -17,7 +27,6 @@ import {
   faExpandAlt,
   faArrowsRotate,
   faVirus,
-  faMoon,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   FullScreen,
@@ -26,6 +35,7 @@ import {
 } from "react-full-screen";
 import React from "react";
 import { OptionsMenu } from "../Components/OptionsMenu";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 export type Node = {
   id: string;
@@ -51,6 +61,7 @@ export type Taxon = {
 };
 
 export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
+  const { theme } = useContext(ThemeContext);
   const { queriedSpeciesId } = useParams();
   const parsedSpeciesId = Number(queriedSpeciesId);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,7 +97,7 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     .map((key) => sessionStorage.getItem(key));
 
   const cosmograph = useRef<CosmographRef<Node, Link> | undefined>();
-  const navigateHome = useNavigate();
+  const navigate = useNavigate();
 
   console.log("NETWORKVIEW RENDERING---------------------");
 
@@ -248,7 +259,10 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     taxonomyWorker.onmessage = (event) => {
       // This will be called when the worker sends back the result
       const result = event.data;
-      setTaxonomy(result);
+      const sortedTaxonomy = [...result].sort((a, b) =>
+        a.Rank.localeCompare(b.Rank)
+      );
+      setTaxonomy(sortedTaxonomy);
       console.log("TAXONOMY RESULT: " + JSON.stringify(result));
       setTaxonomyLoading(false);
     };
@@ -325,7 +339,9 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
 
   if (isLoading) {
     return (
-      <div className="App">
+      <div
+        className={`App ${theme === "Light" ? "light-theme" : "dark-theme"}`}
+      >
         {taxonomyLoading && (
           <div className="page-loading-container">
             <TailSpin color="#e45e19" height="300px" width="300px" />
@@ -338,15 +354,19 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
 
   if (!validSpeciesIds.includes(parsedSpeciesId)) {
     return (
-      <div className="App">
+      <div
+        className={`App ${theme === "Light" ? "light-theme" : "dark-theme"}`}
+      >
         <OptionsMenu />
         <div className="error-content">
           <div className="main-title">
             <img
-              className="visionet"
-              src={visionet}
+              className={`visionet ${
+                theme === "Light" ? "light-visionet" : "dark-visionet"
+              }`}
+              src={theme === "Light" ? visionet : darkVisionet}
               alt="visionet"
-              onClick={() => navigateHome("/")}
+              onClick={() => navigate("/")}
             />
           </div>
           <div className="error-box">
@@ -363,19 +383,29 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
     );
   } else {
     return (
-      <div className="App">
+      <div
+        className={`App ${theme === "Light" ? "light-theme" : "dark-theme"}`}
+      >
         <div className="content">
           <div className="main-title">
             <OptionsMenu />
             <img
-              className="visionet"
-              src={visionet}
+              className={`visionet ${
+                theme === "Light" ? "light-visionet" : "dark-visionet"
+              }`}
+              src={theme === "Light" ? visionet : darkVisionet}
               alt="visionet"
-              onClick={() => navigateHome("/")}
+              onClick={() => navigate("/")}
             />
           </div>
           <div className="network">
-            <p className="speciesName">{queriedSpecies?.compact_name}</p>
+            <p
+              className={`speciesName ${
+                theme === "Light" ? "light-theme" : "dark-theme"
+              }`}
+            >
+              {queriedSpecies?.compact_name}
+            </p>
           </div>
           <div className="screen">
             <div className="visualisation-pane">
@@ -423,22 +453,25 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                       </div>
                       <div className="species-details">
                         {Array.isArray(taxonomy) &&
-                          taxonomy.map(
-                            (taxon: Taxon, index: number) =>
-                              taxon.Rank !== "no rank" && (
+                          taxonomy
+                            .map((taxon: Taxon) => ({
+                              ...taxon,
+                              Rank:
+                                taxon.Rank === "superkingdom"
+                                  ? "domain"
+                                  : taxon.Rank,
+                            }))
+                            .sort((a, b) => a.Rank.localeCompare(b.Rank))
+                            .map((taxon: Taxon, index: number) =>
+                              taxon.Rank !== "no rank" ? (
                                 <div key={index} className="detail-stat">
-                                  {capitalizeRankFirstLetter(
-                                    taxon.Rank === "superkingdom"
-                                      ? "domain"
-                                      : taxon.Rank
-                                  )}
-                                  :{" "}
+                                  {capitalizeRankFirstLetter(taxon.Rank)}:{" "}
                                   <span className="rank-style">
                                     {taxon.ScientificName}
                                   </span>
                                 </div>
-                              )
-                          )}
+                              ) : null
+                            )}
                       </div>
                     </div>
                   )}
@@ -500,7 +533,9 @@ export const NetworkView = ({ speciesData }: { speciesData: Species[] }) => {
                             linkWidth={1}
                             linkArrows={false}
                             linkWidthScale={1}
-                            backgroundColor="white"
+                            backgroundColor={
+                              theme === "Light" ? "white" : "black"
+                            }
                             fitViewOnInit={true}
                             simulationGravity={0.1}
                             simulationLinkDistance={4}

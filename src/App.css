@@ -1,17 +1,21 @@
-.App {
-  /* background-color: #F9E1CD; */
+.App.light-theme {
+  background-color: #F9E1CD;
   /* background-color: #09143C; */
   height: 100vh;
   width: 100vw;
   display: inline-flex;
+  transition: background-color 1s ease;
+  justify-content: center;
 }
 
-.light-theme {
-  background-color: #F9E1CD;
-}
-
-.dark-theme {
+.App.dark-theme {
   background-color: #09143C;
+  /* background-color: #09143C; */
+  height: 100vh;
+  width: 100vw;
+  display: inline-flex;
+  transition: background-color 1s ease;
+  justify-content: center;
 }
 
 .visionet-features {

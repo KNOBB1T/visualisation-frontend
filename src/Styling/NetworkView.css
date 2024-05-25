@@ -1,6 +1,6 @@
-.App {
+/* .App {
   justify-content: center;
-}
+} */
 
 .visionet {
   height: auto;
@@ -94,6 +94,15 @@
     text-decoration: underline;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:xx-large;
+    transition: background-color 1s ease;
+}
+
+.speciesName.light-theme {
+  color: black; /* color for light mode */
+}
+
+.speciesName.dark-theme {
+  color: white; /* color for dark mode */
 }
 
 .network-buttons {
